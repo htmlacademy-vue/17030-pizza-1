@@ -20,6 +20,7 @@ export const normalizeIngredient = (ingredient) => {
     ...ingredient,
     type: INGREDIENT_TYPES.find(({ label }) => ingredient.name === label)
       ?.value,
+    count: 0,
   };
 };
 
