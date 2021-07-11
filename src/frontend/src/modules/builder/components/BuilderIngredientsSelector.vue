@@ -34,6 +34,8 @@
             </AppDrag>
             <AppCounter
               v-model.number="fillingItem.count"
+              :min="APP_COUNTER_MIN_VALUE"
+              :max="APP_COUNTER_MAX_VALUE"
               class="counter--orange ingridients__counter"
             />
           </li>
@@ -47,6 +49,10 @@
 import AppRadio from "@/common/components/AppRadio";
 import AppDrag from "@/common/components/AppDrag";
 import AppCounter from "@/common/components/AppCounter";
+import {
+  APP_COUNTER_MAX_VALUE,
+  APP_COUNTER_MIN_VALUE,
+} from "@/common/constants";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -71,6 +77,8 @@ export default {
   data() {
     return {
       pickedSauce: null,
+      APP_COUNTER_MIN_VALUE,
+      APP_COUNTER_MAX_VALUE,
     };
   },
 

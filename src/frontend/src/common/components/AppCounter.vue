@@ -29,13 +29,9 @@
 </template>
 
 <script>
-import {
-  APP_COUNTER_MAX_VALUE,
-  APP_COUNTER_MIN_VALUE,
-} from "@/common/constants";
-
 export default {
   name: "AppCounter",
+
   props: {
     value: {
       type: Number,
@@ -46,7 +42,7 @@ export default {
     },
     min: {
       type: Number,
-      default: 0,
+      default: -Infinity,
     },
     max: {
       type: Number,
@@ -54,19 +50,12 @@ export default {
     },
   },
 
-  data() {
-    return {
-      APP_COUNTER_MIN_VALUE,
-      APP_COUNTER_MAX_VALUE,
-    };
-  },
-
   computed: {
     canNotDecrease() {
-      return this.value <= APP_COUNTER_MIN_VALUE;
+      return this.value <= this.min;
     },
     canNotIncrease() {
-      return this.value >= APP_COUNTER_MAX_VALUE;
+      return this.value >= this.max;
     },
   },
 
@@ -77,12 +66,12 @@ export default {
         value = parseInt(evt.target.value);
       }
 
-      if (value < APP_COUNTER_MIN_VALUE) {
-        value = APP_COUNTER_MIN_VALUE;
+      if (value < this.min) {
+        value = this.min;
       }
 
-      if (value > APP_COUNTER_MAX_VALUE) {
-        value = APP_COUNTER_MAX_VALUE;
+      if (value > this.max) {
+        value = this.max;
       }
 
       this.$emit("input", value);
