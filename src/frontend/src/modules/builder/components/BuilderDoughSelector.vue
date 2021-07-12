@@ -7,7 +7,7 @@
         v-for="doughItem in doughList"
         :key="doughItem.name"
         v-model="pickedDough"
-        :value="doughItem"
+        :value="doughItem.type"
         class="dough__input"
         :class="`dough__input--${doughItem.type}`"
         name="dough"
@@ -24,21 +24,26 @@ import AppSelectorRadio from "@/common/components/AppSelectorRadio";
 
 export default {
   name: "BuilderDoughSelector",
+
   components: {
     AppSelectorRadio,
   },
 
-  data() {
-    return {
-      pickedDough: null,
-    };
-  },
-
   props: {
+    doughValue: {
+      type: String,
+      required: true,
+    },
     doughList: {
       type: Array,
       required: true,
     },
+  },
+
+  data() {
+    return {
+      pickedDough: this.doughValue,
+    };
   },
 
   watch: {
@@ -46,12 +51,6 @@ export default {
       this.$emit("choose-dough", val);
     },
   },
-
-  // methods: {
-  //   changeHandler(doughType) {
-  //     this.$emit("choose-dough", doughType);
-  //   },
-  // },
 };
 </script>
 

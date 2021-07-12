@@ -14,16 +14,19 @@
 <script>
 export default {
   name: "AppRadio",
+
   model: {
     prop: "checked",
     event: "change",
   },
+
   props: {
     checked: {
-      type: [String, Object],
+      type: String,
+      required: true,
     },
     value: {
-      type: [String, Object],
+      type: String,
       required: true,
     },
     name: {
@@ -39,8 +42,8 @@ export default {
   },
 
   methods: {
-    changeHandler() {
-      this.$emit("change", this.value);
+    changeHandler(evt) {
+      this.$emit("change", evt.target.value);
     },
   },
 };

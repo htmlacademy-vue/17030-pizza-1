@@ -10,7 +10,7 @@
           v-for="sauce in saucesList"
           :key="sauce.name"
           v-model="pickedSauce"
-          :value="sauce"
+          :value="sauce.type"
           class="ingridients__input"
           name="sauce"
         >
@@ -64,6 +64,10 @@ export default {
   },
 
   props: {
+    sauceValue: {
+      type: String,
+      required: true,
+    },
     saucesList: {
       type: Array,
       required: true,
@@ -76,7 +80,7 @@ export default {
 
   data() {
     return {
-      pickedSauce: null,
+      pickedSauce: this.sauceValue,
       APP_COUNTER_MIN_VALUE,
       APP_COUNTER_MAX_VALUE,
     };

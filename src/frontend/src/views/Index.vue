@@ -6,23 +6,26 @@
 
         <div class="content__dough">
           <BuilderDoughSelector
+            :dough-value="doughValue"
             :dough-list="dough"
-            @choose-dough="preferredDough = $event"
+            @choose-dough="updatedDough"
           />
         </div>
 
         <div class="content__diameter">
           <BuilderSizeSelector
+            :size-value="sizeValue"
             :sizes-list="sizes"
-            @choose-size="preferredSize = $event"
+            @choose-size="updatedSize"
           />
         </div>
 
         <div class="content__ingridients">
           <BuilderIngredientsSelector
+            :sauce-value="sauceValue"
             :sauces-list="sauces"
             :fillings-list="fillings"
-            @choose-sauce="preferredSauce = $event"
+            @choose-sauce="updatedSauce"
           />
         </div>
 
@@ -68,6 +71,8 @@ import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import AppInput from "@/common/components/AppInput";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import { DOUGH_TYPES, SAUCE_TYPES } from "@/common/constants";
+import sizes from "@/common/enums/sizes";
 
 export default {
   name: "IndexHome",
@@ -89,6 +94,9 @@ export default {
       fillings: pizza.ingredients.map((ingredient) =>
         normalizeIngredient(ingredient)
       ),
+      doughValue: DOUGH_TYPES[0].value,
+      sizeValue: sizes[1],
+      sauceValue: SAUCE_TYPES[0].value,
       preferredName: "",
       preferredDough: null,
       preferredSize: null,
@@ -114,12 +122,27 @@ export default {
     },
   },
 
+  mounted() {
+    this.updatedDough(this.doughValue);
+    this.updatedSize(this.sizeValue);
+    this.updatedSauce(this.sauceValue);
+  },
+
   methods: {
     droppedFilling(filling) {
       const targetFilling = this.fillings.find(
         ({ type }) => type === filling.type
       );
       targetFilling.count = targetFilling.count + 1;
+    },
+    updatedDough(doughValue) {
+      this.preferredDough = this.dough.find(({ type }) => type === doughValue);
+    },
+    updatedSize(sizeValue) {
+      this.preferredSize = this.sizes.find(({ type }) => type === sizeValue);
+    },
+    updatedSauce(sauceValue) {
+      this.preferredSauce = this.sauces.find(({ type }) => type === sauceValue);
     },
     addingToCart(price) {
       this.$emit("add-to-cart", price);

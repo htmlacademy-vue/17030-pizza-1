@@ -7,7 +7,7 @@
         v-for="size in sizesList"
         :key="size.name"
         v-model="pickedSize"
-        :value="size"
+        :value="size.type"
         class="diameter__input"
         :class="`diameter__input--${size.type}`"
         name="size"
@@ -28,6 +28,10 @@ export default {
   },
 
   props: {
+    sizeValue: {
+      type: String,
+      required: true,
+    },
     sizesList: {
       type: Array,
       required: true,
@@ -36,7 +40,7 @@ export default {
 
   data() {
     return {
-      pickedSize: null,
+      pickedSize: this.sizeValue,
     };
   },
 

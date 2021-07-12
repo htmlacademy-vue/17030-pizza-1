@@ -15,6 +15,7 @@
 <script>
 export default {
   name: "AppSelectorRadio",
+
   model: {
     prop: "checked",
     event: "change",
@@ -22,9 +23,11 @@ export default {
 
   props: {
     checked: {
+      type: String,
       required: true,
     },
     value: {
+      type: String,
       required: true,
     },
     name: {
@@ -40,8 +43,8 @@ export default {
   },
 
   methods: {
-    changeHandler() {
-      this.$emit("change", this.value);
+    changeHandler(evt) {
+      this.$emit("change", evt.target.value);
     },
   },
 };
