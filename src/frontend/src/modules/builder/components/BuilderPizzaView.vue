@@ -2,12 +2,14 @@
   <AppDrop @drop="dropHandler">
     <div class="pizza" :class="classFoundation">
       <div class="pizza__wrapper">
-        <div
-          v-for="filling in preferredFillings"
-          :key="filling.name"
-          class="pizza__filling"
-          :class="classFilling(filling)"
-        ></div>
+        <template v-for="filling in preferredFillings">
+          <div
+            v-for="counter in filling.count"
+            :key="`${filling.type}-${counter}`"
+            class="pizza__filling"
+            :class="classFilling(filling.type, counter)"
+          ></div>
+        </template>
       </div>
     </div>
   </AppDrop>
@@ -20,6 +22,7 @@ import fillingCount from "@/common/enums/fillingCount";
 
 export default {
   name: "BuilderPizzaView",
+
   components: {
     AppDrop,
   },
@@ -67,9 +70,9 @@ export default {
     dropHandler(evt) {
       this.$emit("drop-filling", evt);
     },
-    classFilling(filling) {
-      const classCount = fillingCount[filling.count] ?? "";
-      return [`pizza__filling--${filling.type}`, classCount];
+    classFilling(type, counter) {
+      const classCount = fillingCount[counter] ?? "";
+      return [`pizza__filling--${type}`, classCount];
     },
   },
 };
