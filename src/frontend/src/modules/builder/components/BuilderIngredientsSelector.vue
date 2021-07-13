@@ -23,7 +23,7 @@
 
         <ul class="ingridients__list">
           <li
-            v-for="fillingItem in fillingsList"
+            v-for="(fillingItem, index) in fillingsList"
             :key="fillingItem.name"
             class="ingridients__item"
           >
@@ -33,10 +33,11 @@
               </span>
             </AppDrag>
             <AppCounter
-              v-model.number="fillingItem.count"
+              :value="fillingsCounterList[index].count"
               :min="APP_COUNTER_MIN_VALUE"
               :max="APP_COUNTER_MAX_VALUE"
               class="counter--orange ingridients__counter"
+              @input="changeFillingCount($event, fillingItem.type)"
             />
           </li>
         </ul>
@@ -76,6 +77,12 @@ export default {
       type: Array,
       required: true,
     },
+    fillingsCounterList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
 
   data() {
@@ -89,6 +96,12 @@ export default {
   watch: {
     pickedSauce(val) {
       this.$emit("choose-sauce", val);
+    },
+  },
+
+  methods: {
+    changeFillingCount(count, type) {
+      this.$emit("change-filling", count, type);
     },
   },
 };

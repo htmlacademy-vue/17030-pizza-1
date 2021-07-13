@@ -1,5 +1,9 @@
-import { DOUGH_TYPES, INGREDIENT_TYPES, SAUCE_TYPES } from "./constants.js";
-import sizes from "./enums/sizes";
+import {
+  DOUGH_TYPES,
+  FILLING_TYPES,
+  SAUCE_TYPES,
+  SIZE_TYPES,
+} from "./constants.js";
 
 export const normalizeDough = (dough) => {
   return {
@@ -15,11 +19,17 @@ export const normalizeSauce = (sauce) => {
   };
 };
 
-export const normalizeIngredient = (ingredient) => {
+export const normalizeFilling = (filling) => {
   return {
-    ...ingredient,
-    type: INGREDIENT_TYPES.find(({ label }) => ingredient.name === label)
-      ?.value,
+    ...filling,
+    type: FILLING_TYPES.find(({ label }) => filling.name === label)?.value,
+  };
+};
+
+export const composeFillingTypeAndCounter = (filling) => {
+  return {
+    price: filling.price,
+    type: FILLING_TYPES.find(({ label }) => filling.name === label)?.value,
     count: 0,
   };
 };
@@ -27,6 +37,6 @@ export const normalizeIngredient = (ingredient) => {
 export const normalizeSize = (size) => {
   return {
     ...size,
-    type: sizes[size.multiplier],
+    type: SIZE_TYPES.find(({ label }) => size.name === label)?.value,
   };
 };

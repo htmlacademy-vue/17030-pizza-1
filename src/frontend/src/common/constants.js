@@ -20,7 +20,22 @@ export const SAUCE_TYPES = [
   },
 ];
 
-export const INGREDIENT_TYPES = [
+export const SIZE_TYPES = [
+  {
+    label: "23 см",
+    value: "small",
+  },
+  {
+    label: "32 см",
+    value: "normal",
+  },
+  {
+    label: "45 см",
+    value: "big",
+  },
+];
+
+export const FILLING_TYPES = [
   {
     label: "Грибы",
     value: "mushrooms",

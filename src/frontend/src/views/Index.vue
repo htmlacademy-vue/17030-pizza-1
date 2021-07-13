@@ -25,7 +25,9 @@
             :sauce-value="sauceValue"
             :sauces-list="sauces"
             :fillings-list="fillings"
+            :fillings-counter-list="fillingCounters"
             @choose-sauce="updatedSauce"
+            @change-filling="updateFilling"
           />
         </div>
 
@@ -60,8 +62,9 @@
 <script>
 import pizza from "@/static/pizza.json";
 import {
+  composeFillingTypeAndCounter,
   normalizeDough,
-  normalizeIngredient,
+  normalizeFilling,
   normalizeSauce,
   normalizeSize,
 } from "@/common/helpers";
@@ -71,8 +74,7 @@ import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import AppInput from "@/common/components/AppInput";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import { DOUGH_TYPES, SAUCE_TYPES } from "@/common/constants";
-import sizes from "@/common/enums/sizes";
+import { DOUGH_TYPES, SAUCE_TYPES, SIZE_TYPES } from "@/common/constants";
 
 export default {
   name: "IndexHome",
@@ -92,10 +94,11 @@ export default {
       sizes: pizza.sizes.map((size) => normalizeSize(size)),
       sauces: pizza.sauces.map((sauce) => normalizeSauce(sauce)),
       fillings: pizza.ingredients.map((ingredient) =>
-        normalizeIngredient(ingredient)
+        normalizeFilling(ingredient)
       ),
+      fillingCounters: pizza.ingredients.map(composeFillingTypeAndCounter),
       doughValue: DOUGH_TYPES[0].value,
-      sizeValue: sizes[1],
+      sizeValue: SIZE_TYPES[0].value,
       sauceValue: SAUCE_TYPES[0].value,
       preferredName: "",
       preferredDough: null,
@@ -106,7 +109,7 @@ export default {
 
   computed: {
     preferredFillings() {
-      return this.fillings.filter((f) => {
+      return this.fillingCounters.filter((f) => {
         return f.count !== 0;
       });
     },
@@ -143,6 +146,20 @@ export default {
     },
     updatedSauce(sauceValue) {
       this.preferredSauce = this.sauces.find(({ type }) => type === sauceValue);
+    },
+    updateFilling(fillingValue, fillingType) {
+      const filling = this.fillingCounters.find(
+        ({ type }) => type === fillingType
+      );
+      filling.count = fillingValue;
+
+      // const index = this.fillingCounters.findIndex(
+      //   ({ type }) => type === fillingType
+      // );
+      // this.$set(this.fillingCounters, index, {
+      //   type: fillingType,
+      //   count: fillingValue,
+      // });
     },
     addingToCart(price) {
       this.$emit("add-to-cart", price);
