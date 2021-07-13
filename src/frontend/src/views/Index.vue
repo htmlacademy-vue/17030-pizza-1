@@ -62,7 +62,7 @@
 <script>
 import pizza from "@/static/pizza.json";
 import {
-  composeFillingTypeAndCounter,
+  normalizeFillingWithCounter,
   normalizeDough,
   normalizeFilling,
   normalizeSauce,
@@ -93,10 +93,10 @@ export default {
       dough: pizza.dough.map((item) => normalizeDough(item)),
       sizes: pizza.sizes.map((size) => normalizeSize(size)),
       sauces: pizza.sauces.map((sauce) => normalizeSauce(sauce)),
-      fillings: pizza.ingredients.map((ingredient) =>
-        normalizeFilling(ingredient)
+      fillings: pizza.ingredients.map((filling) => normalizeFilling(filling)),
+      fillingCounters: pizza.ingredients.map((filling) =>
+        normalizeFillingWithCounter(filling)
       ),
-      fillingCounters: pizza.ingredients.map(composeFillingTypeAndCounter),
       doughValue: DOUGH_TYPES[0].value,
       sizeValue: SIZE_TYPES[0].value,
       sauceValue: SAUCE_TYPES[0].value,

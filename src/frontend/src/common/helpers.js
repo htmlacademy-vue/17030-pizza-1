@@ -26,9 +26,9 @@ export const normalizeFilling = (filling) => {
   };
 };
 
-export const composeFillingTypeAndCounter = (filling) => {
+export const normalizeFillingWithCounter = (filling) => {
   return {
-    price: filling.price,
+    ...filling,
     type: FILLING_TYPES.find(({ label }) => filling.name === label)?.value,
     count: 0,
   };
