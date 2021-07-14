@@ -133,7 +133,7 @@ export default {
 
   methods: {
     droppedFilling(filling) {
-      const targetFilling = this.fillings.find(
+      const targetFilling = this.fillingCounters.find(
         ({ type }) => type === filling.type
       );
       targetFilling.count = targetFilling.count + 1;

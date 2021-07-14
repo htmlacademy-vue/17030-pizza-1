@@ -5,10 +5,7 @@
 </template>
 
 <script>
-import {
-  APP_COUNTER_MAX_VALUE,
-  DATA_TRANSFER_PAYLOAD,
-} from "@/common/constants";
+import { DATA_TRANSFER_PAYLOAD } from "@/common/constants";
 
 export default {
   name: "AppDrop",
@@ -23,10 +20,7 @@ export default {
 
       if (payload) {
         const transferData = JSON.parse(payload);
-
-        if (transferData.count < APP_COUNTER_MAX_VALUE) {
-          this.$emit("drop", transferData);
-        }
+        this.$emit("drop", transferData);
       }
     },
   },

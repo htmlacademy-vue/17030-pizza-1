@@ -1,5 +1,5 @@
 <template>
-  <div draggable="true" @dragstart.self="dragstartHandler">
+  <div :draggable="draggable" @dragstart.self="dragstartHandler">
     <slot />
   </div>
 </template>
@@ -14,6 +14,10 @@ export default {
     transferData: {
       type: Object,
       required: true,
+    },
+    draggable: {
+      type: Boolean,
+      default: true,
     },
   },
 

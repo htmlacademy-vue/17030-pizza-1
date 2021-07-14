@@ -27,7 +27,10 @@
             :key="fillingItem.name"
             class="ingridients__item"
           >
-            <AppDrag :transfer-data="fillingItem">
+            <AppDrag
+              :transfer-data="fillingsCounterList[index]"
+              :draggable="canDragFilling(fillingsCounterList[index].count)"
+            >
               <span class="filling" :class="`filling--${fillingItem.type}`">
                 {{ fillingItem.name }}
               </span>
@@ -102,6 +105,9 @@ export default {
   methods: {
     changeFillingCount(count, type) {
       this.$emit("change-filling", count, type);
+    },
+    canDragFilling(counter) {
+      return counter < APP_COUNTER_MAX_VALUE;
     },
   },
 };
