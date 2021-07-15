@@ -20,7 +20,22 @@ export const SAUCE_TYPES = [
   },
 ];
 
-export const INGREDIENT_TYPES = [
+export const SIZE_TYPES = [
+  {
+    label: "23 см",
+    value: "small",
+  },
+  {
+    label: "32 см",
+    value: "normal",
+  },
+  {
+    label: "45 см",
+    value: "big",
+  },
+];
+
+export const FILLING_TYPES = [
   {
     label: "Грибы",
     value: "mushrooms",
@@ -82,3 +97,8 @@ export const INGREDIENT_TYPES = [
     value: "blue_cheese",
   },
 ];
+
+export const MOVE = "move";
+export const DATA_TRANSFER_PAYLOAD = "payload";
+export const APP_COUNTER_MIN_VALUE = 0;
+export const APP_COUNTER_MAX_VALUE = 3;
