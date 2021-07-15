@@ -23,20 +23,20 @@
 
         <ul class="ingridients__list">
           <li
-            v-for="(fillingItem, index) in fillingsList"
+            v-for="fillingItem in fillingsList"
             :key="fillingItem.name"
             class="ingridients__item"
           >
             <AppDrag
-              :transfer-data="fillingsCounterList[index]"
-              :draggable="canDragFilling(fillingsCounterList[index].count)"
+              :transfer-data="fillingItem"
+              :draggable="canDragFilling(fillingCounts[fillingItem.type])"
             >
               <span class="filling" :class="`filling--${fillingItem.type}`">
                 {{ fillingItem.name }}
               </span>
             </AppDrag>
             <AppCounter
-              :value="fillingsCounterList[index].count"
+              :value="fillingCounts[fillingItem.type]"
               :min="APP_COUNTER_MIN_VALUE"
               :max="APP_COUNTER_MAX_VALUE"
               class="counter--orange ingridients__counter"
@@ -80,10 +80,10 @@ export default {
       type: Array,
       required: true,
     },
-    fillingsCounterList: {
-      type: Array,
+    fillingCounts: {
+      type: Object,
       default() {
-        return [];
+        return {};
       },
     },
   },

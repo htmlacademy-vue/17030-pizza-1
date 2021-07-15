@@ -26,14 +26,6 @@ export const normalizeFilling = (filling) => {
   };
 };
 
-export const normalizeFillingWithCounter = (filling) => {
-  return {
-    ...filling,
-    type: FILLING_TYPES.find(({ label }) => filling.name === label)?.value,
-    count: 0,
-  };
-};
-
 export const normalizeSize = (size) => {
   return {
     ...size,

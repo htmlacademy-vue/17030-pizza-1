@@ -46,6 +46,12 @@ export default {
         return [];
       },
     },
+    preferredFillingCounts: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
 
   computed: {
@@ -56,8 +62,8 @@ export default {
       return this.preferredSauce?.price ?? 0;
     },
     priceOfFillings() {
-      return this.preferredFillings.reduce((acc, current) => {
-        return acc + current.price * current.count;
+      return this.preferredFillings.reduce((acc, { price, type }) => {
+        return acc + price * this.preferredFillingCounts[type];
       }, 0);
     },
     size() {

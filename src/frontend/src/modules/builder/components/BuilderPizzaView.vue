@@ -4,7 +4,7 @@
       <div class="pizza__wrapper">
         <template v-for="filling in preferredFillings">
           <div
-            v-for="counter in filling.count"
+            v-for="counter in preferredFillingCounts[filling.type]"
             :key="`${filling.type}-${counter}`"
             class="pizza__filling"
             :class="classFilling(filling.type, counter)"
@@ -54,6 +54,12 @@ export default {
       type: Array,
       default() {
         return [];
+      },
+    },
+    preferredFillingCounts: {
+      type: Object,
+      default() {
+        return {};
       },
     },
   },
