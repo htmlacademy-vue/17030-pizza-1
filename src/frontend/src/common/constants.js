@@ -1,10 +1,12 @@
 export const DOUGH_TYPES = [
   {
     label: "Тонкое",
+    nameAlt: "на тонком тесте",
     value: "light",
   },
   {
     label: "Толстое",
+    nameAlt: "на толстом тесте",
     value: "large",
   },
 ];
@@ -95,6 +97,21 @@ export const FILLING_TYPES = [
   {
     label: "Блю чиз",
     value: "blue_cheese",
+  },
+];
+
+export const MISC_ITEMS = [
+  {
+    label: "Cola-Cola 0,5 литра",
+    value: "cola",
+  },
+  {
+    label: "Острый соус",
+    value: "sauce",
+  },
+  {
+    label: "Картошка из печи",
+    value: "potato",
   },
 ];
 

@@ -1,73 +1,52 @@
 <template>
   <div>
     <p>Итого: {{ price }} ₽</p>
-    <button
-      type="button"
-      class="button"
+
+    <AppButton
       :class="{ 'button--disabled': canNotOrder }"
       :disabled="canNotOrder"
       @click.prevent="addToCart"
     >
       Готовьте!
-    </button>
+    </AppButton>
   </div>
 </template>
 
 <script>
+import AppButton from "@/common/components/AppButton.vue";
+
 export default {
   name: "BuilderPriceCounter",
 
+  components: {
+    AppButton,
+  },
+
   props: {
-    preferredName: {
-      type: String,
+    pizza: {
+      type: Object,
       required: true,
     },
-    preferredDough: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    preferredSize: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    preferredSauce: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    preferredFillings: {
+    fillingsList: {
       type: Array,
-      default() {
-        return [];
-      },
-    },
-    preferredFillingCounts: {
-      type: Object,
-      default() {
-        return {};
-      },
+      required: true,
     },
   },
 
   computed: {
     priceOfDough() {
-      return this.preferredDough?.price ?? 0;
+      return this.pizza.dough?.price ?? 0;
     },
     priceOfSauce() {
-      return this.preferredSauce?.price ?? 0;
+      return this.pizza.sauce?.price ?? 0;
     },
     priceOfFillings() {
-      return this.preferredFillings.reduce((acc, { price, type }) => {
-        return acc + price * this.preferredFillingCounts[type];
+      return this.fillingsList.reduce((acc, { price, type }) => {
+        return acc + price * this.pizza.fillingCounts[type];
       }, 0);
     },
     size() {
-      return this.preferredSize?.multiplier ?? 0;
+      return this.pizza.size?.multiplier ?? 0;
     },
     price() {
       return (
@@ -75,13 +54,16 @@ export default {
         this.size
       );
     },
+    hasPizzaName() {
+      return !!this.pizza.name.length;
+    },
     canNotOrder() {
       return !(
         this.priceOfDough &&
         this.priceOfSauce &&
         this.priceOfFillings &&
         this.size &&
-        this.preferredName.length
+        this.hasPizzaName
       );
     },
   },

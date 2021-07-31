@@ -19,7 +19,10 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
-      :class="{ 'counter__button--disabled': canNotIncrease }"
+      :class="[
+        { 'counter__button--disabled': canNotIncrease },
+        plusColorModifierClass,
+      ]"
       @click.prevent="increase"
       :disabled="canNotIncrease"
     >
@@ -47,6 +50,10 @@ export default {
     max: {
       type: Number,
       default: Infinity,
+    },
+    plusColorModifierClass: {
+      type: String,
+      default: "",
     },
   },
 
