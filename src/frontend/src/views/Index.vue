@@ -82,7 +82,6 @@ import {
   normalizeSauce,
   normalizeSize,
 } from "@/common/helpers.js";
-import { cloneDeep } from "lodash";
 
 const createNewPizza = () => ({
   name: "",
@@ -136,35 +135,22 @@ export default {
       this.updatedSize(this.pizza.sizeValue);
     },
     updatedDough(doughValue) {
-      const pizza = cloneDeep(this.pizza);
-
-      pizza.doughValue = doughValue;
-      pizza.dough = this.dough.find(({ type }) => type === doughValue);
-      this.$set(this, "pizza", pizza);
+      this.pizza.doughValue = doughValue;
+      this.pizza.dough = this.dough.find(({ type }) => type === doughValue);
     },
     updatedSize(sizeValue) {
-      const pizza = cloneDeep(this.pizza);
-
-      pizza.sizeValue = sizeValue;
-      pizza.size = this.sizes.find(({ type }) => type === sizeValue);
-      this.$set(this, "pizza", pizza);
+      this.pizza.sizeValue = sizeValue;
+      this.pizza.size = this.sizes.find(({ type }) => type === sizeValue);
     },
     updatedSauce(sauceValue) {
-      const pizza = cloneDeep(this.pizza);
-
-      pizza.sauceValue = sauceValue;
-      pizza.sauce = this.sauces.find(({ type }) => type === sauceValue);
-      this.$set(this, "pizza", pizza);
+      this.pizza.sauceValue = sauceValue;
+      this.pizza.sauce = this.sauces.find(({ type }) => type === sauceValue);
     },
     updateFilling({ slug, value }) {
-      this.$set(this.pizza, "fillingCounts", {
-        ...this.pizza.fillingCounts,
-        [slug]: value,
-      });
-      const filteredFillings = this.fillings.filter(
+      this.pizza.fillingCounts[slug] = value;
+      this.pizza.fillings = this.fillings.filter(
         ({ type }) => this.pizza.fillingCounts[type] !== 0
       );
-      this.$set(this.pizza, "fillings", filteredFillings);
     },
     dropFilling(filling) {
       this.pizza.fillingCounts[filling.type] += 1;
@@ -172,7 +158,8 @@ export default {
     addingToCart(price) {
       this.pizza.price = price;
       this.$emit("add-to-cart", this.pizza);
-      this.$set(this, "pizza", createNewPizza());
+      this.pizza = createNewPizza();
+      this.updatePizzaComponents();
     },
   },
 };
