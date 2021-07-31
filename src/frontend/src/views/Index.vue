@@ -8,7 +8,7 @@
           <BuilderDoughSelector
             :dough-value="pizza.doughValue"
             :dough-list="dough"
-            @update-dough="$emit('update-dough', $event)"
+            @update-dough="updatedDough"
           />
         </div>
 
@@ -16,7 +16,7 @@
           <BuilderSizeSelector
             :size-value="pizza.sizeValue"
             :sizes-list="sizes"
-            @update-size="$emit('update-size', $event)"
+            @update-size="updatedSize"
           />
         </div>
 
@@ -26,8 +26,8 @@
             :sauces-list="sauces"
             :fillings-list="fillings"
             :filling-counts="pizza.fillingCounts"
-            @update-sauce="$emit('update-sauce', $event)"
-            @update-filling="$emit('update-filling', $event)"
+            @update-sauce="updatedSauce"
+            @update-filling="updateFilling"
           />
         </div>
 
@@ -45,7 +45,7 @@
             <BuilderPizzaView
               :pizza="pizza"
               :fillings-list="fillings"
-              @drop-filling="$emit('drop-filling', $event)"
+              @drop-filling="dropFilling"
             />
           </div>
 
@@ -53,7 +53,7 @@
             :pizza="pizza"
             :fillings-list="fillings"
             class="content__result"
-            @add-to-cart="$emit('add-to-cart', $event)"
+            @add-to-cart="addingToCart"
           />
         </div>
       </div>
@@ -69,6 +69,39 @@ import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import AppInput from "@/common/components/AppInput";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import {
+  DOUGH_TYPES,
+  FILLING_TYPES,
+  SAUCE_TYPES,
+  SIZE_TYPES,
+} from "@/common/constants.js";
+import pizza from "@/static/pizza.json";
+import {
+  normalizeDough,
+  normalizeFilling,
+  normalizeSauce,
+  normalizeSize,
+} from "@/common/helpers.js";
+import { cloneDeep } from "lodash";
+
+const createNewPizza = () => ({
+  name: "",
+  dough: null,
+  doughValue: DOUGH_TYPES[0].value,
+  size: null,
+  sizeValue: SIZE_TYPES[0].value,
+  sauce: null,
+  sauceValue: SAUCE_TYPES[0].value,
+  fillings: [],
+  fillingCounts: pizza.ingredients.reduce((obj, { name }) => {
+    const type = FILLING_TYPES.find(({ label }) => name === label)?.value;
+    obj[type] = 0;
+
+    return obj;
+  }, {}),
+  price: 0,
+  count: 1,
+});
 
 export default {
   name: "IndexHome",
@@ -82,26 +115,64 @@ export default {
     BuilderPriceCounter,
   },
 
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
+  data() {
+    return {
+      pizza: createNewPizza(),
+      sauces: pizza.sauces.map((sauce) => normalizeSauce(sauce)),
+      sizes: pizza.sizes.map((size) => normalizeSize(size)),
+      dough: pizza.dough.map((item) => normalizeDough(item)),
+      fillings: pizza.ingredients.map((filling) => normalizeFilling(filling)),
+    };
+  },
+
+  mounted() {
+    this.updatePizzaComponents();
+  },
+
+  methods: {
+    updatePizzaComponents() {
+      this.updatedDough(this.pizza.doughValue);
+      this.updatedSauce(this.pizza.sauceValue);
+      this.updatedSize(this.pizza.sizeValue);
     },
-    sauces: {
-      type: Array,
-      required: true,
+    updatedDough(doughValue) {
+      const pizza = cloneDeep(this.pizza);
+
+      pizza.doughValue = doughValue;
+      pizza.dough = this.dough.find(({ type }) => type === doughValue);
+      this.$set(this, "pizza", pizza);
     },
-    sizes: {
-      type: Array,
-      required: true,
+    updatedSize(sizeValue) {
+      const pizza = cloneDeep(this.pizza);
+
+      pizza.sizeValue = sizeValue;
+      pizza.size = this.sizes.find(({ type }) => type === sizeValue);
+      this.$set(this, "pizza", pizza);
     },
-    dough: {
-      type: Array,
-      required: true,
+    updatedSauce(sauceValue) {
+      const pizza = cloneDeep(this.pizza);
+
+      pizza.sauceValue = sauceValue;
+      pizza.sauce = this.sauces.find(({ type }) => type === sauceValue);
+      this.$set(this, "pizza", pizza);
     },
-    fillings: {
-      type: Array,
-      required: true,
+    updateFilling({ slug, value }) {
+      this.$set(this.pizza, "fillingCounts", {
+        ...this.pizza.fillingCounts,
+        [slug]: value,
+      });
+      const filteredFillings = this.fillings.filter(
+        ({ type }) => this.pizza.fillingCounts[type] !== 0
+      );
+      this.$set(this.pizza, "fillings", filteredFillings);
+    },
+    dropFilling(filling) {
+      this.pizza.fillingCounts[filling.type] += 1;
+    },
+    addingToCart(price) {
+      this.pizza.price = price;
+      this.$emit("add-to-cart", this.pizza);
+      this.$set(this, "pizza", createNewPizza());
     },
   },
 };

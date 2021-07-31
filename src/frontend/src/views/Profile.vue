@@ -8,68 +8,126 @@
       <picture>
         <source
           type="image/webp"
-          srcset="
-            @/assets/img/users/user5@2x.webp 1x,
-            @/assets/img/users/user5@4x.webp 2x
-          "
+          srcset="img/users/user5@2x.webp 1x, img/users/user5@4x.webp 2x"
         />
         <img
-          src="@/assets/img/users/user5@2x.jpg"
-          srcset="@/assets/img/users/user5@4x.jpg"
+          src="img/users/user5@2x.jpg"
+          srcset="img/users/user5@4x.jpg"
           alt="Василий Ложкин"
           width="72"
           height="72"
         />
       </picture>
       <div class="user__name">
-        <span>{{ user.name }}</span>
+        <span>Василий Ложкин</span>
       </div>
       <p class="user__phone">
-        Контактный телефон: <span>{{ user.phone }}</span>
+        Контактный телефон: <span>+7 999-999-99-99</span>
       </p>
     </div>
 
     <div class="layout__address">
-      <ProfileAddress />
+      <div class="sheet address-form">
+        <div class="address-form__header">
+          <b>Адрес №1. Тест</b>
+          <div class="address-form__edit">
+            <button type="button" class="icon">
+              <span class="visually-hidden">Изменить адрес</span>
+            </button>
+          </div>
+        </div>
+        <p>Невский пр., д. 22, оф. 46</p>
+        <small>Позвоните, пожалуйста, от проходной</small>
+      </div>
     </div>
 
     <div class="layout__address">
-      <ProfileAddressEditor />
+      <form
+        action="test.html"
+        method="post"
+        class="address-form address-form--opened sheet"
+      >
+        <div class="address-form__header">
+          <b>Адрес №1</b>
+        </div>
+
+        <div class="address-form__wrapper">
+          <div class="address-form__input">
+            <label class="input">
+              <span>Название адреса*</span>
+              <input
+                type="text"
+                name="addr-name"
+                placeholder="Введите название адреса"
+                required
+              />
+            </label>
+          </div>
+          <div class="address-form__input address-form__input--size--normal">
+            <label class="input">
+              <span>Улица*</span>
+              <input
+                type="text"
+                name="addr-street"
+                placeholder="Введите название улицы"
+                required
+              />
+            </label>
+          </div>
+          <div class="address-form__input address-form__input--size--small">
+            <label class="input">
+              <span>Дом*</span>
+              <input
+                type="text"
+                name="addr-house"
+                placeholder="Введите номер дома"
+                required
+              />
+            </label>
+          </div>
+          <div class="address-form__input address-form__input--size--small">
+            <label class="input">
+              <span>Квартира</span>
+              <input
+                type="text"
+                name="addr-apartment"
+                placeholder="Введите № квартиры"
+              />
+            </label>
+          </div>
+          <div class="address-form__input">
+            <label class="input">
+              <span>Комментарий</span>
+              <input
+                type="text"
+                name="addr-comment"
+                placeholder="Введите комментарий"
+              />
+            </label>
+          </div>
+        </div>
+
+        <div class="address-form__buttons">
+          <button type="button" class="button button--transparent">
+            Удалить
+          </button>
+          <button type="submit" class="button">Сохранить</button>
+        </div>
+      </form>
     </div>
 
     <div class="layout__button">
-      <AppButton mod-border>Добавить новый адрес</AppButton>
+      <button type="button" class="button button--border">
+        Добавить новый адрес
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import ProfileAddressEditor from "@/modules/profile/components/ProfileAddressEditor.vue";
-import ProfileAddress from "@/modules/profile/components/ProfileAddress.vue";
-import AppButton from "@/common/components/AppButton.vue";
-
 export default {
   name: "Profile",
-
-  components: {
-    AppButton,
-    ProfileAddress,
-    ProfileAddressEditor,
-  },
-
-  props: {
-    user: {
-      type: Object,
-      required: true,
-    },
-  },
 };
 </script>
 
-<style lang="scss" scoped>
-.layout__button {
-  ::v-deep button {
-    padding: 12px 23px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
