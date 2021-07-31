@@ -47,8 +47,11 @@ export default {
   },
 
   watch: {
+    doughValue(newDough) {
+      this.pickedDough = newDough;
+    },
     pickedDough(val) {
-      this.$emit("choose-dough", val);
+      this.$emit("update-dough", val);
     },
   },
 };

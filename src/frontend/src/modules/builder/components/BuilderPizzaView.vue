@@ -4,7 +4,7 @@
       <div class="pizza__wrapper">
         <template v-for="filling in preferredFillings">
           <div
-            v-for="counter in preferredFillingCounts[filling.type]"
+            v-for="counter in pizza.fillingCounts[filling.type]"
             :key="`${filling.type}-${counter}`"
             class="pizza__filling"
             :class="classFilling(filling.type, counter)"
@@ -28,47 +28,26 @@ export default {
   },
 
   props: {
-    preferredName: {
-      type: String,
+    pizza: {
+      type: Object,
       required: true,
     },
-    preferredDough: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    preferredSize: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    preferredSauce: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-    preferredFillings: {
+    fillingsList: {
       type: Array,
-      default() {
-        return [];
-      },
-    },
-    preferredFillingCounts: {
-      type: Object,
-      default() {
-        return {};
-      },
+      required: true,
     },
   },
 
   computed: {
     classFoundation() {
-      return `pizza--foundation--${doughTypes[this.preferredDough?.type]}-${
-        this.preferredSauce?.type
+      return `pizza--foundation--${doughTypes[this.pizza.dough?.type]}-${
+        this.pizza.sauce?.type
       }`;
+    },
+    preferredFillings() {
+      return this.fillingsList.filter(
+        ({ type }) => this.pizza.fillingCounts[type] > 0
+      );
     },
   },
 

@@ -45,8 +45,11 @@ export default {
   },
 
   watch: {
+    sizeValue(newSize) {
+      this.pickedSize = newSize;
+    },
     pickedSize(val) {
-      this.$emit("choose-size", val);
+      this.$emit("update-size", val);
     },
   },
 };

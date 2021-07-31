@@ -1,28 +1,40 @@
 <template>
-  <div class="app-layout">
-    <AppLayoutHeader :cart-price="cartPrice" />
-    <IndexHome @add-to-cart="addingToCart" />
-  </div>
+  <component
+    :is="layout"
+    :cart-price="cartPrice"
+    :user="user"
+    :is-logged="isLogged"
+    @logout="$emit('logout')"
+  >
+    <slot />
+  </component>
 </template>
 
 <script>
-import IndexHome from "@/views/Index";
-import AppLayoutHeader from "@/layouts/AppLayoutHeader";
+export const APP_LAYOUT_DEFAULT = "AppLayoutDefault";
 
 export default {
   name: "AppLayout",
-  components: {
-    IndexHome,
-    AppLayoutHeader,
+
+  props: {
+    isLogged: {
+      type: Boolean,
+      default: false,
+    },
+    user: {
+      type: Object,
+      required: true,
+    },
+    cartPrice: {
+      type: Number,
+      default: 0,
+    },
   },
-  data() {
-    return {
-      cartPrice: 0,
-    };
-  },
-  methods: {
-    addingToCart(price) {
-      this.cartPrice = price;
+
+  computed: {
+    layout() {
+      const layout = this.$route.meta.layout || APP_LAYOUT_DEFAULT;
+      return () => import(`@/layouts/${layout}.vue`);
     },
   },
 };
