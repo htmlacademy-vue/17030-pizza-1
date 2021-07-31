@@ -4,30 +4,46 @@
       <slot />
     </span>
     <input
-      type="text"
+      ref="input"
+      :type="type"
       :value="value"
       :name="name"
       :placeholder="placeholder"
-      @input="inputHandler"
+      :required="required"
+      @input="$emit('input', $event.target.value)"
     />
+    <span v-if="showError">{{ errorText }}</span>
   </label>
 </template>
 
 <script>
 export default {
   name: "AppInput",
+
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       required: true,
     },
     name: {
       type: String,
-      default: "",
+      required: true,
+    },
+    type: {
+      type: String,
+      default: "text",
     },
     placeholder: {
       type: String,
       default: "",
+    },
+    errorText: {
+      type: String,
+      default: "",
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
     isVisibleCaption: {
       type: Boolean,
@@ -35,9 +51,9 @@ export default {
     },
   },
 
-  methods: {
-    inputHandler(evt) {
-      this.$emit("input", evt.target.value);
+  computed: {
+    showError() {
+      return !!this.errorText;
     },
   },
 };

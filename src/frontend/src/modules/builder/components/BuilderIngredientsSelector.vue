@@ -40,7 +40,12 @@
               :min="APP_COUNTER_MIN_VALUE"
               :max="APP_COUNTER_MAX_VALUE"
               class="counter--orange ingridients__counter"
-              @input="changeFillingCount($event, fillingItem.type)"
+              @input="
+                $emit('update-filling', {
+                  slug: fillingItem.type,
+                  value: $event,
+                })
+              "
             />
           </li>
         </ul>
@@ -97,15 +102,15 @@ export default {
   },
 
   watch: {
+    sauceValue(newSauce) {
+      this.pickedSauce = newSauce;
+    },
     pickedSauce(val) {
-      this.$emit("choose-sauce", val);
+      this.$emit("update-sauce", val);
     },
   },
 
   methods: {
-    changeFillingCount(count, type) {
-      this.$emit("change-filling", count, type);
-    },
     canDragFilling(counter) {
       return counter < APP_COUNTER_MAX_VALUE;
     },

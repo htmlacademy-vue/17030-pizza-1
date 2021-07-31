@@ -1,44 +1,40 @@
 <template>
-  <div class="app-layout">
-    <header class="header">
-      <div class="header__logo">
-        <a href="" class="logo">
-          <img
-            src="@/assets/img/logo.svg"
-            alt="V!U!E! Pizza logo"
-            width="90"
-            height="40"
-          />
-        </a>
-      </div>
-      <div class="header__cart">
-        <a href="">{{ cartPrice }} ₽</a>
-      </div>
-      <div class="header__user">
-        <a href="#" class="header__login"><span>Войти</span></a>
-      </div>
-    </header>
-
-    <IndexHome @add-to-cart="addingToCart" />
-  </div>
+  <component
+    :is="layout"
+    :cart-price="cartPrice"
+    :user="user"
+    :is-logged="isLogged"
+    @logout="$emit('logout')"
+  >
+    <slot />
+  </component>
 </template>
 
 <script>
-import IndexHome from "@/views/Index";
+export const APP_LAYOUT_DEFAULT = "AppLayoutDefault";
 
 export default {
   name: "AppLayout",
-  components: {
-    IndexHome,
+
+  props: {
+    isLogged: {
+      type: Boolean,
+      default: false,
+    },
+    user: {
+      type: Object,
+      required: true,
+    },
+    cartPrice: {
+      type: Number,
+      default: 0,
+    },
   },
-  data() {
-    return {
-      cartPrice: 0,
-    };
-  },
-  methods: {
-    addingToCart(price) {
-      this.cartPrice = price;
+
+  computed: {
+    layout() {
+      const layout = this.$route.meta.layout || APP_LAYOUT_DEFAULT;
+      return () => import(`@/layouts/${layout}.vue`);
     },
   },
 };
