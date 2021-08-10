@@ -21,6 +21,7 @@
 
 <script>
 import AppSelectorRadio from "@/common/components/AppSelectorRadio";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
@@ -29,29 +30,17 @@ export default {
     AppSelectorRadio,
   },
 
-  props: {
-    doughValue: {
-      type: String,
-      required: true,
-    },
-    doughList: {
-      type: Array,
-      required: true,
-    },
-  },
-
-  data() {
-    return {
-      pickedDough: this.doughValue,
-    };
-  },
-
-  watch: {
-    doughValue(newDough) {
-      this.pickedDough = newDough;
-    },
-    pickedDough(val) {
-      this.$emit("update-dough", val);
+  computed: {
+    ...mapGetters("Builder", {
+      doughList: "dough",
+    }),
+    pickedDough: {
+      get() {
+        return this.$store.state.Builder.pizza.doughValue;
+      },
+      set(val) {
+        this.$store.dispatch("Builder/setDough", val);
+      },
     },
   },
 };

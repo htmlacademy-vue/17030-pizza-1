@@ -1,12 +1,7 @@
 <template>
   <div id="app">
-    <AppLayout
-      :cart-price="cartPrice"
-      :user="user"
-      :is-logged="isLogged"
-      @logout="isLogged = false"
-    >
-      <router-view @add-to-cart="addingToCart" @login="isLogged = true" />
+    <AppLayout :user="user" :is-logged="isLogged" @logout="isLogged = false">
+      <router-view @login="isLogged = true" />
     </AppLayout>
   </div>
 </template>
@@ -14,7 +9,7 @@
 <script>
 import AppLayout from "@/layouts/AppLayout.vue";
 import user from "@/static/user.json";
-import { cloneDeep } from "lodash";
+import { mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -32,9 +27,6 @@ export default {
   },
 
   computed: {
-    cartPrice() {
-      return this.productsPrice;
-    },
     productsPrice() {
       return this.cartProducts.reduce((sum, product) => {
         sum += product.count * product.price;
@@ -43,10 +35,13 @@ export default {
     },
   },
 
+  created() {
+    this.fetchPizzaOptions();
+    this.createNewPizza();
+  },
+
   methods: {
-    addingToCart(pizza) {
-      this.cartProducts.push(cloneDeep(pizza));
-    },
+    ...mapActions("Builder", ["fetchPizzaOptions", "createNewPizza"]),
   },
 };
 </script>

@@ -20,6 +20,7 @@
 
 <script>
 import AppSelectorRadio from "@/common/components/AppSelectorRadio";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
@@ -27,29 +28,17 @@ export default {
     AppSelectorRadio,
   },
 
-  props: {
-    sizeValue: {
-      type: String,
-      required: true,
-    },
-    sizesList: {
-      type: Array,
-      required: true,
-    },
-  },
-
-  data() {
-    return {
-      pickedSize: this.sizeValue,
-    };
-  },
-
-  watch: {
-    sizeValue(newSize) {
-      this.pickedSize = newSize;
-    },
-    pickedSize(val) {
-      this.$emit("update-size", val);
+  computed: {
+    ...mapGetters("Builder", {
+      sizesList: "sizes",
+    }),
+    pickedSize: {
+      get() {
+        return this.$store.state.Builder.pizza.sizeValue;
+      },
+      set(val) {
+        this.$store.dispatch("Builder/setSize", val);
+      },
     },
   },
 };

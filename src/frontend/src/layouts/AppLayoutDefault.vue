@@ -2,7 +2,6 @@
   <div class="app-layout-default">
     <AppLayoutHeader
       :user="user"
-      :cart-price="cartPrice"
       :is-logged="isLogged"
       @logout="$emit('logout')"
     />
@@ -28,10 +27,6 @@ export default {
     user: {
       type: Object,
       required: true,
-    },
-    cartPrice: {
-      type: Number,
-      default: 0,
     },
   },
 };

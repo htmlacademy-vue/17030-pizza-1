@@ -1,7 +1,6 @@
 <template>
   <component
     :is="layout"
-    :cart-price="cartPrice"
     :user="user"
     :is-logged="isLogged"
     @logout="$emit('logout')"
@@ -24,10 +23,6 @@ export default {
     user: {
       type: Object,
       required: true,
-    },
-    cartPrice: {
-      type: Number,
-      default: 0,
     },
   },
 
