@@ -1,23 +1,21 @@
 <template>
   <header class="header">
     <div class="header__logo">
-      <a href="" class="logo" @click.prevent="$router.push('/')">
+      <router-link class="logo" to="/">
         <img
           src="@/assets/img/logo.svg"
           alt="V!U!E! Pizza logo"
           width="90"
           height="40"
         />
-      </a>
+      </router-link>
     </div>
     <div class="header__cart">
-      <a href="" @click.prevent="$router.push({ name: 'Cart' })">
-        {{ cartPrice }} ₽
-      </a>
+      <router-link to="/cart"> {{ totalPrice }} ₽</router-link>
     </div>
     <div class="header__user">
       <template v-if="isLogged">
-        <a href="" @click.prevent="$router.push({ name: 'Profile' })">
+        <router-link to="/profile">
           <picture>
             <source
               type="image/webp"
@@ -35,38 +33,31 @@
             />
           </picture>
           <span>{{ user.name }}</span>
-        </a>
-        <a href="#" class="header__logout" @click.prevent="$emit('logout')"
+        </router-link>
+        <a href="#" class="header__logout" @click.prevent="logOut"
           ><span>Выйти</span></a
         >
       </template>
-      <a
-        v-else
-        href="#"
-        class="header__login"
-        @click.prevent="$router.push({ name: 'Login' })"
-        ><span>Войти</span></a
-      >
+      <router-link v-else class="header__login" to="login">
+        <span>Войти</span>
+      </router-link>
     </div>
   </header>
 </template>
 
 <script>
+import { mapActions, mapGetters, mapState } from "vuex";
+
 export default {
   name: "AppLayoutHeader",
-  props: {
-    isLogged: {
-      type: Boolean,
-      default: false,
-    },
-    user: {
-      type: Object,
-      required: true,
-    },
-    cartPrice: {
-      type: Number,
-      required: true,
-    },
+
+  computed: {
+    ...mapState("Auth", ["user", "isLogged"]),
+    ...mapGetters("Cart", ["totalPrice"]),
+  },
+
+  methods: {
+    ...mapActions("Auth", ["logOut"]),
   },
 };
 </script>

@@ -13,27 +13,16 @@
 </template>
 
 <script>
-import AppButton from "@/common/components/AppButton.vue";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
 
-  components: {
-    AppButton,
-  },
-
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
-    fillingsList: {
-      type: Array,
-      required: true,
-    },
-  },
-
   computed: {
+    ...mapState("Builder", ["pizza"]),
+    ...mapGetters("Builder", {
+      fillingsList: "fillings",
+    }),
     priceOfDough() {
       return this.pizza.dough?.price ?? 0;
     },
@@ -69,8 +58,11 @@ export default {
   },
 
   methods: {
+    ...mapActions("Builder", ["setPrice", "createNewPizza"]),
     addToCart() {
-      this.$emit("add-to-cart", this.price);
+      this.setPrice(this.price);
+      this.$store.dispatch("addPizzaToCart");
+      this.createNewPizza();
     },
   },
 };

@@ -6,7 +6,7 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form action="test.html" method="post">
+    <form action="test.html" method="post" @submit.prevent="logIn">
       <div class="sign-form__input">
         <AppInput
           v-model="email"
@@ -28,30 +28,26 @@
           Пароль
         </AppInput>
       </div>
-      <AppButton type="submit" @click.prevent="$emit('login')">
-        Авторизоваться
-      </AppButton>
+      <AppButton type="submit">Авторизоваться</AppButton>
     </form>
   </div>
 </template>
 
 <script>
-import AppInput from "@/common/components/AppInput.vue";
-import AppButton from "@/common/components/AppButton.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "Login",
-
-  components: {
-    AppInput,
-    AppButton,
-  },
 
   data() {
     return {
       email: "",
       pass: "",
     };
+  },
+
+  methods: {
+    ...mapActions("Auth", ["logIn"]),
   },
 };
 </script>

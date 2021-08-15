@@ -1,11 +1,5 @@
 <template>
-  <component
-    :is="layout"
-    :cart-price="cartPrice"
-    :user="user"
-    :is-logged="isLogged"
-    @logout="$emit('logout')"
-  >
+  <component :is="layout">
     <slot />
   </component>
 </template>
@@ -15,21 +9,6 @@ export const APP_LAYOUT_DEFAULT = "AppLayoutDefault";
 
 export default {
   name: "AppLayout",
-
-  props: {
-    isLogged: {
-      type: Boolean,
-      default: false,
-    },
-    user: {
-      type: Object,
-      required: true,
-    },
-    cartPrice: {
-      type: Number,
-      default: 0,
-    },
-  },
 
   computed: {
     layout() {

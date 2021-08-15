@@ -1,5 +1,5 @@
 <template>
-  <AppDrop @drop="dropHandler">
+  <AppDrop @drop="dropFilling">
     <div class="pizza" :class="classFoundation">
       <div class="pizza__wrapper">
         <template v-for="filling in preferredFillings">
@@ -19,6 +19,7 @@
 import AppDrop from "@/common/components/AppDrop";
 import doughTypes from "@/common/enums/doughTypes";
 import fillingCount from "@/common/enums/fillingCount";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
@@ -27,18 +28,11 @@ export default {
     AppDrop,
   },
 
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
-    fillingsList: {
-      type: Array,
-      required: true,
-    },
-  },
-
   computed: {
+    ...mapState("Builder", ["pizza"]),
+    ...mapGetters("Builder", {
+      fillingsList: "fillings",
+    }),
     classFoundation() {
       return `pizza--foundation--${doughTypes[this.pizza.dough?.type]}-${
         this.pizza.sauce?.type
@@ -52,11 +46,10 @@ export default {
   },
 
   methods: {
-    dropHandler(evt) {
-      this.$emit("drop-filling", evt);
-    },
+    ...mapActions("Builder", ["dropFilling"]),
     classFilling(type, counter) {
       const classCount = fillingCount[counter] ?? "";
+
       return [`pizza__filling--${type}`, classCount];
     },
   },

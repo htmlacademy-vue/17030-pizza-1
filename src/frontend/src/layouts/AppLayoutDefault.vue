@@ -1,11 +1,6 @@
 <template>
   <div class="app-layout-default">
-    <AppLayoutHeader
-      :user="user"
-      :cart-price="cartPrice"
-      :is-logged="isLogged"
-      @logout="$emit('logout')"
-    />
+    <AppLayoutHeader />
     <slot />
   </div>
 </template>
@@ -18,21 +13,6 @@ export default {
 
   components: {
     AppLayoutHeader,
-  },
-
-  props: {
-    isLogged: {
-      type: Boolean,
-      default: false,
-    },
-    user: {
-      type: Object,
-      required: true,
-    },
-    cartPrice: {
-      type: Number,
-      default: 0,
-    },
   },
 };
 </script>

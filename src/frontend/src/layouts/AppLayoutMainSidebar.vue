@@ -1,13 +1,13 @@
 <template>
   <div class="sidebar">
-    <a href="" class="logo layout__logo" @click.prevent="$router.push('/')">
+    <router-link to="/" class="logo layout__logo">
       <img
         src="@/assets/img/logo.svg"
         alt="V!U!E! Pizza logo"
         width="90"
         height="40"
       />
-    </a>
+    </router-link>
 
     <router-link
       to="/orders"

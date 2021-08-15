@@ -38,6 +38,6 @@ export const normalizeSize = (size) => {
 export const normalizeMisc = (misc) => {
   return {
     ...misc,
-    slug: MISC_ITEMS.find(({ label }) => misc.name === label)?.value,
+    type: MISC_ITEMS.find(({ label }) => misc.name === label)?.value,
   };
 };

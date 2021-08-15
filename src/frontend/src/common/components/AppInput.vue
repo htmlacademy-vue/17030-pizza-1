@@ -1,5 +1,5 @@
 <template>
-  <label class="input">
+  <label class="input" :class="modifiersClass">
     <span :class="{ 'visually-hidden': !isVisibleCaption }">
       <slot />
     </span>
@@ -9,6 +9,7 @@
       :value="value"
       :name="name"
       :placeholder="placeholder"
+      :readonly="readonly"
       :required="required"
       @input="$emit('input', $event.target.value)"
     />
@@ -41,6 +42,10 @@ export default {
       type: String,
       default: "",
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
     required: {
       type: Boolean,
       default: false,
@@ -49,9 +54,18 @@ export default {
       type: Boolean,
       default: true,
     },
+    modBigLabel: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
+    modifiersClass() {
+      return {
+        "input--big-label": this.modBigLabel,
+      };
+    },
     showError() {
       return !!this.errorText;
     },

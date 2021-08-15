@@ -40,12 +40,7 @@
               :min="APP_COUNTER_MIN_VALUE"
               :max="APP_COUNTER_MAX_VALUE"
               class="counter--orange ingridients__counter"
-              @input="
-                $emit('update-filling', {
-                  slug: fillingItem.type,
-                  value: $event,
-                })
-              "
+              @input="changeFillingCount(fillingItem.type, $event)"
             />
           </li>
         </ul>
@@ -62,6 +57,7 @@ import {
   APP_COUNTER_MAX_VALUE,
   APP_COUNTER_MIN_VALUE,
 } from "@/common/constants";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -72,45 +68,36 @@ export default {
     AppCounter,
   },
 
-  props: {
-    sauceValue: {
-      type: String,
-      required: true,
-    },
-    saucesList: {
-      type: Array,
-      required: true,
-    },
-    fillingsList: {
-      type: Array,
-      required: true,
-    },
-    fillingCounts: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
-  },
-
   data() {
     return {
-      pickedSauce: this.sauceValue,
       APP_COUNTER_MIN_VALUE,
       APP_COUNTER_MAX_VALUE,
     };
   },
 
-  watch: {
-    sauceValue(newSauce) {
-      this.pickedSauce = newSauce;
-    },
-    pickedSauce(val) {
-      this.$emit("update-sauce", val);
+  computed: {
+    ...mapState("Builder", {
+      fillingCounts: (state) => state.pizza.fillingCounts,
+    }),
+    ...mapGetters("Builder", {
+      saucesList: "sauces",
+      fillingsList: "fillings",
+    }),
+    pickedSauce: {
+      get() {
+        return this.$store.state.Builder.pizza.sauceValue;
+      },
+      set(val) {
+        this.$store.dispatch("Builder/setSauce", val);
+      },
     },
   },
 
   methods: {
+    ...mapActions("Builder", ["setFilling"]),
+    changeFillingCount(fillingType, count) {
+      this.setFilling({ fillingType, count });
+    },
     canDragFilling(counter) {
       return counter < APP_COUNTER_MAX_VALUE;
     },
