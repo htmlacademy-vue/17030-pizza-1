@@ -13,15 +13,10 @@
 </template>
 
 <script>
-import AppButton from "@/common/components/AppButton.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
-
-  components: {
-    AppButton,
-  },
 
   computed: {
     ...mapState("Builder", ["pizza"]),

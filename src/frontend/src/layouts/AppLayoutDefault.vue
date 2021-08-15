@@ -1,10 +1,6 @@
 <template>
   <div class="app-layout-default">
-    <AppLayoutHeader
-      :user="user"
-      :is-logged="isLogged"
-      @logout="$emit('logout')"
-    />
+    <AppLayoutHeader />
     <slot />
   </div>
 </template>
@@ -17,17 +13,6 @@ export default {
 
   components: {
     AppLayoutHeader,
-  },
-
-  props: {
-    isLogged: {
-      type: Boolean,
-      default: false,
-    },
-    user: {
-      type: Object,
-      required: true,
-    },
   },
 };
 </script>

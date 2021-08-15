@@ -43,14 +43,12 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
-import AppInput from "@/common/components/AppInput";
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 
 export default {
   name: "IndexHome",
 
   components: {
-    AppInput,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderPizzaView,

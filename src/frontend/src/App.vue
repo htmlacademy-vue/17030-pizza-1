@@ -1,14 +1,13 @@
 <template>
   <div id="app">
-    <AppLayout :user="user" :is-logged="isLogged" @logout="isLogged = false">
-      <router-view @login="isLogged = true" />
+    <AppLayout>
+      <router-view />
     </AppLayout>
   </div>
 </template>
 
 <script>
 import AppLayout from "@/layouts/AppLayout.vue";
-import user from "@/static/user.json";
 import { mapActions } from "vuex";
 
 export default {
@@ -16,23 +15,6 @@ export default {
 
   components: {
     AppLayout,
-  },
-
-  data() {
-    return {
-      user,
-      isLogged: false,
-      cartProducts: [],
-    };
-  },
-
-  computed: {
-    productsPrice() {
-      return this.cartProducts.reduce((sum, product) => {
-        sum += product.count * product.price;
-        return sum;
-      }, 0);
-    },
   },
 
   created() {

@@ -1,10 +1,6 @@
 <template>
   <div class="app-layout-main">
-    <AppLayoutHeader
-      :user="user"
-      :is-logged="isLogged"
-      @logout="$emit('logout')"
-    />
+    <AppLayoutHeader />
 
     <main class="layout">
       <AppLayoutMainSidebar class="layout__sidebar" />
@@ -26,17 +22,6 @@ export default {
   components: {
     AppLayoutHeader,
     AppLayoutMainSidebar,
-  },
-
-  props: {
-    isLogged: {
-      type: Boolean,
-      default: false,
-    },
-    user: {
-      type: Object,
-      required: true,
-    },
   },
 };
 </script>

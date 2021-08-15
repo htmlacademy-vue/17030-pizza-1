@@ -1,10 +1,5 @@
 <template>
-  <component
-    :is="layout"
-    :user="user"
-    :is-logged="isLogged"
-    @logout="$emit('logout')"
-  >
+  <component :is="layout">
     <slot />
   </component>
 </template>
@@ -14,17 +9,6 @@ export const APP_LAYOUT_DEFAULT = "AppLayoutDefault";
 
 export default {
   name: "AppLayout",
-
-  props: {
-    isLogged: {
-      type: Boolean,
-      default: false,
-    },
-    user: {
-      type: Object,
-      required: true,
-    },
-  },
 
   computed: {
     layout() {

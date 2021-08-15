@@ -4,7 +4,16 @@ import {
   normalizeSauce,
   normalizeSize,
 } from "@/common/helpers.js";
-import { SET_ENTITY } from "@/store/mutation-types.js";
+import {
+  DROP_FILLING,
+  SET_DOUGH,
+  SET_ENTITY,
+  SET_FILLING,
+  SET_NAME,
+  SET_PRICE,
+  SET_SAUCE,
+  SET_SIZE,
+} from "@/store/mutation-types.js";
 import jsonPizza from "@/static/pizza.json";
 import {
   DOUGH_TYPES,
@@ -12,6 +21,7 @@ import {
   SAUCE_TYPES,
   SIZE_TYPES,
 } from "@/common/constants.js";
+import { uniqueId } from "lodash";
 
 export default {
   namespaced: true,
@@ -39,36 +49,37 @@ export default {
   },
 
   mutations: {
-    SET_DOUGH(state, { doughType, dough }) {
+    [SET_DOUGH](state, { doughType, dough }) {
       state.pizza.doughValue = doughType;
       state.pizza.dough = dough;
     },
-    SET_SIZE(state, { sizeType, size }) {
+    [SET_SIZE](state, { sizeType, size }) {
       state.pizza.sizeValue = sizeType;
       state.pizza.size = size;
     },
-    SET_SAUCE(state, { sauceType, sauce }) {
+    [SET_SAUCE](state, { sauceType, sauce }) {
       state.pizza.sauceValue = sauceType;
       state.pizza.sauce = sauce;
     },
-    SET_FILLING(state, { fillingType, count }) {
+    [SET_FILLING](state, { fillingType, count }) {
       state.pizza.fillingCounts[fillingType] = count;
     },
-    DROP_FILLING(state, fillingType) {
+    [DROP_FILLING](state, fillingType) {
       state.pizza.fillingCounts[fillingType] += 1;
     },
-    SET_NAME(state, name) {
+    [SET_NAME](state, name) {
       state.pizza.name = name;
     },
-    SET_PRICE(state, price) {
+    [SET_PRICE](state, price) {
       state.pizza.price = price;
     },
   },
 
   actions: {
-    createNewPizza({ state, getters, commit }) {
-      const newPizza = () => {
+    createNewPizza({ state, rootState, getters, commit }, pizzaId) {
+      const createNewPizza = () => {
         return {
+          id: uniqueId(),
           name: "",
           dough: getters.dough.find(
             ({ type }) => type === DOUGH_TYPES[0].value
@@ -96,12 +107,20 @@ export default {
         };
       };
 
+      let newPizza = null;
+
+      if (pizzaId) {
+        newPizza = rootState.Cart.pizzas.find(({ id }) => +id === +pizzaId);
+      } else {
+        newPizza = createNewPizza();
+      }
+
       commit(
         SET_ENTITY,
         {
           module: "Builder",
           entity: "pizza",
-          value: newPizza(),
+          value: newPizza,
         },
         { root: true }
       );
@@ -124,35 +143,35 @@ export default {
     setDough({ getters, commit }, doughType) {
       const dough = getters.dough.find(({ type }) => type === doughType);
 
-      commit("SET_DOUGH", { doughType, dough });
+      commit(SET_DOUGH, { doughType, dough });
     },
 
     setSize({ getters, commit }, sizeType) {
       const size = getters.sizes.find(({ type }) => type === sizeType);
 
-      commit("SET_SIZE", { sizeType, size });
+      commit(SET_SIZE, { sizeType, size });
     },
 
     setSauce({ getters, commit }, sauceType) {
       const sauce = getters.sauces.find(({ type }) => type === sauceType);
 
-      commit("SET_SAUCE", { sauceType, sauce });
+      commit(SET_SAUCE, { sauceType, sauce });
     },
 
     setFilling({ commit }, { fillingType, count }) {
-      commit("SET_FILLING", { fillingType, count });
+      commit(SET_FILLING, { fillingType, count });
     },
 
     dropFilling({ commit }, filling) {
-      commit("DROP_FILLING", filling.type);
+      commit(DROP_FILLING, filling.type);
     },
 
     setName({ commit }, name) {
-      commit("SET_NAME", name);
+      commit(SET_NAME, name);
     },
 
     setPrice({ commit }, price) {
-      commit("SET_PRICE", price);
+      commit(SET_PRICE, price);
     },
   },
 };

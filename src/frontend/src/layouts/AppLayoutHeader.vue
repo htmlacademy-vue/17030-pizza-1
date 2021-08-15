@@ -34,7 +34,7 @@
           </picture>
           <span>{{ user.name }}</span>
         </router-link>
-        <a href="#" class="header__logout" @click.prevent="$emit('logout')"
+        <a href="#" class="header__logout" @click.prevent="logOut"
           ><span>Выйти</span></a
         >
       </template>
@@ -46,24 +46,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "AppLayoutHeader",
 
-  props: {
-    isLogged: {
-      type: Boolean,
-      default: false,
-    },
-    user: {
-      type: Object,
-      required: true,
-    },
+  computed: {
+    ...mapState("Auth", ["user", "isLogged"]),
+    ...mapGetters("Cart", ["totalPrice"]),
   },
 
-  computed: {
-    ...mapGetters("Cart", ["totalPrice"]),
+  methods: {
+    ...mapActions("Auth", ["logOut"]),
   },
 };
 </script>
