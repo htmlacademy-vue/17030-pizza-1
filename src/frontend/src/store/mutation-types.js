@@ -25,4 +25,4 @@ export const SET_PRICE = "SET_PRICE";
 // Cart module
 export const ADD_PIZZA = "ADD_PIZZA";
 export const UPDATE_PIZZA_COUNT = "UPDATE_PIZZA_COUNT";
-export const UPDATE_ADDITIONAL_COUNT = "UPDATE_ADDITIONAL_COUNT";
+export const UPDATE_MISC_COUNT = "UPDATE_MISC_COUNT";

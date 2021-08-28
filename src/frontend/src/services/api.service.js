@@ -4,6 +4,7 @@ import resources from "@/common/enums/resources.js";
 import {
   DOUGH_TYPES,
   INGREDIENT_TYPES,
+  MISC_ITEMS,
   SAUCE_TYPES,
   SIZE_TYPES,
 } from "@/common/constants.js";
@@ -179,5 +180,23 @@ export class SizesApiService extends ReadOnlyApiService {
   async query(config = {}) {
     const sizes = await super.query(config);
     return sizes.map((size) => this._normalize(size));
+  }
+}
+
+export class MiscApiService extends ReadOnlyApiService {
+  constructor(notifier) {
+    super(resources.MISC, notifier);
+  }
+
+  _normalize(oneMisc) {
+    return {
+      ...oneMisc,
+      type: MISC_ITEMS.find(({ label }) => oneMisc.name === label)?.value,
+    };
+  }
+
+  async query(config = {}) {
+    const misc = await super.query(config);
+    return misc.map((oneMisc) => this._normalize(oneMisc));
   }
 }

@@ -23,12 +23,12 @@
 
           <div class="cart__additional">
             <ul class="additional-list">
-              <CartAdditionalItem
+              <CartMiscItem
                 class="sheet"
-                v-for="additionalItem in additional"
-                :key="additionalItem.name"
-                :additional-item="additionalItem"
-                :additional-count="additionalCounts[additionalItem.type]"
+                v-for="miscItem in misc"
+                :key="miscItem.name"
+                :misc-item="miscItem"
+                :misc-count="miscCounts[miscItem.type]"
               />
             </ul>
           </div>
@@ -119,7 +119,7 @@
 <script>
 import { mapState } from "vuex";
 import CartProductItem from "@/modules/cart/CartProductItem.vue";
-import CartAdditionalItem from "@/modules/cart/CartAdditionalItem.vue";
+import CartMiscItem from "@/modules/cart/CartMiscItem.vue";
 import CartFooter from "@/modules/cart/CartFooter.vue";
 import { validator } from "@/mixins";
 
@@ -137,7 +137,7 @@ export default {
 
   components: {
     CartProductItem,
-    CartAdditionalItem,
+    CartMiscItem,
     CartFooter,
   },
 
@@ -169,7 +169,7 @@ export default {
   },
 
   computed: {
-    ...mapState("Cart", ["products", "additional", "additionalCounts"]),
+    ...mapState("Cart", ["products", "misc", "miscCounts"]),
     ...mapState("Auth", ["addresses"]),
     hasProducts() {
       return this.products.length;
@@ -219,6 +219,10 @@ export default {
     "address.building"() {
       this.$clearValidationErrors();
     },
+  },
+
+  created() {
+    this.$store.dispatch("Cart/fetchMisc");
   },
 
   methods: {
