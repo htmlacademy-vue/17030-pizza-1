@@ -12,7 +12,7 @@
           <BuilderSizeSelector />
         </div>
 
-        <div class="content__ingridients">
+        <div class="content__ingredients">
           <BuilderIngredientsSelector />
         </div>
 
@@ -59,7 +59,7 @@ export default {
   computed: {
     pizzaName: {
       get() {
-        return this.$store.state.Builder.pizza.name;
+        return this.$store.state.Builder.pizza?.name;
       },
       set(val) {
         this.$store.dispatch("Builder/setName", val);

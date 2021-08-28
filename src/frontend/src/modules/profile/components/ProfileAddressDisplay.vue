@@ -8,8 +8,8 @@
     </div>
 
     <p>
-      {{ address.street }}, д. {{ address.house }}, оф.
-      {{ address.apartment }}
+      {{ address.street }}, д. {{ address.building }}, оф.
+      {{ address.flat }}
     </p>
     <small>{{ address.comment }}</small>
   </div>

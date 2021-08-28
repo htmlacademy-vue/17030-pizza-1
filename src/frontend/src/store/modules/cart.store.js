@@ -11,7 +11,7 @@ export default {
   namespaced: true,
 
   state: {
-    pizzas: [],
+    products: [],
     additional: jsonAdditional.map((additionalItem) =>
       normalizeMisc(additionalItem)
     ),
@@ -24,10 +24,10 @@ export default {
 
   getters: {
     totalPrice(state, getters) {
-      return getters.pizzasPrice + getters.additionalPrice;
+      return getters.productsPrice + getters.additionalPrice;
     },
-    pizzasPrice(state) {
-      return state.pizzas.reduce((sum, pizza) => {
+    productsPrice(state) {
+      return state.products.reduce((sum, pizza) => {
         return sum + pizza.count * pizza.price;
       }, 0);
     },
@@ -43,16 +43,16 @@ export default {
 
   mutations: {
     [ADD_PIZZA](state, pizza) {
-      const index = state.pizzas.findIndex(({ id }) => +id === +pizza.id);
+      const index = state.products.findIndex(({ id }) => +id === +pizza.id);
 
       if (~index) {
-        state.pizzas = state.pizzas.splice(index, 1, pizza);
+        state.products = state.products.splice(index, 1, pizza);
       } else {
-        state.pizzas = [...state.pizzas, pizza];
+        state.products = [...state.products, pizza];
       }
     },
     [UPDATE_PIZZA_COUNT](state, { pizzaId, count }) {
-      const pizza = state.pizzas.find(({ id }) => +id === +pizzaId);
+      const pizza = state.products.find(({ id }) => +id === +pizzaId);
       pizza.count = count;
     },
     [UPDATE_ADDITIONAL_COUNT](state, { additionalType, count }) {

@@ -24,6 +24,7 @@ export default {
     checked: {
       type: String,
       required: true,
+      default: "",
     },
     value: {
       type: String,

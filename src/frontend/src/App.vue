@@ -8,7 +8,6 @@
 
 <script>
 import AppLayout from "@/layouts/AppLayout.vue";
-import { mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -18,12 +17,8 @@ export default {
   },
 
   created() {
-    this.fetchPizzaOptions();
-    this.createNewPizza();
-  },
-
-  methods: {
-    ...mapActions("Builder", ["fetchPizzaOptions", "createNewPizza"]),
+    console.log("App created");
+    console.log(this.$store.dispatch("init"));
   },
 };
 </script>

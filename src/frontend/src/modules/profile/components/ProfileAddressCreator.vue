@@ -4,6 +4,7 @@
     method="post"
     class="address-form address-form--opened sheet"
     @submit.prevent="save"
+    novalidate
   >
     <div class="address-form__header">
       <b>Адрес №{{ counter }}</b>
@@ -12,9 +13,11 @@
     <div class="address-form__wrapper">
       <div class="address-form__input">
         <AppInput
+          ref="addrName"
           name="addr-name"
           placeholder="Введите название адреса"
           required
+          :error-text="validations.name.error"
           v-model="localAddress.name"
         >
           Название адреса*
@@ -25,6 +28,7 @@
           name="addr-street"
           placeholder="Введите название улицы"
           required
+          :error-text="validations.street.error"
           v-model="localAddress.street"
         >
           Улица*
@@ -35,7 +39,8 @@
           name="addr-house"
           placeholder="Введите номер дома"
           required
-          v-model="localAddress.house"
+          :error-text="validations.building.error"
+          v-model="localAddress.building"
         >
           Дом*
         </AppInput>
@@ -44,7 +49,7 @@
         <AppInput
           name="addr-apartment"
           placeholder="Введите № квартиры"
-          v-model="localAddress.apartment"
+          v-model="localAddress.flat"
         >
           Квартира
         </AppInput>
@@ -71,9 +76,11 @@
 
 <script>
 import { mapActions } from "vuex";
+import { validator } from "@/mixins";
 
 export default {
   name: "ProfileAddressCreator",
+  mixins: [validator],
 
   props: {
     counter: {
@@ -91,12 +98,54 @@ export default {
   data() {
     return {
       localAddress: { ...this.address },
+      validations: {
+        name: {
+          error: "",
+          rules: ["required"],
+        },
+        street: {
+          error: "",
+          rules: ["required"],
+        },
+        building: {
+          error: "",
+          rules: ["required"],
+        },
+      },
     };
+  },
+
+  watch: {
+    "localAddress.name"() {
+      this.$clearValidationErrors();
+    },
+    "localAddress.street"() {
+      this.$clearValidationErrors();
+    },
+    "localAddress.building"() {
+      this.$clearValidationErrors();
+    },
+  },
+
+  mounted() {
+    this.$refs.addrName.$refs.input.focus();
   },
 
   methods: {
     ...mapActions("Auth", ["saveAddress", "removeAddress"]),
     save() {
+      if (
+        !this.$validateFields(
+          {
+            name: this.localAddress.name,
+            street: this.localAddress.street,
+            building: this.localAddress.building,
+          },
+          this.validations
+        )
+      ) {
+        return;
+      }
       this.saveAddress(this.localAddress);
       this.$emit("save");
     },

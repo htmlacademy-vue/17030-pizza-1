@@ -3,18 +3,33 @@ import Vuex from "vuex";
 import modules from "@/store/modules";
 import {
   ADD_ENTITY,
+  ADD_NOTIFICATION,
   DELETE_ENTITY,
+  DELETE_NOTIFICATION,
   SET_ENTITY,
   UPDATE_ENTITY,
 } from "@/store/mutation-types.js";
+import { uniqueId } from "lodash";
+import { MESSAGE_LIVE_TIME } from "@/common/constants.js";
+import VuexPlugins from "@/plugins/vuexPlugins.js";
 
 Vue.use(Vuex);
 
-const state = {};
+const state = {
+  notifications: [],
+};
 
 const getters = {};
 
 const mutations = {
+  [ADD_NOTIFICATION](state, notification) {
+    state.notifications = [...state.notifications, notification];
+  },
+  [DELETE_NOTIFICATION](state, notificationId) {
+    state.notifications = state.notifications.filter(
+      ({ id }) => +id !== +notificationId
+    );
+  },
   [SET_ENTITY](state, { module, entity, value }) {
     module ? (state[module][entity] = value) : (state[entity] = value);
   },
@@ -52,8 +67,25 @@ const mutations = {
 };
 
 const actions = {
+  async init({ dispatch }) {
+    await dispatch("Builder/fetchDough");
+    await dispatch("Builder/fetchIngredients");
+    await dispatch("Builder/fetchSauces");
+    await dispatch("Builder/fetchSizes");
+    await dispatch("Builder/createNewPizza");
+  },
   addPizzaToCart({ state, dispatch }) {
     dispatch("Cart/addPizza", state.Builder.pizza);
+  },
+  createNotification({ commit }, notification) {
+    const uniqueNotification = {
+      ...notification,
+      id: uniqueId(),
+    };
+    commit(ADD_NOTIFICATION, uniqueNotification);
+    setTimeout(() => {
+      commit(DELETE_NOTIFICATION, uniqueNotification.id);
+    }, MESSAGE_LIVE_TIME);
   },
 };
 
@@ -63,4 +95,5 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules,
+  plugins: [VuexPlugins],
 });

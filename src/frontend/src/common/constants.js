@@ -37,7 +37,7 @@ export const SIZE_TYPES = [
   },
 ];
 
-export const FILLING_TYPES = [
+export const INGREDIENT_TYPES = [
   {
     label: "Грибы",
     value: "mushrooms",
@@ -115,7 +115,14 @@ export const MISC_ITEMS = [
   },
 ];
 
+export const SEC = 1000;
+export const MESSAGE_LIVE_TIME = 3 * SEC;
 export const MOVE = "move";
 export const DATA_TRANSFER_PAYLOAD = "payload";
 export const APP_COUNTER_MIN_VALUE = 0;
 export const APP_COUNTER_MAX_VALUE = 3;
+
+/* eslint-disable */
+export const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+export const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
+/* eslint-enable */

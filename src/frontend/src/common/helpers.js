@@ -1,43 +1,35 @@
+import { MISC_ITEMS } from "./constants.js";
+import resources from "@/common/enums/resources.js";
 import {
-  DOUGH_TYPES,
-  FILLING_TYPES,
-  SAUCE_TYPES,
-  SIZE_TYPES,
-  MISC_ITEMS,
-} from "./constants.js";
-
-export const normalizeDough = (dough) => {
-  return {
-    ...dough,
-    type: DOUGH_TYPES.find(({ label }) => dough.name === label)?.value,
-    nameAlt: DOUGH_TYPES.find(({ label }) => dough.name === label)?.nameAlt,
-  };
-};
-
-export const normalizeSauce = (sauce) => {
-  return {
-    ...sauce,
-    type: SAUCE_TYPES.find(({ label }) => sauce.name === label)?.value,
-  };
-};
-
-export const normalizeFilling = (filling) => {
-  return {
-    ...filling,
-    type: FILLING_TYPES.find(({ label }) => filling.name === label)?.value,
-  };
-};
-
-export const normalizeSize = (size) => {
-  return {
-    ...size,
-    type: SIZE_TYPES.find(({ label }) => size.name === label)?.value,
-  };
-};
+  AuthApiService,
+  CrudApiService,
+  DoughApiService,
+  IngredientsApiService,
+  ReadOnlyApiService,
+  SaucesApiService,
+  SizesApiService,
+} from "@/services/api.service.js";
 
 export const normalizeMisc = (misc) => {
   return {
     ...misc,
     type: MISC_ITEMS.find(({ label }) => misc.name === label)?.value,
+  };
+};
+
+export const createResources = (notifier) => {
+  return {
+    [resources.AUTH]: new AuthApiService(notifier),
+    [resources.USER]: new CrudApiService(resources.USER, notifier),
+    [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES, notifier),
+    [resources.DOUGH]: new DoughApiService(notifier),
+    [resources.INGREDIENTS]: new IngredientsApiService(
+      resources.INGREDIENTS,
+      notifier
+    ),
+    [resources.MISC]: new ReadOnlyApiService(resources.MISC, notifier),
+    [resources.SAUCES]: new SaucesApiService(resources.SAUCES, notifier),
+    [resources.SIZES]: new SizesApiService(resources.SIZES, notifier),
+    [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
   };
 };

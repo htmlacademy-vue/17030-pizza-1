@@ -6,24 +6,24 @@
         class="product__img"
         width="56"
         height="56"
-        :alt="pizza.name"
+        :alt="product.name"
       />
       <div class="product__text">
-        <h2>{{ pizza.name }}</h2>
+        <h2>{{ product.name }}</h2>
         <ul>
           <li>{{ sizeAndDoughText }}</li>
           <li>Соус: {{ sauceText }}</li>
-          <li>Начинка: {{ fillingText }}</li>
+          <li>Начинка: {{ ingredientsText }}</li>
         </ul>
       </div>
     </div>
 
     <AppCounter
       class="cart-list__counter"
-      :value="pizza.count"
+      :value="product.count"
       :min="0"
       plus-color-modifier-class="counter__button--orange"
-      @input="changePizzaCount(pizza.id, $event)"
+      @input="changePizzaCount(product.id, $event)"
     />
 
     <div class="cart-list__price">
@@ -34,7 +34,7 @@
       <button
         type="button"
         class="cart-list__edit"
-        @click.prevent="editPizza(pizza.id)"
+        @click.prevent="editPizza(product.id)"
       >
         Изменить
       </button>
@@ -44,17 +44,17 @@
 
 <script>
 import AppCounter from "@/common/components/AppCounter.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "CartItem",
+  name: "CartProductItem",
 
   components: {
     AppCounter,
   },
 
   props: {
-    pizza: {
+    product: {
       type: Object,
       default() {
         return {};
@@ -63,22 +63,24 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Builder", ["fillings"]),
+    ...mapState("Builder", ["ingredients"]),
     totalPrice() {
-      return this.pizza.price * this.pizza.count;
+      return this.product.price * this.product.count;
     },
     sizeAndDoughText() {
-      return `${this.pizza.size.name}, ${this.pizza.dough.nameAlt}`;
+      return `${this.product.size.name}, ${this.product.dough.nameAlt}`;
     },
     sauceText() {
-      return this.pizza.sauce.name.toLowerCase();
+      return this.product.sauce.name.toLowerCase();
     },
-    fillingText() {
-      const filteredFillings = this.fillings.filter(({ type }) => {
-        return this.pizza.fillingCounts[type] > 0;
+    ingredientsText() {
+      const filteredIngredients = this.ingredients.filter(({ type }) => {
+        return this.product.ingredientCounts[type] > 0;
       });
 
-      return filteredFillings.map(({ name }) => name.toLowerCase()).join(", ");
+      return filteredIngredients
+        .map(({ name }) => name.toLowerCase())
+        .join(", ");
     },
   },
 

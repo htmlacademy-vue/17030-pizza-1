@@ -1,5 +1,4 @@
 import jsonUser from "@/static/user.json";
-import router from "@/router/index.js";
 import { uniqueId } from "lodash";
 import {
   CREATE_NEW_ADDRESS,
@@ -7,31 +6,41 @@ import {
   LOG_OUT,
   REMOVE_ADDRESS,
   SAVE_ADDRESS,
+  SET_ENTITY,
 } from "@/store/mutation-types.js";
 
 export default {
   namespaced: true,
+
   state: {
     user: jsonUser,
-    isLogged: false,
+    isAuthenticated: false,
     addresses: [
       {
         id: uniqueId(),
         name: "Тест",
         street: "Невский пр.",
-        house: "22",
-        apartment: "46",
+        building: "22",
+        flat: "46",
         comment: "Позвоните, пожалуйста, от проходной",
       },
     ],
   },
-  getters: {},
+
+  getters: {
+    getUserAttribute(state) {
+      return (attr) => {
+        return state.user ? state.user[attr] : "";
+      };
+    },
+  },
+
   mutations: {
     [LOG_IN](state) {
-      state.isLogged = true;
+      state.isAuthenticated = true;
     },
     [LOG_OUT](state) {
-      state.isLogged = false;
+      state.isAuthenticated = false;
     },
     [CREATE_NEW_ADDRESS](state, newAddress) {
       state.addresses = [...state.addresses, newAddress];
@@ -51,14 +60,65 @@ export default {
       }
     },
   },
+
   actions: {
-    async logIn({ commit }) {
-      await router.push("/");
-      commit(LOG_IN);
+    async login({ dispatch }, credentials) {
+      const data = await this.$api.auth.login(credentials);
+      this.$jwt.saveToken(data.token);
+      this.$api.auth.setAuthHeader();
+      dispatch("getMe");
     },
-    async logOut({ commit }) {
-      await router.push("/");
-      commit(LOG_OUT);
+    async logout({ commit }, sendRequest = true) {
+      if (sendRequest) {
+        await this.$api.auth.logout();
+      }
+
+      this.$jwt.destroyToken();
+      this.$api.auth.setAuthHeader();
+
+      commit(
+        SET_ENTITY,
+        {
+          module: "Auth",
+          entity: "isAuthenticated",
+          value: false,
+        },
+        { root: true }
+      );
+      commit(
+        SET_ENTITY,
+        {
+          module: "Auth",
+          entity: "user",
+          value: null,
+        },
+        { root: true }
+      );
+    },
+    async getMe({ commit, dispatch }) {
+      try {
+        const data = await this.$api.auth.getMe();
+        commit(
+          SET_ENTITY,
+          {
+            module: "Auth",
+            entity: "isAuthenticated",
+            value: true,
+          },
+          { root: true }
+        );
+        commit(
+          SET_ENTITY,
+          {
+            module: "Auth",
+            entity: "user",
+            value: data,
+          },
+          { root: true }
+        );
+      } catch {
+        dispatch("logout", false);
+      }
     },
     createNewAddress({ commit }) {
       const newAddress = () => {
@@ -66,8 +126,8 @@ export default {
           id: uniqueId(),
           name: "",
           street: "",
-          house: "",
-          apartment: "",
+          building: "",
+          flat: "",
           comment: "",
         };
       };

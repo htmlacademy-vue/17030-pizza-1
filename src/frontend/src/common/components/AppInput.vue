@@ -1,6 +1,9 @@
 <template>
   <label class="input" :class="modifiersClass">
-    <span :class="{ 'visually-hidden': !isVisibleCaption }">
+    <span
+      class="input__caption"
+      :class="{ 'visually-hidden': !isVisibleCaption }"
+    >
       <slot />
     </span>
     <input
@@ -13,7 +16,7 @@
       :required="required"
       @input="$emit('input', $event.target.value)"
     />
-    <span v-if="showError">{{ errorText }}</span>
+    <span v-if="showError" class="input__text">{{ errorText }}</span>
   </label>
 </template>
 
@@ -25,6 +28,7 @@ export default {
     value: {
       type: [String, Number],
       required: true,
+      default: "",
     },
     name: {
       type: String,

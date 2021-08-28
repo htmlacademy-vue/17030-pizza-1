@@ -13,33 +13,30 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
 
   computed: {
-    ...mapState("Builder", ["pizza"]),
-    ...mapGetters("Builder", {
-      fillingsList: "fillings",
-    }),
+    ...mapState("Builder", ["pizza", "ingredients"]),
     priceOfDough() {
-      return this.pizza.dough?.price ?? 0;
+      return this.pizza?.dough?.price ?? 0;
     },
     priceOfSauce() {
-      return this.pizza.sauce?.price ?? 0;
+      return this.pizza?.sauce?.price ?? 0;
     },
-    priceOfFillings() {
-      return this.fillingsList.reduce((acc, { price, type }) => {
-        return acc + price * this.pizza.fillingCounts[type];
+    priceOfIngredients() {
+      return this.ingredients?.reduce((acc, { price, type }) => {
+        return acc + price * this.pizza?.ingredientCounts[type];
       }, 0);
     },
     size() {
-      return this.pizza.size?.multiplier ?? 0;
+      return this.pizza?.size?.multiplier ?? 0;
     },
     price() {
       return (
-        (this.priceOfDough + this.priceOfSauce + this.priceOfFillings) *
+        (this.priceOfDough + this.priceOfSauce + this.priceOfIngredients) *
         this.size
       );
     },
@@ -50,7 +47,7 @@ export default {
       return !(
         this.priceOfDough &&
         this.priceOfSauce &&
-        this.priceOfFillings &&
+        this.priceOfIngredients &&
         this.size &&
         this.hasPizzaName
       );
