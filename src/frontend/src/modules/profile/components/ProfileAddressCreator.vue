@@ -97,7 +97,8 @@ export default {
 
   data() {
     return {
-      localAddress: { ...this.address },
+      isNewAddress: !this.address.name,
+      localAddress: this.address,
       validations: {
         name: {
           error: "",
@@ -132,7 +133,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("Auth", ["saveAddress", "removeAddress"]),
+    ...mapActions("Auth", ["postAddress", "putAddress", "deleteAddress"]),
     save() {
       if (
         !this.$validateFields(
@@ -146,11 +147,17 @@ export default {
       ) {
         return;
       }
-      this.saveAddress(this.localAddress);
-      this.$emit("save");
+
+      if (this.isNewAddress) {
+        this.postAddress(this.localAddress);
+      } else {
+        this.putAddress(this.localAddress);
+      }
+
+      this.$emit("saved");
     },
     remove(id) {
-      this.removeAddress(id);
+      this.deleteAddress({ id, isNewAddress: this.isNewAddress });
     },
   },
 };

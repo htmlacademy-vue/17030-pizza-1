@@ -1,30 +1,21 @@
-import jsonUser from "@/static/user.json";
 import { uniqueId } from "lodash";
 import {
-  CREATE_NEW_ADDRESS,
+  CREATE_TEMPORARY_ADDRESS,
+  DELETE_ENTITY,
   LOG_IN,
   LOG_OUT,
-  REMOVE_ADDRESS,
-  SAVE_ADDRESS,
+  REPLACE_TEMPORARY_ADDRESS,
   SET_ENTITY,
+  UPDATE_ENTITY,
 } from "@/store/mutation-types.js";
 
 export default {
   namespaced: true,
 
   state: {
-    user: jsonUser,
+    user: null,
     isAuthenticated: false,
-    addresses: [
-      {
-        id: uniqueId(),
-        name: "Тест",
-        street: "Невский пр.",
-        building: "22",
-        flat: "46",
-        comment: "Позвоните, пожалуйста, от проходной",
-      },
-    ],
+    addresses: [],
   },
 
   getters: {
@@ -42,21 +33,14 @@ export default {
     [LOG_OUT](state) {
       state.isAuthenticated = false;
     },
-    [CREATE_NEW_ADDRESS](state, newAddress) {
+    [CREATE_TEMPORARY_ADDRESS](state, newAddress) {
       state.addresses = [...state.addresses, newAddress];
     },
-    [SAVE_ADDRESS](state, address) {
-      const index = state.addresses.findIndex(({ id }) => +id === +address.id);
-
+    [REPLACE_TEMPORARY_ADDRESS](state, { temporaryId, newAddress }) {
+      const index = state.addresses.findIndex(({ id }) => id === temporaryId);
+      debugger;
       if (~index) {
-        state.addresses.splice(index, 1, address);
-      }
-    },
-    [REMOVE_ADDRESS](state, addressId) {
-      const index = state.addresses.findIndex(({ id }) => +id === +addressId);
-
-      if (~index) {
-        state.addresses.splice(index, 1);
+        state.addresses.splice(index, 1, newAddress);
       }
     },
   },
@@ -68,6 +52,7 @@ export default {
       this.$api.auth.setAuthHeader();
       dispatch("getMe");
     },
+
     async logout({ commit }, sendRequest = true) {
       if (sendRequest) {
         await this.$api.auth.logout();
@@ -95,6 +80,7 @@ export default {
         { root: true }
       );
     },
+
     async getMe({ commit, dispatch }) {
       try {
         const data = await this.$api.auth.getMe();
@@ -120,10 +106,11 @@ export default {
         dispatch("logout", false);
       }
     },
+
     createNewAddress({ commit }) {
       const newAddress = () => {
         return {
-          id: uniqueId(),
+          id: uniqueId("new-address-"),
           name: "",
           street: "",
           building: "",
@@ -131,14 +118,55 @@ export default {
           comment: "",
         };
       };
+      commit(CREATE_TEMPORARY_ADDRESS, newAddress());
+    },
 
-      commit(CREATE_NEW_ADDRESS, newAddress());
+    async queryAddresses({ commit }) {
+      const addresses = await this.$api.addresses.query();
+      commit(
+        SET_ENTITY,
+        {
+          module: "Auth",
+          entity: "addresses",
+          value: addresses,
+        },
+        { root: true }
+      );
     },
-    saveAddress({ commit }, address) {
-      commit(SAVE_ADDRESS, address);
+
+    async postAddress({ state, commit }, address) {
+      const { id: temporaryId, ...postParams } = address;
+      postParams.userId = state.user.id;
+      const newAddress = await this.$api.addresses.post(postParams);
+      commit(REPLACE_TEMPORARY_ADDRESS, { temporaryId, newAddress });
     },
-    removeAddress({ commit }, addressId) {
-      commit(REMOVE_ADDRESS, addressId);
+
+    async putAddress({ commit }, address) {
+      const newAddress = await this.$api.addresses.put(address);
+      commit(
+        UPDATE_ENTITY,
+        {
+          module: "Auth",
+          entity: "addresses",
+          value: newAddress,
+        },
+        { root: true }
+      );
+    },
+
+    async deleteAddress({ commit }, { id, isNewAddress }) {
+      if (!isNewAddress) {
+        await this.$api.addresses.delete(id);
+      }
+      commit(
+        DELETE_ENTITY,
+        {
+          module: "Auth",
+          entity: "addresses",
+          id,
+        },
+        { root: true }
+      );
     },
   },
 };

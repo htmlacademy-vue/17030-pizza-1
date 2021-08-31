@@ -4,6 +4,8 @@
       <h1 class="title title--big">История заказов</h1>
     </div>
 
+    <pre>{{ orders }}</pre>
+
     <OrderItem />
 
     <section class="sheet order">
@@ -112,12 +114,21 @@
 
 <script>
 import OrderItem from "@/modules/orders/components/OrderItem.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "Orders",
 
   components: {
     OrderItem,
+  },
+
+  computed: {
+    ...mapState("Orders", ["orders"]),
+  },
+
+  created() {
+    this.$store.dispatch("Orders/query");
   },
 };
 </script>

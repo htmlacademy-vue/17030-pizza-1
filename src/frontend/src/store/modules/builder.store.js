@@ -60,14 +60,14 @@ export default {
         return {
           id: uniqueId(),
           name: "",
-          dough: state.dough?.find(({ type }) => type === DOUGH_TYPES[0].value),
           doughValue: DOUGH_TYPES[0].value,
-          size: state.sizes?.find(({ type }) => type === SIZE_TYPES[0].value),
           sizeValue: SIZE_TYPES[0].value,
+          sauceValue: SAUCE_TYPES[0].value,
+          dough: state.dough?.find(({ type }) => type === DOUGH_TYPES[0].value),
+          size: state.sizes?.find(({ type }) => type === SIZE_TYPES[0].value),
           sauce: state.sauces?.find(
             ({ type }) => type === SAUCE_TYPES[0].value
           ),
-          sauceValue: SAUCE_TYPES[0].value,
           ingredientCounts: state.ingredients?.reduce((obj, { name }) => {
             const type = INGREDIENT_TYPES.find(
               ({ label }) => name === label
@@ -77,7 +77,7 @@ export default {
             return obj;
           }, {}),
           price: 0,
-          count: 1,
+          quantity: 1,
         };
       };
 

@@ -19,11 +19,11 @@
     </div>
 
     <AppCounter
-      class="cart-list__counter"
-      :value="product.count"
+      class="cart-list__quantityer"
+      :value="product.quantity"
       :min="0"
-      plus-color-modifier-class="counter__button--orange"
-      @input="changePizzaCount(product.id, $event)"
+      plus-color-modifier-class="quantityer__button--orange"
+      @input="changeQuantity(product.id, $event)"
     />
 
     <div class="cart-list__price">
@@ -65,7 +65,7 @@ export default {
   computed: {
     ...mapState("Builder", ["ingredients"]),
     totalPrice() {
-      return this.product.price * this.product.count;
+      return this.product.price * this.product.quantity;
     },
     sizeAndDoughText() {
       return `${this.product.size.name}, ${this.product.dough.nameAlt}`;
@@ -85,9 +85,9 @@ export default {
   },
 
   methods: {
-    ...mapActions("Cart", ["updatePizzaCount", "changePizza"]),
-    changePizzaCount(pizzaId, count) {
-      this.updatePizzaCount({ pizzaId, count });
+    ...mapActions("Cart", ["updatePizzaQuantity", "changePizza"]),
+    changeQuantity(pizzaId, quantity) {
+      this.updatePizzaQuantity({ pizzaId, quantity });
     },
     editPizza(pizzaId) {
       this.$router.push("/");

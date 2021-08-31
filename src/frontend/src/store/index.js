@@ -59,9 +59,17 @@ const mutations = {
   },
   [DELETE_ENTITY](state, { module, entity, id }) {
     if (module) {
-      state[module][entity] = state[module][entity].filter((e) => e.id !== id);
+      state[module][entity] = state[module][entity].filter((e) => {
+        return Number.isFinite(e.id) && Number.isFinite(id)
+          ? +e.id !== +id
+          : e.id !== id;
+      });
     } else {
-      state[entity] = state[entity].filter((e) => e.id !== id);
+      state[entity] = state[entity].filter((e) => {
+        return Number.isFinite(e.id) && Number.isFinite(id)
+          ? +e.id !== +id
+          : e.id !== id;
+      });
     }
   },
 };

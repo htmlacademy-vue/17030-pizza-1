@@ -3,7 +3,7 @@ import {
   ADD_PIZZA,
   SET_ENTITY,
   UPDATE_MISC_COUNT,
-  UPDATE_PIZZA_COUNT,
+  UPDATE_PIZZA_QUANTITY,
 } from "@/store/mutation-types.js";
 
 export default {
@@ -24,7 +24,7 @@ export default {
     },
     productsPrice(state) {
       return state.products.reduce((sum, pizza) => {
-        return sum + pizza.count * pizza.price;
+        return sum + pizza.quantity * pizza.price;
       }, 0);
     },
     miscPrice(state) {
@@ -47,9 +47,9 @@ export default {
         state.products = [...state.products, pizza];
       }
     },
-    [UPDATE_PIZZA_COUNT](state, { pizzaId, count }) {
+    [UPDATE_PIZZA_QUANTITY](state, { pizzaId, quantity }) {
       const pizza = state.products.find(({ id }) => +id === +pizzaId);
-      pizza.count = count;
+      pizza.quantity = quantity;
     },
     [UPDATE_MISC_COUNT](state, { miscType, count }) {
       state.miscCounts[miscType] = count;
@@ -69,15 +69,19 @@ export default {
         { root: true }
       );
     },
+
     addPizza({ commit }, pizza) {
       commit(ADD_PIZZA, pizza);
     },
-    updatePizzaCount({ commit }, { pizzaId, count }) {
-      commit(UPDATE_PIZZA_COUNT, { pizzaId, count });
+
+    updatePizzaQuantity({ commit }, { pizzaId, quantity }) {
+      commit(UPDATE_PIZZA_QUANTITY, { pizzaId, quantity });
     },
+
     changePizza({ dispatch }, pizzaId) {
       dispatch("Builder/createNewPizza", pizzaId, { root: true });
     },
+
     updateMiscCount({ commit }, { miscType, count }) {
       commit(UPDATE_MISC_COUNT, { miscType, count });
     },

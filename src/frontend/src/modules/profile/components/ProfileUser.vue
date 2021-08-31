@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div v-if="user" class="user">
     <picture>
       <source
         type="image/webp"

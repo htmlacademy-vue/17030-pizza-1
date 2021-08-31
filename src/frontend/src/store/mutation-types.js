@@ -9,9 +9,8 @@ export const DELETE_ENTITY = "DELETE_ENTITY";
 // Auth module
 export const LOG_IN = "LOG_IN";
 export const LOG_OUT = "LOG_OUT";
-export const CREATE_NEW_ADDRESS = "CREATE_NEW_ADDRESS";
-export const SAVE_ADDRESS = "SAVE_ADDRESS";
-export const REMOVE_ADDRESS = "REMOVE_ADDRESS";
+export const CREATE_TEMPORARY_ADDRESS = "CREATE_TEMPORARY_ADDRESS";
+export const REPLACE_TEMPORARY_ADDRESS = "REPLACE_TEMPORARY_ADDRESS";
 
 // Builder module
 export const SET_DOUGH = "SET_DOUGH";
@@ -24,5 +23,5 @@ export const SET_PRICE = "SET_PRICE";
 
 // Cart module
 export const ADD_PIZZA = "ADD_PIZZA";
-export const UPDATE_PIZZA_COUNT = "UPDATE_PIZZA_COUNT";
+export const UPDATE_PIZZA_QUANTITY = "UPDATE_PIZZA_QUANTITY";
 export const UPDATE_MISC_COUNT = "UPDATE_MISC_COUNT";

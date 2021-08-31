@@ -4,7 +4,6 @@ export default class Notifier {
   #store;
 
   constructor(store) {
-    console.log("Notifier constructor");
     this.#store = store;
   }
 

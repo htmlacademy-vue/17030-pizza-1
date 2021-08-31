@@ -54,8 +54,8 @@ export class CrudApiService extends ReadOnlyApiService {
     return data;
   }
 
-  async delete(entity) {
-    const { data } = await axios.delete(`${this.#resource}/${entity.id}`);
+  async delete(id) {
+    const { data } = await axios.delete(`${this.#resource}/${id}`);
     return data;
   }
 }
@@ -86,26 +86,6 @@ export class AuthApiService extends BaseApiService {
     const { data } = await axios.get("whoAmI");
     return data;
   }
-}
-
-export class AddressApiService extends CrudApiService {
-  constructor(notifier) {
-    super(resources.ADDRESSES, notifier);
-  }
-
-  // TODO: нужна ли нормализация?
-  // async query() {
-  // }
-
-  // [{
-  //   id: 0,
-  //   name: "string",
-  //   street: "string",
-  //   building: "string",
-  //   flat: "string",
-  //   comment: "string",
-  //   userId: "string",
-  // }];
 }
 
 export class DoughApiService extends ReadOnlyApiService {

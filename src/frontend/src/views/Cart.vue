@@ -37,7 +37,7 @@
             <label class="cart-form__select">
               <span class="cart-form__label">Получение заказа:</span>
 
-              <select name="test" class="select" v-model="receivingMethodComp">
+              <select name="test" class="select" v-model="receiving">
                 <option value="pickup">Заберу сам</option>
                 <option value="new-address">Новый адрес</option>
                 <option
@@ -61,7 +61,7 @@
               Контактный телефон:
             </AppInput>
 
-            <div v-if="isAddressFormVisible" class="cart-form__address">
+            <div v-if="isNotPickupReceiving" class="cart-form__address">
               <span class="cart-form__label">Новый адрес:</span>
 
               <div class="cart-form__input">
@@ -169,12 +169,13 @@ export default {
   },
 
   computed: {
+    ...mapState("Builder", ["pizza", "ingredients"]),
     ...mapState("Cart", ["products", "misc", "miscCounts"]),
-    ...mapState("Auth", ["addresses"]),
+    ...mapState("Auth", ["addresses", "user"]),
     hasProducts() {
       return this.products.length;
     },
-    receivingMethodComp: {
+    receiving: {
       get() {
         return this.receivingMethod;
       },
@@ -192,7 +193,7 @@ export default {
         this.receivingMethod = val;
       },
     },
-    isAddressFormVisible() {
+    isNotPickupReceiving() {
       return this.receivingMethod !== "pickup";
     },
   },
@@ -205,6 +206,8 @@ export default {
 
         if (this.receivingMethod !== "pickup") {
           result = { ...result, ...this.validationAddress };
+        } else {
+          this.address = null;
         }
 
         this.validations = result;
@@ -239,6 +242,41 @@ export default {
       ) {
         return;
       }
+
+      const userId = this.user?.id ?? null;
+      const phone = this.phone;
+      const address = this.address;
+      const pizzas = this.products.map((pizza) => {
+        const ingredients = this.ingredients
+          .filter(({ type }) => pizza.ingredientCounts[type] > 0)
+          .map(({ id, type }) => ({
+            ingredientId: id,
+            quantity: pizza.ingredientCounts[type],
+          }));
+
+        return {
+          name: pizza.name,
+          sauceId: pizza.sauce.id,
+          doughId: pizza.dough.id,
+          sizeId: pizza.size.id,
+          quantity: pizza.quantity,
+          ingredients,
+        };
+      });
+      const misc = this.misc
+        .filter(({ type }) => this.miscCounts[type] > 0)
+        .map(({ id, type }) => ({
+          miscId: id,
+          quantity: this.miscCounts[type],
+        }));
+
+      this.$store.dispatch("Orders/post", {
+        userId,
+        phone,
+        address,
+        pizzas,
+        misc,
+      });
 
       this.isPopupVisible = true;
     },

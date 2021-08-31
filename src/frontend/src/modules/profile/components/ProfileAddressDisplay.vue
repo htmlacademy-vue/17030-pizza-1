@@ -3,7 +3,7 @@
     <div class="address-form__header">
       <b>Адрес №{{ counter }}. {{ address.name }}</b>
       <div class="address-form__edit">
-        <AppIcon @click="$emit('edit')">Изменить адрес</AppIcon>
+        <AppIcon @click="$emit('editing')">Изменить адрес</AppIcon>
       </div>
     </div>
 

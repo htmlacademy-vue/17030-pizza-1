@@ -19,6 +19,6 @@ export const createResources = (notifier) => {
     [resources.MISC]: new MiscApiService(notifier),
     [resources.SAUCES]: new SaucesApiService(notifier),
     [resources.SIZES]: new SizesApiService(notifier),
-    [resources.ORDERS]: new CrudApiService(notifier),
+    [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
   };
 };
