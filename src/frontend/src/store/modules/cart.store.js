@@ -22,11 +22,13 @@ export default {
     totalPrice(state, getters) {
       return getters.productsPrice + getters.miscPrice;
     },
+
     productsPrice(state) {
       return state.products.reduce((sum, pizza) => {
         return sum + pizza.quantity * pizza.price;
       }, 0);
     },
+
     miscPrice(state) {
       return state.misc
         .filter(({ type }) => state.miscCounts[type] !== 0)
