@@ -27,12 +27,12 @@
             <img
               src="@/assets/img/users/user5.jpg"
               srcset="@/assets/img/users/user5@2x.jpg"
-              :alt="user.name"
+              :alt="getUserAttribute('name')"
               width="32"
               height="32"
             />
           </picture>
-          <span>{{ user.name }}</span>
+          <span>{{ getUserAttribute("name") }}</span>
         </router-link>
         <a href="#" class="header__logout" @click.prevent="logout">
           <span>Выйти</span>
@@ -52,8 +52,9 @@ export default {
   name: "AppLayoutHeader",
 
   computed: {
-    ...mapState("Auth", ["user", "isAuthenticated"]),
+    ...mapState("Auth", ["isAuthenticated"]),
     ...mapGetters("Cart", ["totalPrice"]),
+    ...mapGetters("Auth", ["getUserAttribute"]),
   },
 
   methods: {

@@ -8,6 +8,7 @@
 
 <script>
 import AppLayout from "@/layouts/AppLayout.vue";
+import { setAuth } from "@/common/helpers.js";
 
 export default {
   name: "App",
@@ -17,8 +18,13 @@ export default {
   },
 
   created() {
-    console.log("App created");
-    console.log(this.$store.dispatch("init"));
+    window.onerror = function (msg, url, line, col, error) {
+      console.log(error);
+    };
+    if (this.$jwt.getToken()) {
+      setAuth(this.$store);
+    }
+    this.$store.dispatch("init");
   },
 };
 </script>

@@ -10,7 +10,9 @@
       </div>
 
       <div class="order__button">
-        <AppButton mod-border>Удалить</AppButton>
+        <AppButton mod-border @click.prevent="deleteOrder(order.id)">
+          Удалить
+        </AppButton>
       </div>
       <div class="order__button">
         <AppButton>Повторить</AppButton>
@@ -41,7 +43,6 @@
           </div>
         </div>
 
-        <pre><mark>{{ calcCostOfOnePizza(orderPizza) }}</mark></pre>
         <p class="order__price">{{ costOfPizzaText(orderPizza) }} ₽</p>
       </li>
     </ul>
@@ -56,7 +57,7 @@
       </li>
     </ul>
 
-    <p class="order__address">Адрес доставки: {{ order.orderAddress.name }}</p>
+    <p class="order__address">Адрес доставки: {{ getAddressText() }}</p>
   </section>
 </template>
 
@@ -129,7 +130,7 @@ export default {
     },
 
     calcTotalCostOfOrder() {
-      const totalOfPizza = this.order.orderPizzas.reduce(
+      const totalOfPizza = this.order.orderPizzas?.reduce(
         (sum, orderPizza) =>
           sum + this.calcCostOfOnePizza(orderPizza) * orderPizza.quantity,
         0
@@ -159,6 +160,14 @@ export default {
       return this.getIngredients(orderPizza)
         ?.map(({ name }) => name.toLowerCase())
         .join(", ");
+    },
+
+    getAddressText() {
+      return this.order?.orderAddress?.name ?? "Заберу сам";
+    },
+
+    deleteOrder(orderId) {
+      this.$store.dispatch("Orders/delete", orderId);
     },
   },
 };

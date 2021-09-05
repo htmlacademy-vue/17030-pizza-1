@@ -8,6 +8,7 @@ import {
   SaucesApiService,
   SizesApiService,
 } from "@/services/api.service.js";
+import { SET_ENTITY } from "@/store/mutation-types.js";
 
 export const createResources = (notifier) => {
   return {
@@ -21,4 +22,14 @@ export const createResources = (notifier) => {
     [resources.SIZES]: new SizesApiService(notifier),
     [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
   };
+};
+
+export const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+  store.commit(SET_ENTITY, {
+    module: "Auth",
+    entity: "isAuthenticated",
+    value: true,
+  });
 };

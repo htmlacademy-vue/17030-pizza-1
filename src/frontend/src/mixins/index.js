@@ -1,3 +1,4 @@
 import validator from "@/mixins/validator.js";
+import logout from "@/mixins/logout.js";
 
-export { validator };
+export { validator, logout };

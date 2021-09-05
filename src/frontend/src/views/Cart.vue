@@ -128,6 +128,7 @@ const newAddress = () => {
     street: "",
     building: "",
     flat: "",
+    comment: "",
   };
 };
 
