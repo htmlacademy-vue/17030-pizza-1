@@ -2,7 +2,7 @@
   <div class="sheet">
     <h2 class="title title--small sheet__title">Выберите ингредиенты</h2>
 
-    <div class="sheet__content ingredients">
+    <div v-if="pizza" class="sheet__content ingredients">
       <div class="ingredients__sauce">
         <p>Основной соус:</p>
 
@@ -10,7 +10,7 @@
           v-for="sauce in sauces"
           :key="sauce.name"
           v-model="pickedSauce"
-          :value="sauce.type"
+          :value="sauce.id"
           class="ingredients__input"
           name="sauce"
         >
@@ -21,7 +21,7 @@
       <div class="ingredients__filling">
         <p>Начинка:</p>
 
-        <ul v-if="ingredients && ingredientCounts" class="ingredients__list">
+        <ul v-if="ingredients" class="ingredients__list">
           <li
             v-for="ingredientItem in ingredients"
             :key="ingredientItem.name"
@@ -29,20 +29,18 @@
           >
             <AppDrag
               :transfer-data="ingredientItem"
-              :draggable="
-                canDragIngredient(ingredientCounts[ingredientItem.type])
-              "
+              :draggable="canDragIngredient(ingredientItem)"
             >
               <span class="filling" :class="`filling--${ingredientItem.type}`">
                 {{ ingredientItem.name }}
               </span>
             </AppDrag>
             <AppCounter
-              :value="ingredientCounts[ingredientItem.type]"
+              :value="getIngredientQuantity(ingredientItem.id)"
               :min="APP_COUNTER_MIN_VALUE"
               :max="APP_COUNTER_MAX_VALUE"
               class="counter--orange ingredients__counter"
-              @input="changeIngredientCount(ingredientItem.type, $event)"
+              @input="changeIngredientQuantity(ingredientItem.id, $event)"
             />
           </li>
         </ul>
@@ -78,14 +76,11 @@ export default {
   },
 
   computed: {
-    ...mapState("Builder", {
-      ingredientCounts: (state) => state.pizza?.ingredientCounts,
-      ingredients: "ingredients",
-      sauces: "sauces",
-    }),
+    ...mapState("Builder", ["pizza", "ingredients", "sauces"]),
+
     pickedSauce: {
       get() {
-        return this.$store.state.Builder.pizza?.sauceValue;
+        return this.$store.state.Builder.pizza?.sauceId;
       },
       set(val) {
         this.$store.dispatch("Builder/setSauce", val);
@@ -95,11 +90,29 @@ export default {
 
   methods: {
     ...mapActions("Builder", ["setIngredient"]),
-    changeIngredientCount(ingredientType, count) {
-      this.setIngredient({ ingredientType, count });
+
+    getIngredientQuantity(id) {
+      return (
+        this.pizza?.ingredients?.find(
+          ({ ingredientId }) => +ingredientId === +id
+        )?.quantity ?? 1
+      );
     },
-    canDragIngredient(counter) {
-      return counter < APP_COUNTER_MAX_VALUE;
+
+    changeIngredientQuantity(ingredientId, quantity) {
+      this.setIngredient({ ingredientId, quantity });
+    },
+
+    canDragIngredient(ingredientItem) {
+      const ingredientMini = this.pizza?.ingredients?.find(
+        ({ ingredientId }) => +ingredientId === ingredientItem.id
+      );
+
+      if (!ingredientMini) {
+        return true;
+      }
+
+      return ingredientMini?.quantity < APP_COUNTER_MAX_VALUE;
     },
   },
 };

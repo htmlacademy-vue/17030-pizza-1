@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Итого: {{ price }} ₽</p>
+    <p>Итого: {{ $priceForOnePizza(pizza) }} ₽</p>
 
     <AppButton
       :class="{ 'button--disabled': canNotOrder }"
@@ -13,51 +13,36 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
+import { priceForOnePizza } from "@/mixins";
 
 export default {
   name: "BuilderPriceCounter",
+  mixins: [priceForOnePizza],
 
   computed: {
     ...mapState("Builder", ["pizza", "ingredients"]),
-    priceOfDough() {
-      return this.pizza?.dough?.price ?? 0;
-    },
-    priceOfSauce() {
-      return this.pizza?.sauce?.price ?? 0;
-    },
-    priceOfIngredients() {
-      return this.ingredients?.reduce((acc, { price, type }) => {
-        return acc + price * this.pizza?.ingredientCounts[type];
-      }, 0);
-    },
-    size() {
-      return this.pizza?.size?.multiplier ?? 0;
-    },
-    price() {
-      return (
-        (this.priceOfDough + this.priceOfSauce + this.priceOfIngredients) *
-        this.size
-      );
-    },
+    ...mapGetters("Builder", ["getFullPizzaComponentById"]),
+
     hasPizzaName() {
-      return !!this.pizza.name.length;
+      return !!this.pizza?.name.trim();
     },
+
     canNotOrder() {
       return !(
-        this.priceOfDough &&
-        this.priceOfSauce &&
-        this.priceOfIngredients &&
-        this.size &&
+        this.$priceOfIngredients(this.pizza) &&
+        this.$priceForOnePizza(this.pizza) &&
         this.hasPizzaName
       );
     },
   },
 
   methods: {
-    ...mapActions("Builder", ["setPrice", "createNewPizza"]),
+    ...mapActions("Builder", ["createNewPizza"]),
+    ...mapActions("Cart", ["updatePizzaPrices"]),
+
     addToCart() {
-      this.setPrice(this.price);
+      this.updatePizzaPrices(this.$priceForOnePizza(this.pizza));
       this.$store.dispatch("addPizzaToCart");
       this.createNewPizza();
     },

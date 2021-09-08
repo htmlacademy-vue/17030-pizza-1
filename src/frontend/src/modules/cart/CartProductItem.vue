@@ -6,24 +6,24 @@
         class="product__img"
         width="56"
         height="56"
-        :alt="product.name"
+        :alt="pizza.name"
       />
       <div class="product__text">
-        <h2>{{ product.name }}</h2>
+        <h2>{{ pizza.name }}</h2>
         <ul>
-          <li>{{ sizeAndDoughText }}</li>
-          <li>Соус: {{ sauceText }}</li>
-          <li>Начинка: {{ ingredientsText }}</li>
+          <li>{{ getSizeAndDoughText }}</li>
+          <li>Соус: {{ getSauceText }}</li>
+          <li>Начинка: {{ getIngredientsText }}</li>
         </ul>
       </div>
     </div>
 
     <AppCounter
       class="cart-list__quantityer"
-      :value="product.quantity"
+      :value="pizza.quantity"
       :min="0"
       plus-color-modifier-class="quantityer__button--orange"
-      @input="changeQuantity(product.id, $event)"
+      @input="changeQuantity(pizza.id, $event)"
     />
 
     <div class="cart-list__price">
@@ -34,7 +34,7 @@
       <button
         type="button"
         class="cart-list__edit"
-        @click.prevent="editPizza(product.id)"
+        @click.prevent="editPizza(pizza.id)"
       >
         Изменить
       </button>
@@ -44,17 +44,20 @@
 
 <script>
 import AppCounter from "@/common/components/AppCounter.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
+import pizzaComponents from "@/common/enums/pizzaComponents.js";
+import { priceForOnePizza } from "@/mixins";
 
 export default {
   name: "CartProductItem",
+  mixins: [priceForOnePizza],
 
   components: {
     AppCounter,
   },
 
   props: {
-    product: {
+    pizza: {
       type: Object,
       default() {
         return {};
@@ -64,21 +67,45 @@ export default {
 
   computed: {
     ...mapState("Builder", ["ingredients"]),
+    ...mapGetters("Builder", ["getFullPizzaComponentById"]),
+
     totalPrice() {
-      return this.product.price * this.product.quantity;
+      return this.$priceForOnePizza(this.pizza) * this.pizza.quantity;
     },
-    sizeAndDoughText() {
-      return `${this.product.size.name}, ${this.product.dough.nameAlt}`;
+
+    getSizeAndDoughText() {
+      const size = this.getFullPizzaComponentById(
+        pizzaComponents.SIZES,
+        this.pizza?.sizeId
+      );
+
+      const dough = this.getFullPizzaComponentById(
+        pizzaComponents.DOUGH,
+        this.pizza?.doughId
+      );
+
+      return `${size?.name}, ${dough?.nameAlt}`;
     },
-    sauceText() {
-      return this.product.sauce.name.toLowerCase();
+
+    getSauceText() {
+      const sauce = this.getFullPizzaComponentById(
+        pizzaComponents.SAUCES,
+        this.pizza?.sauceId
+      );
+
+      return sauce?.name.toLowerCase();
     },
-    ingredientsText() {
-      const filteredIngredients = this.ingredients.filter(({ type }) => {
-        return this.product.ingredientCounts[type] > 0;
+
+    getIngredientsText() {
+      const appliedIngredients = this.ingredients?.filter(({ id }) => {
+        return (
+          this.pizza.ingredients.find(
+            ({ ingredientId }) => +ingredientId === +id
+          )?.quantity > 0
+        );
       });
 
-      return filteredIngredients
+      return appliedIngredients
         .map(({ name }) => name.toLowerCase())
         .join(", ");
     },
@@ -86,9 +113,11 @@ export default {
 
   methods: {
     ...mapActions("Cart", ["updatePizzaQuantity", "changePizza"]),
+
     changeQuantity(pizzaId, quantity) {
       this.updatePizzaQuantity({ pizzaId, quantity });
     },
+
     editPizza(pizzaId) {
       this.$router.push("/");
       this.changePizza(pizzaId);

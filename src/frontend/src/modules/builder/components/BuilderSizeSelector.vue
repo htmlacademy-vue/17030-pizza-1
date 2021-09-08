@@ -7,7 +7,7 @@
         v-for="size in sizes"
         :key="size.name"
         v-model="pickedSize"
-        :value="size.type"
+        :value="size.id"
         class="diameter__input"
         :class="`diameter__input--${size.type}`"
         name="size"
@@ -32,7 +32,7 @@ export default {
     ...mapState("Builder", ["sizes"]),
     pickedSize: {
       get() {
-        return this.$store.state.Builder.pizza?.sizeValue;
+        return this.$store.state.Builder.pizza?.sizeId;
       },
       set(val) {
         this.$store.dispatch("Builder/setSize", val);

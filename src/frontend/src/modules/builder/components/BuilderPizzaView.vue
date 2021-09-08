@@ -1,13 +1,13 @@
 <template>
   <AppDrop @drop="dropIngredient">
-    <div class="pizza" :class="classFoundation">
+    <div v-if="pizza" class="pizza" :class="classFoundation">
       <div class="pizza__wrapper">
-        <template v-for="ingredient in preferredIngredients">
+        <template v-for="ingredientMini in this.pizza.ingredients">
           <div
-            v-for="counter in pizza.ingredientCounts[ingredient.type]"
-            :key="`${ingredient.type}-${counter}`"
+            v-for="quantity in ingredientMini.quantity"
+            :key="`${ingredientMini.ingredientId}-${quantity}`"
             class="pizza__filling"
-            :class="classIngredient(ingredient.type, counter)"
+            :class="classIngredient(ingredientMini.ingredientId, quantity)"
           ></div>
         </template>
       </div>
@@ -19,7 +19,8 @@
 import AppDrop from "@/common/components/AppDrop";
 import doughTypes from "@/common/enums/doughTypes";
 import ingredientCountClasses from "@/common/enums/ingredientCountClasses.js";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
+import pizzaComponents from "@/common/enums/pizzaComponents.js";
 
 export default {
   name: "BuilderPizzaView",
@@ -30,24 +31,31 @@ export default {
 
   computed: {
     ...mapState("Builder", ["pizza", "ingredients"]),
+    ...mapGetters("Builder", ["getFullPizzaComponentById"]),
     classFoundation() {
-      return `pizza--foundation--${doughTypes[this.pizza?.dough?.type]}-${
-        this.pizza?.sauce?.type
-      }`;
-    },
-    preferredIngredients() {
-      return this.ingredients?.filter(
-        ({ type }) => this.pizza?.ingredientCounts[type] > 0
+      const doug = this.getFullPizzaComponentById(
+        pizzaComponents.DOUGH,
+        this.pizza?.doughId
       );
+      const sauce = this.getFullPizzaComponentById(
+        pizzaComponents.SAUCES,
+        this.pizza.sauceId
+      );
+
+      return `pizza--foundation--${doughTypes[doug.type]}-${sauce.type}`;
     },
   },
 
   methods: {
     ...mapActions("Builder", ["dropIngredient"]),
-    classIngredient(type, counter) {
-      const classCount = ingredientCountClasses[counter] ?? "";
+    classIngredient(id, quantity) {
+      const ingredient = this.getFullPizzaComponentById(
+        pizzaComponents.INGREDIENTS,
+        id
+      );
+      const classCount = ingredientCountClasses[quantity] ?? "";
 
-      return [`pizza__filling--${type}`, classCount];
+      return [`pizza__filling--${ingredient.type}`, classCount];
     },
   },
 };

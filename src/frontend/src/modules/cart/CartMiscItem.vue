@@ -7,10 +7,10 @@
 
     <div class="additional-list__wrapper">
       <AppCounter
-        :value="miscCount"
+        :value="miscQuantity"
         :min="0"
         class="additional-list__counter"
-        @input="changeMiscCount(miscItem.type, $event)"
+        @input="changeMiscCount(miscItem.id, $event)"
         plus-color-modifier-class="counter__button--orange"
       />
 
@@ -37,7 +37,7 @@ export default {
       type: Object,
       required: true,
     },
-    miscCount: {
+    miscQuantity: {
       type: Number,
       required: true,
     },
@@ -45,8 +45,8 @@ export default {
 
   methods: {
     ...mapActions("Cart", ["updateMiscCount"]),
-    changeMiscCount(miscType, count) {
-      this.updateMiscCount({ miscType, count });
+    changeMiscCount(miscId, quantity) {
+      this.updateMiscCount({ miscId, quantity });
     },
   },
 };

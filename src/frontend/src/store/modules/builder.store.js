@@ -4,16 +4,9 @@ import {
   SET_ENTITY,
   SET_INGREDIENT,
   SET_NAME,
-  SET_PRICE,
   SET_SAUCE,
   SET_SIZE,
 } from "@/store/mutation-types.js";
-import {
-  DOUGH_TYPES,
-  INGREDIENT_TYPES,
-  SAUCE_TYPES,
-  SIZE_TYPES,
-} from "@/common/constants.js";
 import { uniqueId } from "lodash";
 
 export default {
@@ -27,67 +20,80 @@ export default {
     sizes: null,
   },
 
+  getters: {
+    getFullPizzaComponentById: (state) => (componentName, id) => {
+      return state[componentName]?.find((component) => +component.id === +id);
+    },
+  },
+
   mutations: {
-    [SET_DOUGH](state, { doughType, dough }) {
-      state.pizza.doughValue = doughType;
-      state.pizza.dough = dough;
+    [SET_DOUGH](state, doughId) {
+      state.pizza.doughId = doughId;
     },
-    [SET_SIZE](state, { sizeType, size }) {
-      state.pizza.sizeValue = sizeType;
-      state.pizza.size = size;
+
+    [SET_SIZE](state, sizeId) {
+      state.pizza.sizeId = sizeId;
     },
-    [SET_SAUCE](state, { sauceType, sauce }) {
-      state.pizza.sauceValue = sauceType;
-      state.pizza.sauce = sauce;
+
+    [SET_SAUCE](state, sauceId) {
+      state.pizza.sauceId = sauceId;
     },
-    [SET_INGREDIENT](state, { ingredientType, count }) {
-      state.pizza.ingredientCounts[ingredientType] = count;
+
+    [SET_INGREDIENT](state, { ingredientId, quantity }) {
+      const newIngredient = {
+        ingredientId,
+        quantity,
+      };
+
+      const index = state.pizza.ingredients.findIndex(
+        (ingredient) => +ingredient.ingredientId === +ingredientId
+      );
+
+      if (~index) {
+        state.pizza.ingredients.splice(index, 1, newIngredient);
+      } else {
+        state.pizza.ingredients = [...state.pizza.ingredients, newIngredient];
+      }
     },
-    [DROP_INGREDIENT](state, ingredientType) {
-      state.pizza.ingredientCounts[ingredientType] += 1;
+
+    [DROP_INGREDIENT](state, ingredientId) {
+      const index = state.pizza.ingredients.findIndex(
+        (ingredient) => +ingredient.ingredientId === +ingredientId
+      );
+
+      if (~index) {
+        state.pizza.ingredients[index].quantity += 1;
+      } else {
+        const newIngredient = {
+          ingredientId,
+          quantity: 1,
+        };
+        state.pizza.ingredients = [...state.pizza.ingredients, newIngredient];
+      }
     },
+
     [SET_NAME](state, name) {
       state.pizza.name = name;
-    },
-    [SET_PRICE](state, price) {
-      state.pizza.price = price;
     },
   },
 
   actions: {
-    createNewPizza({ state, rootState, commit }, pizzaId) {
+    createNewPizza({ state, rootState, commit }, pizzaId = null) {
       const createNewPizza = () => {
         return {
           id: uniqueId(),
           name: "",
-          doughValue: DOUGH_TYPES[0].value,
-          sizeValue: SIZE_TYPES[0].value,
-          sauceValue: SAUCE_TYPES[0].value,
-          dough: state.dough?.find(({ type }) => type === DOUGH_TYPES[0].value),
-          size: state.sizes?.find(({ type }) => type === SIZE_TYPES[0].value),
-          sauce: state.sauces?.find(
-            ({ type }) => type === SAUCE_TYPES[0].value
-          ),
-          ingredientCounts: state.ingredients?.reduce((obj, { name }) => {
-            const type = INGREDIENT_TYPES.find(
-              ({ label }) => name === label
-            )?.value;
-            obj[type] = 0;
-
-            return obj;
-          }, {}),
-          price: 0,
+          sauceId: state.sauces[0].id,
+          doughId: state.dough[0].id,
+          sizeId: state.sizes[0].id,
           quantity: 1,
+          ingredients: [],
         };
       };
 
-      let newPizza = null;
-
-      if (pizzaId) {
-        newPizza = rootState.Cart.products.find(({ id }) => +id === +pizzaId);
-      } else {
-        newPizza = createNewPizza();
-      }
+      let newPizza = pizzaId
+        ? rootState.Cart.cartOrder.pizzas?.find(({ id }) => +id === +pizzaId)
+        : createNewPizza();
 
       commit(
         SET_ENTITY,
@@ -144,38 +150,28 @@ export default {
       );
     },
 
-    setDough({ state, commit }, doughType) {
-      const dough = state.dough.find(({ type }) => type === doughType);
-
-      commit(SET_DOUGH, { doughType, dough });
+    setDough({ commit }, doughId) {
+      commit(SET_DOUGH, doughId);
     },
 
-    setSize({ state, commit }, sizeType) {
-      const size = state.sizes.find(({ type }) => type === sizeType);
-
-      commit(SET_SIZE, { sizeType, size });
+    setSize({ commit }, sizeId) {
+      commit(SET_SIZE, sizeId);
     },
 
-    setSauce({ state, commit }, sauceType) {
-      const sauce = state.sauces.find(({ type }) => type === sauceType);
-
-      commit(SET_SAUCE, { sauceType, sauce });
+    setSauce({ commit }, sauceId) {
+      commit(SET_SAUCE, sauceId);
     },
 
-    setIngredient({ commit }, { ingredientType, count }) {
-      commit(SET_INGREDIENT, { ingredientType, count });
+    setIngredient({ commit }, { ingredientId, quantity }) {
+      commit(SET_INGREDIENT, { ingredientId, quantity });
     },
 
     dropIngredient({ commit }, ingredient) {
-      commit(DROP_INGREDIENT, ingredient.type);
+      commit(DROP_INGREDIENT, ingredient.id);
     },
 
     setName({ commit }, name) {
       commit(SET_NAME, name);
-    },
-
-    setPrice({ commit }, price) {
-      commit(SET_PRICE, price);
     },
   },
 };

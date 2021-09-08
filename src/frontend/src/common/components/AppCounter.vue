@@ -39,6 +39,7 @@ export default {
     value: {
       type: Number,
       required: true,
+      default: 0,
       validator(value) {
         return Number.isFinite(value);
       },

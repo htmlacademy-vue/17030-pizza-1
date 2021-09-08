@@ -15,9 +15,9 @@
         <template v-if="hasProducts">
           <ul class="cart-list sheet">
             <CartProductItem
-              v-for="product in products"
-              :key="product.id"
-              :product="product"
+              v-for="pizza in cartOrder.pizzas"
+              :key="pizza.id"
+              :pizza="pizza"
             />
           </ul>
 
@@ -28,7 +28,7 @@
                 v-for="miscItem in misc"
                 :key="miscItem.name"
                 :misc-item="miscItem"
-                :misc-count="miscCounts[miscItem.type]"
+                :misc-quantity="getMiscQuantity(miscItem.id)"
               />
             </ul>
           </div>
@@ -53,7 +53,7 @@
             <AppInput
               name="tel"
               placeholder="+7 999-999-99-99"
-              v-model="phone"
+              v-model="cartOrder.phone"
               mod-big-label
               :error-text="validations.phone.error"
               required
@@ -67,7 +67,7 @@
               <div class="cart-form__input">
                 <AppInput
                   name="street"
-                  v-model="address.street"
+                  v-model="cartOrder.address.street"
                   :readonly="isAddressFromProfile"
                   :error-text="validations.street.error"
                   required
@@ -78,7 +78,7 @@
               <div class="cart-form__input cart-form__input--small">
                 <AppInput
                   name="house"
-                  v-model="address.building"
+                  v-model="cartOrder.address.building"
                   :readonly="isAddressFromProfile"
                   :error-text="validations.building.error"
                   required
@@ -89,7 +89,7 @@
               <div class="cart-form__input cart-form__input--small">
                 <AppInput
                   name="apartment"
-                  v-model="address.flat"
+                  v-model="cartOrder.address.flat"
                   :readonly="isAddressFromProfile"
                   >Квартира
                 </AppInput>
@@ -106,7 +106,7 @@
 
     <CartFooter v-if="hasProducts" />
 
-    <AppPopup v-if="isPopupVisible" @close-popup="isPopupVisible = false">
+    <AppPopup v-if="isPopupVisible" @close-popup="closePopup">
       <template v-slot:title>Спасибо за заказ</template>
       <template v-slot:default>
         Мы начали готовить Ваш заказ, скоро привезём его вам ;)
@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import CartProductItem from "@/modules/cart/CartProductItem.vue";
 import CartMiscItem from "@/modules/cart/CartMiscItem.vue";
 import CartFooter from "@/modules/cart/CartFooter.vue";
@@ -145,8 +145,6 @@ export default {
   data() {
     return {
       receivingMethod: "pickup",
-      phone: "",
-      address: null,
       isPopupVisible: false,
       isAddressFromProfile: false,
       validations: null,
@@ -171,11 +169,13 @@ export default {
 
   computed: {
     ...mapState("Builder", ["pizza", "ingredients"]),
-    ...mapState("Cart", ["products", "misc", "miscCounts"]),
+    ...mapState("Cart", ["cartOrder", "misc"]),
     ...mapState("Auth", ["addresses", "user"]),
+
     hasProducts() {
-      return this.products.length;
+      return this.cartOrder.pizzas.length;
     },
+
     receiving: {
       get() {
         return this.receivingMethod;
@@ -184,16 +184,17 @@ export default {
         const address = this.addresses.find(({ id }) => +id === +val);
 
         if (address) {
-          this.address = { ...address };
+          this.cartOrder.address = { ...address };
           this.isAddressFromProfile = true;
         } else {
-          this.address = newAddress();
+          this.cartOrder.address = newAddress();
           this.isAddressFromProfile = false;
         }
 
         this.receivingMethod = val;
       },
     },
+
     isNotPickupReceiving() {
       return this.receivingMethod !== "pickup";
     },
@@ -214,13 +215,13 @@ export default {
         this.validations = result;
       },
     },
-    phone() {
+    "cartOrder.phone"() {
       this.$clearValidationErrors();
     },
-    "address.street"() {
+    "cartOrder.address.street"() {
       this.$clearValidationErrors();
     },
-    "address.building"() {
+    "cartOrder.address.building"() {
       this.$clearValidationErrors();
     },
   },
@@ -230,13 +231,21 @@ export default {
   },
 
   methods: {
-    checkout() {
+    ...mapActions("Cart", ["setUserIdToCartOrder", "resetState"]),
+    ...mapActions("Builder", ["createNewPizza"]),
+    getMiscQuantity(id) {
+      return (
+        this.cartOrder.misc?.find(({ miscId }) => +miscId === +id)?.quantity ??
+        0
+      );
+    },
+    async checkout() {
       if (
         !this.$validateFields(
           {
-            phone: this.phone,
-            street: this.address?.street,
-            building: this.address?.building,
+            phone: this.cartOrder.phone,
+            street: this.cartOrder.address?.street,
+            building: this.cartOrder.address?.building,
           },
           this.validations
         )
@@ -244,42 +253,20 @@ export default {
         return;
       }
 
-      const userId = this.user?.id ?? null;
-      const phone = this.phone;
-      const address = this.address;
-      const pizzas = this.products.map((pizza) => {
-        const ingredients = this.ingredients
-          .filter(({ type }) => pizza.ingredientCounts[type] > 0)
-          .map(({ id, type }) => ({
-            ingredientId: id,
-            quantity: pizza.ingredientCounts[type],
-          }));
-
-        return {
-          name: pizza.name,
-          sauceId: pizza.sauce.id,
-          doughId: pizza.dough.id,
-          sizeId: pizza.size.id,
-          quantity: pizza.quantity,
-          ingredients,
-        };
-      });
-      const misc = this.misc
-        .filter(({ type }) => this.miscCounts[type] > 0)
-        .map(({ id, type }) => ({
-          miscId: id,
-          quantity: this.miscCounts[type],
-        }));
-
-      this.$store.dispatch("Orders/post", {
-        userId,
-        phone,
-        address,
-        pizzas,
-        misc,
-      });
-
+      this.setUserIdToCartOrder(this.user.id);
+      await this.$store.dispatch("Orders/post", this.cartOrder);
       this.isPopupVisible = true;
+    },
+    closePopup() {
+      this.isPopupVisible = false;
+      this.resetState();
+      this.createNewPizza();
+
+      if (this.user) {
+        this.$router.push("/orders");
+      } else {
+        this.$router.push("/");
+      }
     },
   },
 };

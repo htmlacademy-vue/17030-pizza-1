@@ -7,7 +7,7 @@
         v-for="doughItem in doughList"
         :key="doughItem.name"
         v-model="pickedDough"
-        :value="doughItem.type"
+        :value="doughItem.id"
         class="dough__input"
         :class="`dough__input--${doughItem.type}`"
         name="dough"
@@ -36,7 +36,7 @@ export default {
     }),
     pickedDough: {
       get() {
-        return this.$store.state.Builder.pizza?.doughValue;
+        return this.$store.state.Builder.pizza?.doughId;
       },
       set(val) {
         this.$store.dispatch("Builder/setDough", val);
