@@ -19,9 +19,11 @@ export const SET_SAUCE = "SET_SAUCE";
 export const SET_INGREDIENT = "SET_INGREDIENT";
 export const DROP_INGREDIENT = "DROP_INGREDIENT";
 export const SET_NAME = "SET_NAME";
-export const SET_PRICE = "SET_PRICE";
 
 // Cart module
 export const ADD_PIZZA = "ADD_PIZZA";
 export const UPDATE_PIZZA_QUANTITY = "UPDATE_PIZZA_QUANTITY";
 export const UPDATE_MISC_QUANTITY = "UPDATE_MISC_QUANTITY";
+export const UPDATE_PIZZA_PRICES = "UPDATE_PIZZA_PRICES";
+export const SET_USER_ID_TO_CART_ORDER = "SET_USER_ID_TO_CART_ORDER";
+export const RESET_STATE = "RESET_STATE";

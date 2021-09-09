@@ -1,7 +1,10 @@
 import {
   ADD_PIZZA,
+  RESET_STATE,
   SET_ENTITY,
+  SET_USER_ID_TO_CART_ORDER,
   UPDATE_MISC_QUANTITY,
+  UPDATE_PIZZA_PRICES,
   UPDATE_PIZZA_QUANTITY,
 } from "@/store/mutation-types.js";
 import pizzaComponents from "@/common/enums/pizzaComponents.js";
@@ -113,13 +116,13 @@ export default {
         state.cartOrder.misc = [...state.cartOrder.misc, newMisc];
       }
     },
-    UPDATE_PIZZA_PRICES(state, pizzaPrices) {
+    [UPDATE_PIZZA_PRICES](state, pizzaPrices) {
       state.pizzasPrice = pizzaPrices;
     },
-    SET_USER_ID_TO_CART_ORDER(state, userId) {
+    [SET_USER_ID_TO_CART_ORDER](state, userId) {
       state.cartOrder.userId = userId;
     },
-    RESET_STATE(state) {
+    [RESET_STATE](state) {
       Object.assign(state, setupState());
     },
   },
@@ -155,15 +158,15 @@ export default {
     },
 
     updatePizzaPrices({ commit }, pizzasPrice) {
-      commit("UPDATE_PIZZA_PRICES", pizzasPrice);
+      commit(UPDATE_PIZZA_PRICES, pizzasPrice);
     },
 
     setUserIdToCartOrder({ commit }, userId) {
-      commit("SET_USER_ID_TO_CART_ORDER", userId);
+      commit(SET_USER_ID_TO_CART_ORDER, userId);
     },
 
     resetState({ commit }) {
-      commit("RESET_STATE");
+      commit(RESET_STATE);
     },
   },
 };
