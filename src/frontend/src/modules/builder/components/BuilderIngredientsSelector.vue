@@ -95,7 +95,7 @@ export default {
       return (
         this.pizza?.ingredients?.find(
           ({ ingredientId }) => +ingredientId === +id
-        )?.quantity ?? 1
+        )?.quantity ?? 0
       );
     },
 
