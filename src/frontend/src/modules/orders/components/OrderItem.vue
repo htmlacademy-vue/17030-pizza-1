@@ -15,7 +15,7 @@
         </AppButton>
       </div>
       <div class="order__button">
-        <AppButton>Повторить</AppButton>
+        <AppButton @click.prevent="repeatOrder(order.id)">Повторить</AppButton>
       </div>
     </div>
 
@@ -89,7 +89,7 @@ export default {
 
     getIngredients(orderPizza) {
       return this.ingredients?.filter(({ id }) => {
-        return orderPizza.ingredients.some(
+        return orderPizza.ingredients?.some(
           ({ ingredientId }) => id === ingredientId
         );
       });
@@ -168,6 +168,11 @@ export default {
 
     deleteOrder(orderId) {
       this.$store.dispatch("Orders/delete", orderId);
+    },
+
+    repeatOrder(orderId) {
+      this.$store.dispatch("Orders/repeatOrder", orderId);
+      this.$router.push("/cart");
     },
   },
 };

@@ -144,7 +144,6 @@ export default {
 
   data() {
     return {
-      receivingMethod: "pickup",
       isPopupVisible: false,
       isAddressFromProfile: false,
       validations: null,
@@ -169,7 +168,7 @@ export default {
 
   computed: {
     ...mapState("Builder", ["pizza", "ingredients"]),
-    ...mapState("Cart", ["cartOrder", "misc"]),
+    ...mapState("Cart", ["cartOrder", "misc", "receivingMethodValue"]),
     ...mapState("Auth", ["addresses", "user"]),
 
     hasProducts() {
@@ -178,7 +177,7 @@ export default {
 
     receiving: {
       get() {
-        return this.receivingMethod;
+        return this.receivingMethodValue;
       },
       set(val) {
         const address = this.addresses.find(({ id }) => +id === +val);
@@ -191,22 +190,22 @@ export default {
           this.isAddressFromProfile = false;
         }
 
-        this.receivingMethod = val;
+        this.setReceivingMethod(val);
       },
     },
 
     isNotPickupReceiving() {
-      return this.receivingMethod !== "pickup";
+      return this.receivingMethodValue !== "pickup";
     },
   },
 
   watch: {
-    receivingMethod: {
+    receivingMethodValue: {
       immediate: true,
       handler() {
         let result = this.validationCommon;
 
-        if (this.receivingMethod !== "pickup") {
+        if (this.receivingMethodValue !== "pickup") {
           result = { ...result, ...this.validationAddress };
         } else {
           this.address = null;
@@ -215,6 +214,7 @@ export default {
         this.validations = result;
       },
     },
+    cartOrder() {},
     "cartOrder.phone"() {
       this.$clearValidationErrors();
     },
@@ -231,14 +231,20 @@ export default {
   },
 
   methods: {
-    ...mapActions("Cart", ["setUserIdToCartOrder", "resetState"]),
+    ...mapActions("Cart", [
+      "setUserIdToCartOrder",
+      "resetState",
+      "setReceivingMethod",
+    ]),
     ...mapActions("Builder", ["createNewPizza"]),
+
     getMiscQuantity(id) {
       return (
         this.cartOrder.misc?.find(({ miscId }) => +miscId === +id)?.quantity ??
         0
       );
     },
+
     async checkout() {
       if (
         !this.$validateFields(
@@ -253,10 +259,13 @@ export default {
         return;
       }
 
-      this.setUserIdToCartOrder(this.user.id);
+      if (!this.cartOrder.userId) {
+        this.setUserIdToCartOrder(this.user.id);
+      }
       await this.$store.dispatch("Orders/post", this.cartOrder);
       this.isPopupVisible = true;
     },
+
     closePopup() {
       this.isPopupVisible = false;
       this.resetState();

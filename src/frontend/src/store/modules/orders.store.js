@@ -54,5 +54,9 @@ export default {
         { root: true }
       );
     },
+
+    repeatOrder({ dispatch }, existOrderId) {
+      dispatch("Cart/setupExistOrder", existOrderId, { root: true });
+    },
   },
 };
