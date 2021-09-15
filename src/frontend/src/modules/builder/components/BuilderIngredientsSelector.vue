@@ -94,7 +94,7 @@ export default {
     getIngredientQuantity(id) {
       return (
         this.pizza?.ingredients?.find(
-          ({ ingredientId }) => +ingredientId === +id
+          ({ ingredientId }) => ingredientId.toString() === id.toString()
         )?.quantity ?? 0
       );
     },
@@ -105,7 +105,8 @@ export default {
 
     canDragIngredient(ingredientItem) {
       const ingredientMini = this.pizza?.ingredients?.find(
-        ({ ingredientId }) => +ingredientId === ingredientItem.id
+        ({ ingredientId }) =>
+          ingredientId.toString() === ingredientItem.id.toString()
       );
 
       if (!ingredientMini) {

@@ -22,7 +22,9 @@ export default {
 
   getters: {
     getFullPizzaComponentById: (state) => (componentName, id) => {
-      return state[componentName]?.find((component) => +component.id === +id);
+      return state[componentName]?.find(
+        (component) => component.id.toString() === id.toString()
+      );
     },
   },
 
@@ -46,7 +48,8 @@ export default {
       };
 
       const index = state.pizza.ingredients.findIndex(
-        (ingredient) => +ingredient.ingredientId === +ingredientId
+        (ingredient) =>
+          ingredient.ingredientId.toString() === ingredientId.toString()
       );
 
       if (~index) {
@@ -58,7 +61,8 @@ export default {
 
     [DROP_INGREDIENT](state, ingredientId) {
       const index = state.pizza.ingredients.findIndex(
-        (ingredient) => +ingredient.ingredientId === +ingredientId
+        (ingredient) =>
+          ingredient.ingredientId.toString() === ingredientId.toString()
       );
 
       if (~index) {
@@ -92,7 +96,9 @@ export default {
       };
 
       let newPizza = pizzaId
-        ? rootState.Cart.cartOrder.pizzas?.find(({ id }) => +id === +pizzaId)
+        ? rootState.Cart.cartOrder.pizzas?.find(
+            ({ id }) => id.toString() === pizzaId.toString()
+          )
         : createNewPizza();
 
       commit(

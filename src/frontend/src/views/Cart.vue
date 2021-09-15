@@ -180,7 +180,9 @@ export default {
         return this.receivingMethodValue;
       },
       set(val) {
-        const address = this.addresses.find(({ id }) => +id === +val);
+        const address = this.addresses.find(
+          ({ id }) => id.toString() === val.toString()
+        );
 
         if (address) {
           this.cartOrder.address = { ...address };
@@ -240,8 +242,9 @@ export default {
 
     getMiscQuantity(id) {
       return (
-        this.cartOrder.misc?.find(({ miscId }) => +miscId === +id)?.quantity ??
-        0
+        this.cartOrder.misc?.find(
+          ({ miscId }) => miscId.toString() === id.toString()
+        )?.quantity ?? 0
       );
     },
 

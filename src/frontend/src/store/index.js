@@ -27,7 +27,7 @@ const mutations = {
   },
   [DELETE_NOTIFICATION](state, notificationId) {
     state.notifications = state.notifications.filter(
-      ({ id }) => +id !== +notificationId
+      ({ id }) => id.toString() !== notificationId.toString()
     );
   },
   [SET_ENTITY](state, { module, entity, value }) {
@@ -43,14 +43,16 @@ const mutations = {
   [UPDATE_ENTITY](state, { module, entity, value }) {
     if (module) {
       const index = state[module][entity].findIndex(({ id }) => {
-        return id === value.id;
+        return id.toString() === value.id.toString();
       });
 
       if (~index) {
         state[module][entity].splice(index, 1, value);
       }
     } else {
-      const index = state[entity].findIndex(({ id }) => id === value.id);
+      const index = state[entity].findIndex(
+        ({ id }) => id.toString() === value.id.toString()
+      );
 
       if (~index) {
         state[entity].splice(index, 1, value);
@@ -59,17 +61,13 @@ const mutations = {
   },
   [DELETE_ENTITY](state, { module, entity, id }) {
     if (module) {
-      state[module][entity] = state[module][entity].filter((e) => {
-        return Number.isFinite(e.id) && Number.isFinite(id)
-          ? +e.id !== +id
-          : e.id !== id;
-      });
+      state[module][entity] = state[module][entity].filter(
+        (e) => e.id.toString() !== id.toString()
+      );
     } else {
-      state[entity] = state[entity].filter((e) => {
-        return Number.isFinite(e.id) && Number.isFinite(id)
-          ? +e.id !== +id
-          : e.id !== id;
-      });
+      state[entity] = state[entity].filter(
+        (e) => e.id.toString() !== id.toString()
+      );
     }
   },
 };

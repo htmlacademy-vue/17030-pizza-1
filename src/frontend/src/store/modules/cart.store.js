@@ -73,7 +73,8 @@ export default {
     miscPrices(state) {
       return state.cartOrder.misc.reduce((sum, { miscId, quantity }) => {
         const miscPrice =
-          state.misc?.find(({ id }) => +id === +miscId)?.price ?? 0;
+          state.misc?.find(({ id }) => id.toString() === miscId.toString())
+            ?.price ?? 0;
 
         return sum + miscPrice * quantity;
       }, 0);
@@ -83,7 +84,7 @@ export default {
   mutations: {
     [ADD_PIZZA](state, pizza) {
       const index = state.cartOrder.pizzas.findIndex(
-        ({ id }) => +id === +pizza.id
+        ({ id }) => id.toString() === pizza.id.toString()
       );
 
       if (~index) {
@@ -95,7 +96,7 @@ export default {
 
     [UPDATE_PIZZA_QUANTITY](state, { pizzaId, quantity }) {
       const index = state.cartOrder.pizzas.findIndex(
-        ({ id }) => +id === +pizzaId
+        ({ id }) => id.toString() === pizzaId.toString()
       );
 
       if (~index) {
@@ -111,7 +112,7 @@ export default {
       };
 
       const index = state.cartOrder.misc.findIndex(
-        (misc) => misc.miscId === miscId
+        (misc) => misc.miscId.toString() === miscId.toString()
       );
 
       if (~index) {
@@ -194,7 +195,7 @@ export default {
 
     setupExistOrder({ commit, rootState, dispatch }, existOrderId) {
       const existOrder = rootState.Orders.orders.find(
-        ({ id }) => +id === +existOrderId
+        ({ id }) => id.toString() === existOrderId.toString()
       );
 
       const { userId, phone, orderAddress, orderPizzas, orderMisc } =

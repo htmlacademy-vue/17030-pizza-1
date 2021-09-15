@@ -100,7 +100,7 @@ export default {
       const appliedIngredients = this.ingredients?.filter(({ id }) => {
         return (
           this.pizza.ingredients.find(
-            ({ ingredientId }) => +ingredientId === +id
+            ({ ingredientId }) => ingredientId.toString() === id.toString()
           )?.quantity > 0
         );
       });

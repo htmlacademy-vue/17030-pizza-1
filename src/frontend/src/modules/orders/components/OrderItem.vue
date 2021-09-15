@@ -84,28 +84,36 @@ export default {
 
   methods: {
     getDough(orderPizza) {
-      return this.dough?.find(({ id }) => id === orderPizza.doughId);
+      return this.dough?.find(
+        ({ id }) => id.toString() === orderPizza.doughId.toString()
+      );
     },
 
     getIngredients(orderPizza) {
       return this.ingredients?.filter(({ id }) => {
         return orderPizza.ingredients?.some(
-          ({ ingredientId }) => id === ingredientId
+          ({ ingredientId }) => id.toString() === ingredientId.toString()
         );
       });
     },
 
     getSauce(orderPizza) {
-      return this.sauces?.find(({ id }) => id === orderPizza.sauceId);
+      return this.sauces?.find(
+        ({ id }) => id.toString() === orderPizza.sauceId.toString()
+      );
     },
 
     getSize(orderPizza) {
-      return this.sizes?.find(({ id }) => id === orderPizza.sizeId);
+      return this.sizes?.find(
+        ({ id }) => id.toString() === orderPizza.sizeId.toString()
+      );
     },
 
     getMisc() {
       return this.misc?.filter(({ id }) =>
-        this.order.orderMisc?.some(({ miscId }) => id === miscId)
+        this.order.orderMisc?.some(
+          ({ miscId }) => id.toString() === miscId.toString()
+        )
       );
     },
 
@@ -117,7 +125,8 @@ export default {
         this.getIngredients(orderPizza)?.reduce((sum, ingredient) => {
           const quantity =
             orderPizza.ingredients.find(
-              ({ ingredientId }) => ingredientId === ingredient.id
+              ({ ingredientId }) =>
+                ingredientId.toString() === ingredient.id.toString()
             )?.quantity ?? 1;
           return sum + ingredient.price * quantity;
         }, 0) ?? 0;
@@ -138,7 +147,7 @@ export default {
 
       const totalOfMisc = this.getMisc()?.reduce((sum, misc) => {
         const quantity = this.order.orderMisc?.find(
-          ({ miscId }) => miscId === misc.id
+          ({ miscId }) => miscId.toString() === misc.id.toString()
         )?.quantity;
         return sum + misc.price * quantity;
       }, 0);

@@ -37,8 +37,9 @@ export default {
       state.addresses = [...state.addresses, newAddress];
     },
     [REPLACE_TEMPORARY_ADDRESS](state, { temporaryId, newAddress }) {
-      const index = state.addresses.findIndex(({ id }) => id === temporaryId);
-      debugger;
+      const index = state.addresses.findIndex(
+        ({ id }) => id.toString() === temporaryId.toString()
+      );
       if (~index) {
         state.addresses.splice(index, 1, newAddress);
       }

@@ -38,7 +38,7 @@ export default {
 
   computed: {
     isChecked() {
-      return +this.checked === +this.value;
+      return this.checked.toString() === this.value.toString();
     },
   },
 
