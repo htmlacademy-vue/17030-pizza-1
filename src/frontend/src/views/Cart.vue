@@ -259,9 +259,10 @@ export default {
         return;
       }
 
-      if (!this.cartOrder.userId) {
-        this.setUserIdToCartOrder(this.user.id);
+      if (this.user && !this.cartOrder.userId) {
+        this.setUserIdToCartOrder(this.user?.id);
       }
+
       await this.$store.dispatch("Orders/post", this.cartOrder);
       this.isPopupVisible = true;
     },
