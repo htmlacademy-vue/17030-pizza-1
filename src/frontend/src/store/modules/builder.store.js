@@ -23,7 +23,7 @@ export default {
   getters: {
     getFullPizzaComponentById: (state) => (componentName, id) => {
       return state[componentName]?.find(
-        (component) => component.id.toString() === id.toString()
+        (component) => component.id?.toString() === id?.toString()
       );
     },
   },
