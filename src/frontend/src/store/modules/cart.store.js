@@ -88,7 +88,7 @@ export default {
       );
 
       if (~index) {
-        state.cartOrder.pizzas = state.cartOrder.pizzas.splice(index, 1, pizza);
+        state.cartOrder.pizzas.splice(index, 1, pizza);
       } else {
         state.cartOrder.pizzas = [...state.cartOrder.pizzas, pizza];
       }
