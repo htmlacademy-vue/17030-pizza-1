@@ -46,11 +46,10 @@
 import AppCounter from "@/common/components/AppCounter.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
 import pizzaComponents from "@/common/enums/pizzaComponents.js";
-import { priceForOnePizza } from "@/mixins";
+import { PizzaCalculator } from "@/common/helpers.js";
 
 export default {
   name: "CartProductItem",
-  mixins: [priceForOnePizza],
 
   components: {
     AppCounter,
@@ -65,12 +64,18 @@ export default {
     },
   },
 
+  data() {
+    return {
+      pizzaCalculator: new PizzaCalculator(this.$store),
+    };
+  },
+
   computed: {
     ...mapState("Builder", ["ingredients"]),
     ...mapGetters("Builder", ["getFullPizzaComponentById"]),
 
     totalPrice() {
-      return this.$priceForOnePizza(this.pizza) * this.pizza.quantity;
+      return this.pizzaCalculator.getPrice(this.pizza) * this.pizza.quantity;
     },
 
     getSizeAndDoughText() {

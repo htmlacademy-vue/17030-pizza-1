@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Итого: {{ $priceForOnePizza(pizza) }} ₽</p>
+    <p>Итого: {{ this.pizzaCalculator.getPrice(this.pizza) }} ₽</p>
 
     <AppButton
       :class="{ 'button--disabled': canNotOrder }"
@@ -14,11 +14,16 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
-import { priceForOnePizza } from "@/mixins";
+import { PizzaCalculator } from "@/common/helpers.js";
 
 export default {
   name: "BuilderPriceCounter",
-  mixins: [priceForOnePizza],
+
+  data() {
+    return {
+      pizzaCalculator: new PizzaCalculator(this.$store),
+    };
+  },
 
   computed: {
     ...mapState("Builder", ["pizza", "ingredients"]),
@@ -30,8 +35,8 @@ export default {
 
     canNotOrder() {
       return !(
-        this.$priceOfIngredients(this.pizza) &&
-        this.$priceForOnePizza(this.pizza) &&
+        this.pizzaCalculator.getPriceOfIngredients(this.pizza) &&
+        this.pizzaCalculator.getPrice(this.pizza) &&
         this.hasPizzaName
       );
     },
@@ -42,7 +47,9 @@ export default {
     ...mapActions("Cart", ["updatePizzaPrices"]),
 
     addToCart() {
-      this.updatePizzaPrices(this.$priceForOnePizza(this.pizza));
+      this.updatePizzaPrices(
+        this.pizzaCalculator.getPriceOfIngredients(this.pizza)
+      );
       this.$store.dispatch("addPizzaToCart");
       this.createNewPizza();
     },

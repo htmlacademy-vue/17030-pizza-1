@@ -9,6 +9,57 @@ import {
   SizesApiService,
 } from "@/services/api.service.js";
 import { SET_ENTITY } from "@/store/mutation-types.js";
+import pizzaComponents from "@/common/enums/pizzaComponents.js";
+
+export class PizzaCalculator {
+  #store;
+
+  constructor(store) {
+    this.#store = store;
+  }
+
+  getPriceOfDough(pizza) {
+    const dough = this.#store.getters["Builder/getFullPizzaComponentById"](
+      pizzaComponents.DOUGH,
+      pizza?.doughId
+    );
+    return dough?.price ?? 0;
+  }
+
+  getPriceOfSauce(pizza) {
+    const sauce = this.#store.getters["Builder/getFullPizzaComponentById"](
+      pizzaComponents.SAUCES,
+      pizza?.sauceId
+    );
+    return sauce?.price ?? 0;
+  }
+
+  getPriceOfIngredients(pizza) {
+    return pizza?.ingredients?.reduce((sum, ingredientMini) => {
+      const ingredient = this.#store.getters[
+        "Builder/getFullPizzaComponentById"
+      ](pizzaComponents.INGREDIENTS, ingredientMini.ingredientId);
+      return sum + ingredient.price * ingredientMini.quantity;
+    }, 0);
+  }
+
+  getSize(pizza) {
+    const size = this.#store.getters["Builder/getFullPizzaComponentById"](
+      pizzaComponents.SIZES,
+      pizza?.sizeId
+    );
+    return size?.multiplier ?? 0;
+  }
+
+  getPrice(pizza) {
+    return (
+      (this.getPriceOfDough(pizza) +
+        this.getPriceOfSauce(pizza) +
+        this.getPriceOfIngredients(pizza)) *
+      this.getSize(pizza)
+    );
+  }
+}
 
 export const createResources = (notifier) => {
   return {
