@@ -9,6 +9,8 @@
         <slot />
       </div>
     </main>
+
+    <AppNotifications />
   </div>
 </template>
 

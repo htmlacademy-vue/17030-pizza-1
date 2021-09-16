@@ -4,10 +4,10 @@
 
     <div class="sheet__content diameter">
       <AppSelectorRadio
-        v-for="size in sizesList"
+        v-for="size in sizes"
         :key="size.name"
         v-model="pickedSize"
-        :value="size.type"
+        :value="size.id"
         class="diameter__input"
         :class="`diameter__input--${size.type}`"
         name="size"
@@ -20,7 +20,7 @@
 
 <script>
 import AppSelectorRadio from "@/common/components/AppSelectorRadio";
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
@@ -29,12 +29,10 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Builder", {
-      sizesList: "sizes",
-    }),
+    ...mapState("Builder", ["sizes"]),
     pickedSize: {
       get() {
-        return this.$store.state.Builder.pizza.sizeValue;
+        return this.$store.state.Builder.pizza?.sizeId;
       },
       set(val) {
         this.$store.dispatch("Builder/setSize", val);

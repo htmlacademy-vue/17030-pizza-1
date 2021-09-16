@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Итого: {{ price }} ₽</p>
+    <p>Итого: {{ this.pizzaCalculator.getPrice(this.pizza) }} ₽</p>
 
     <AppButton
       :class="{ 'button--disabled': canNotOrder }"
@@ -14,53 +14,42 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
+import { PizzaCalculator } from "@/common/helpers.js";
 
 export default {
   name: "BuilderPriceCounter",
 
+  data() {
+    return {
+      pizzaCalculator: new PizzaCalculator(this.$store),
+    };
+  },
+
   computed: {
-    ...mapState("Builder", ["pizza"]),
-    ...mapGetters("Builder", {
-      fillingsList: "fillings",
-    }),
-    priceOfDough() {
-      return this.pizza.dough?.price ?? 0;
-    },
-    priceOfSauce() {
-      return this.pizza.sauce?.price ?? 0;
-    },
-    priceOfFillings() {
-      return this.fillingsList.reduce((acc, { price, type }) => {
-        return acc + price * this.pizza.fillingCounts[type];
-      }, 0);
-    },
-    size() {
-      return this.pizza.size?.multiplier ?? 0;
-    },
-    price() {
-      return (
-        (this.priceOfDough + this.priceOfSauce + this.priceOfFillings) *
-        this.size
-      );
-    },
+    ...mapState("Builder", ["pizza", "ingredients"]),
+    ...mapGetters("Builder", ["getFullPizzaComponentById"]),
+
     hasPizzaName() {
-      return !!this.pizza.name.length;
+      return !!this.pizza?.name.trim();
     },
+
     canNotOrder() {
       return !(
-        this.priceOfDough &&
-        this.priceOfSauce &&
-        this.priceOfFillings &&
-        this.size &&
+        this.pizzaCalculator.getPriceOfIngredients(this.pizza) &&
+        this.pizzaCalculator.getPrice(this.pizza) &&
         this.hasPizzaName
       );
     },
   },
 
   methods: {
-    ...mapActions("Builder", ["setPrice", "createNewPizza"]),
+    ...mapActions("Builder", ["createNewPizza"]),
+    ...mapActions("Cart", ["updatePizzaPrices"]),
+
     addToCart() {
-      this.setPrice(this.price);
+      this.updatePizzaPrices(
+        this.pizzaCalculator.getPriceOfIngredients(this.pizza)
+      );
       this.$store.dispatch("addPizzaToCart");
       this.createNewPizza();
     },

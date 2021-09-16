@@ -1,5 +1,5 @@
 <template>
-  <label class="radio ingridients__input">
+  <label class="radio ingredients__input">
     <input
       type="radio"
       name="sauce"

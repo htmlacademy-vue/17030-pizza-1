@@ -14,7 +14,7 @@
       <router-link to="/cart"> {{ totalPrice }} ₽</router-link>
     </div>
     <div class="header__user">
-      <template v-if="isLogged">
+      <template v-if="isAuthenticated">
         <router-link to="/profile">
           <picture>
             <source
@@ -27,16 +27,16 @@
             <img
               src="@/assets/img/users/user5.jpg"
               srcset="@/assets/img/users/user5@2x.jpg"
-              :alt="user.name"
+              :alt="getUserAttribute('name')"
               width="32"
               height="32"
             />
           </picture>
-          <span>{{ user.name }}</span>
+          <span>{{ getUserAttribute("name") }}</span>
         </router-link>
-        <a href="#" class="header__logout" @click.prevent="logOut"
-          ><span>Выйти</span></a
-        >
+        <a href="#" class="header__logout" @click.prevent="logout">
+          <span>Выйти</span>
+        </a>
       </template>
       <router-link v-else class="header__login" to="login">
         <span>Войти</span>
@@ -46,18 +46,24 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "AppLayoutHeader",
 
   computed: {
-    ...mapState("Auth", ["user", "isLogged"]),
+    ...mapState("Auth", ["isAuthenticated"]),
     ...mapGetters("Cart", ["totalPrice"]),
+    ...mapGetters("Auth", ["getUserAttribute"]),
   },
 
   methods: {
-    ...mapActions("Auth", ["logOut"]),
+    async logout() {
+      await this.$store.dispatch("Auth/logout");
+
+      this.$notifier.success("Вы успешно вышли");
+      await this.$router.push("login");
+    },
   },
 };
 </script>

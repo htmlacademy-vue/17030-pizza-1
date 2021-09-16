@@ -16,6 +16,7 @@ services:
     command: npm start
     volumes:
       - ./src/backend:/backend
+      - /backend/node_modules
     depends_on:
       - db
     ports:
@@ -27,7 +28,9 @@ services:
     environment:
       PORT: '8080'
       HOST: '0.0.0.0'
+      CHOKIDAR_USEPOLLING: "true"
     ports:
       - '8080:8080'
     volumes:
       - ./src/frontend:/frontend
+      - /frontend/node_modules

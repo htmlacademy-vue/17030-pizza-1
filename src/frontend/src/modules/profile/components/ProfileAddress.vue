@@ -1,10 +1,10 @@
 <template>
   <component
-    :is="componentName"
+    :is="component"
     :counter="counter"
     :address="address"
-    @edit="edit"
-    @save="save"
+    @editing="edit"
+    @saved="save"
   />
 </template>
 
@@ -40,10 +40,8 @@ export default {
   },
 
   computed: {
-    componentName() {
-      return this.isDisplayMode
-        ? "ProfileAddressDisplay"
-        : "ProfileAddressCreator";
+    component() {
+      return this.isDisplayMode ? ProfileAddressDisplay : ProfileAddressCreator;
     },
   },
 

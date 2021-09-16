@@ -7,7 +7,7 @@
         v-for="doughItem in doughList"
         :key="doughItem.name"
         v-model="pickedDough"
-        :value="doughItem.type"
+        :value="doughItem.id"
         class="dough__input"
         :class="`dough__input--${doughItem.type}`"
         name="dough"
@@ -21,7 +21,7 @@
 
 <script>
 import AppSelectorRadio from "@/common/components/AppSelectorRadio";
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
@@ -31,12 +31,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Builder", {
+    ...mapState("Builder", {
       doughList: "dough",
     }),
     pickedDough: {
       get() {
-        return this.$store.state.Builder.pizza.doughValue;
+        return this.$store.state.Builder.pizza?.doughId;
       },
       set(val) {
         this.$store.dispatch("Builder/setDough", val);

@@ -8,7 +8,7 @@
 
 <script>
 import AppLayout from "@/layouts/AppLayout.vue";
-import { mapActions } from "vuex";
+import { setAuth } from "@/common/helpers.js";
 
 export default {
   name: "App",
@@ -18,12 +18,13 @@ export default {
   },
 
   created() {
-    this.fetchPizzaOptions();
-    this.createNewPizza();
-  },
-
-  methods: {
-    ...mapActions("Builder", ["fetchPizzaOptions", "createNewPizza"]),
+    window.onerror = function (msg, url, line, col, error) {
+      console.log(error);
+    };
+    if (this.$jwt.getToken()) {
+      setAuth(this.$store);
+    }
+    this.$store.dispatch("init");
   },
 };
 </script>

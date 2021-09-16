@@ -40,6 +40,10 @@ export default {
     ...mapState("Auth", ["addresses"]),
   },
 
+  created() {
+    this.$store.dispatch("Auth/queryAddresses");
+  },
+
   methods: {
     ...mapActions("Auth", ["createNewAddress"]),
   },

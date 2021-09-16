@@ -1,7 +1,7 @@
 <template>
   <section class="footer">
     <div class="footer__more">
-      <AppButton tag="a" mod-border mod-arrow @click.prevent="$router.push('/')"
+      <AppButton tag="a" mod-border mod-arrow @click.prevent="wantAnother"
         >Хочу еще одну
       </AppButton>
     </div>
@@ -26,6 +26,13 @@ export default {
 
   computed: {
     ...mapGetters("Cart", ["totalPrice"]),
+  },
+
+  methods: {
+    wantAnother() {
+      this.$store.dispatch("Builder/createNewPizza");
+      this.$router.push("/");
+    },
   },
 };
 </script>

@@ -2,6 +2,7 @@
   <div class="app-layout-default">
     <AppLayoutHeader />
     <slot />
+    <AppNotifications />
   </div>
 </template>
 

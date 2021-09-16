@@ -1,43 +1,86 @@
+import resources from "@/common/enums/resources.js";
 import {
-  DOUGH_TYPES,
-  FILLING_TYPES,
-  SAUCE_TYPES,
-  SIZE_TYPES,
-  MISC_ITEMS,
-} from "./constants.js";
+  AuthApiService,
+  CrudApiService,
+  DoughApiService,
+  IngredientsApiService,
+  MiscApiService,
+  SaucesApiService,
+  SizesApiService,
+} from "@/services/api.service.js";
+import { SET_ENTITY } from "@/store/mutation-types.js";
+import pizzaComponents from "@/common/enums/pizzaComponents.js";
 
-export const normalizeDough = (dough) => {
+export class PizzaCalculator {
+  #store;
+
+  constructor(store) {
+    this.#store = store;
+  }
+
+  getPriceOfDough(pizza) {
+    const dough = this.#store.getters["Builder/getFullPizzaComponentById"](
+      pizzaComponents.DOUGH,
+      pizza?.doughId
+    );
+    return dough?.price ?? 0;
+  }
+
+  getPriceOfSauce(pizza) {
+    const sauce = this.#store.getters["Builder/getFullPizzaComponentById"](
+      pizzaComponents.SAUCES,
+      pizza?.sauceId
+    );
+    return sauce?.price ?? 0;
+  }
+
+  getPriceOfIngredients(pizza) {
+    return pizza?.ingredients?.reduce((sum, ingredientMini) => {
+      const ingredient = this.#store.getters[
+        "Builder/getFullPizzaComponentById"
+      ](pizzaComponents.INGREDIENTS, ingredientMini.ingredientId);
+      return sum + ingredient.price * ingredientMini.quantity;
+    }, 0);
+  }
+
+  getSize(pizza) {
+    const size = this.#store.getters["Builder/getFullPizzaComponentById"](
+      pizzaComponents.SIZES,
+      pizza?.sizeId
+    );
+    return size?.multiplier ?? 0;
+  }
+
+  getPrice(pizza) {
+    return (
+      (this.getPriceOfDough(pizza) +
+        this.getPriceOfSauce(pizza) +
+        this.getPriceOfIngredients(pizza)) *
+      this.getSize(pizza)
+    );
+  }
+}
+
+export const createResources = (notifier) => {
   return {
-    ...dough,
-    type: DOUGH_TYPES.find(({ label }) => dough.name === label)?.value,
-    nameAlt: DOUGH_TYPES.find(({ label }) => dough.name === label)?.nameAlt,
+    [resources.AUTH]: new AuthApiService(notifier),
+    [resources.USER]: new CrudApiService(resources.USER, notifier),
+    [resources.ADDRESSES]: new CrudApiService(resources.ADDRESSES, notifier),
+    [resources.DOUGH]: new DoughApiService(notifier),
+    [resources.INGREDIENTS]: new IngredientsApiService(notifier),
+    [resources.MISC]: new MiscApiService(notifier),
+    [resources.SAUCES]: new SaucesApiService(notifier),
+    [resources.SIZES]: new SizesApiService(notifier),
+    [resources.ORDERS]: new CrudApiService(resources.ORDERS, notifier),
   };
 };
 
-export const normalizeSauce = (sauce) => {
-  return {
-    ...sauce,
-    type: SAUCE_TYPES.find(({ label }) => sauce.name === label)?.value,
-  };
-};
-
-export const normalizeFilling = (filling) => {
-  return {
-    ...filling,
-    type: FILLING_TYPES.find(({ label }) => filling.name === label)?.value,
-  };
-};
-
-export const normalizeSize = (size) => {
-  return {
-    ...size,
-    type: SIZE_TYPES.find(({ label }) => size.name === label)?.value,
-  };
-};
-
-export const normalizeMisc = (misc) => {
-  return {
-    ...misc,
-    type: MISC_ITEMS.find(({ label }) => misc.name === label)?.value,
-  };
+export const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+  store.commit(SET_ENTITY, {
+    module: "Auth",
+    entity: "isAuthenticated",
+    value: true,
+  });
 };

@@ -1,26 +1,12 @@
 import {
-  normalizeDough,
-  normalizeFilling,
-  normalizeSauce,
-  normalizeSize,
-} from "@/common/helpers.js";
-import {
-  DROP_FILLING,
+  DROP_INGREDIENT,
   SET_DOUGH,
   SET_ENTITY,
-  SET_FILLING,
+  SET_INGREDIENT,
   SET_NAME,
-  SET_PRICE,
   SET_SAUCE,
   SET_SIZE,
 } from "@/store/mutation-types.js";
-import jsonPizza from "@/static/pizza.json";
-import {
-  DOUGH_TYPES,
-  FILLING_TYPES,
-  SAUCE_TYPES,
-  SIZE_TYPES,
-} from "@/common/constants.js";
 import { uniqueId } from "lodash";
 
 export default {
@@ -28,150 +14,170 @@ export default {
 
   state: {
     pizza: null,
-    pizzaOptions: null,
+    dough: null,
+    ingredients: null,
+    sauces: null,
+    sizes: null,
   },
 
   getters: {
-    sauces({ pizzaOptions }) {
-      return pizzaOptions?.sauces.map((sauce) => normalizeSauce(sauce));
-    },
-    sizes({ pizzaOptions }) {
-      return pizzaOptions?.sizes.map((size) => normalizeSize(size));
-    },
-    dough({ pizzaOptions }) {
-      return pizzaOptions?.dough.map((item) => normalizeDough(item));
-    },
-    fillings({ pizzaOptions }) {
-      return pizzaOptions?.ingredients.map((filling) =>
-        normalizeFilling(filling)
+    getFullPizzaComponentById: (state) => (componentName, id) => {
+      return state[componentName]?.find(
+        (component) => component.id?.toString() === id?.toString()
       );
     },
   },
 
   mutations: {
-    [SET_DOUGH](state, { doughType, dough }) {
-      state.pizza.doughValue = doughType;
-      state.pizza.dough = dough;
+    [SET_DOUGH](state, doughId) {
+      state.pizza.doughId = doughId;
     },
-    [SET_SIZE](state, { sizeType, size }) {
-      state.pizza.sizeValue = sizeType;
-      state.pizza.size = size;
+
+    [SET_SIZE](state, sizeId) {
+      state.pizza.sizeId = sizeId;
     },
-    [SET_SAUCE](state, { sauceType, sauce }) {
-      state.pizza.sauceValue = sauceType;
-      state.pizza.sauce = sauce;
+
+    [SET_SAUCE](state, sauceId) {
+      state.pizza.sauceId = sauceId;
     },
-    [SET_FILLING](state, { fillingType, count }) {
-      state.pizza.fillingCounts[fillingType] = count;
+
+    [SET_INGREDIENT](state, { ingredientId, quantity }) {
+      const newIngredient = {
+        ingredientId,
+        quantity,
+      };
+
+      const index = state.pizza.ingredients.findIndex(
+        (ingredient) =>
+          ingredient.ingredientId.toString() === ingredientId.toString()
+      );
+
+      if (~index) {
+        state.pizza.ingredients.splice(index, 1, newIngredient);
+      } else {
+        state.pizza.ingredients = [...state.pizza.ingredients, newIngredient];
+      }
     },
-    [DROP_FILLING](state, fillingType) {
-      state.pizza.fillingCounts[fillingType] += 1;
+
+    [DROP_INGREDIENT](state, ingredientId) {
+      const index = state.pizza.ingredients.findIndex(
+        (ingredient) =>
+          ingredient.ingredientId.toString() === ingredientId.toString()
+      );
+
+      if (~index) {
+        state.pizza.ingredients[index].quantity += 1;
+      } else {
+        const newIngredient = {
+          ingredientId,
+          quantity: 1,
+        };
+        state.pizza.ingredients = [...state.pizza.ingredients, newIngredient];
+      }
     },
+
     [SET_NAME](state, name) {
       state.pizza.name = name;
-    },
-    [SET_PRICE](state, price) {
-      state.pizza.price = price;
     },
   },
 
   actions: {
-    createNewPizza({ state, rootState, getters, commit }, pizzaId) {
+    createNewPizza({ state, rootState, commit }, pizzaId = null) {
       const createNewPizza = () => {
         return {
           id: uniqueId(),
           name: "",
-          dough: getters.dough.find(
-            ({ type }) => type === DOUGH_TYPES[0].value
-          ),
-          doughValue: DOUGH_TYPES[0].value,
-          size: getters.sizes.find(({ type }) => type === SIZE_TYPES[0].value),
-          sizeValue: SIZE_TYPES[0].value,
-          sauce: getters.sauces.find(
-            ({ type }) => type === SAUCE_TYPES[0].value
-          ),
-          sauceValue: SAUCE_TYPES[0].value,
-          fillingCounts: state?.pizzaOptions?.ingredients.reduce(
-            (obj, { name }) => {
-              const type = FILLING_TYPES.find(
-                ({ label }) => name === label
-              )?.value;
-              obj[type] = 0;
-
-              return obj;
-            },
-            {}
-          ),
-          price: 0,
-          count: 1,
+          sauceId: state.sauces[0].id,
+          doughId: state.dough[0].id,
+          sizeId: state.sizes[0].id,
+          quantity: 1,
+          ingredients: [],
         };
       };
 
-      let newPizza = null;
+      let newPizza = pizzaId
+        ? rootState.Cart.cartOrder.pizzas?.find(
+            ({ id }) => id.toString() === pizzaId.toString()
+          )
+        : createNewPizza();
 
-      if (pizzaId) {
-        newPizza = rootState.Cart.pizzas.find(({ id }) => +id === +pizzaId);
-      } else {
-        newPizza = createNewPizza();
-      }
+      commit(
+        SET_ENTITY,
+        { module: "Builder", entity: "pizza", value: newPizza },
+        { root: true }
+      );
+    },
 
+    async fetchDough({ commit }) {
+      const dough = await this.$api.dough.query();
+      commit(
+        SET_ENTITY,
+        { module: "Builder", entity: "dough", value: dough },
+        { root: true }
+      );
+    },
+
+    async fetchSauces({ commit }) {
+      const sauces = await this.$api.sauces.query();
       commit(
         SET_ENTITY,
         {
           module: "Builder",
-          entity: "pizza",
-          value: newPizza,
+          entity: "sauces",
+          value: sauces,
         },
         { root: true }
       );
     },
 
-    fetchPizzaOptions({ commit }) {
-      const pizzaOptions = jsonPizza;
-
+    async fetchIngredients({ commit }) {
+      const ingredients = await this.$api.ingredients.query();
       commit(
         SET_ENTITY,
         {
           module: "Builder",
-          entity: "pizzaOptions",
-          value: pizzaOptions,
+          entity: "ingredients",
+          value: ingredients,
         },
         { root: true }
       );
     },
 
-    setDough({ getters, commit }, doughType) {
-      const dough = getters.dough.find(({ type }) => type === doughType);
-
-      commit(SET_DOUGH, { doughType, dough });
+    async fetchSizes({ commit }) {
+      const sizes = await this.$api.sizes.query();
+      commit(
+        SET_ENTITY,
+        {
+          module: "Builder",
+          entity: "sizes",
+          value: sizes,
+        },
+        { root: true }
+      );
     },
 
-    setSize({ getters, commit }, sizeType) {
-      const size = getters.sizes.find(({ type }) => type === sizeType);
-
-      commit(SET_SIZE, { sizeType, size });
+    setDough({ commit }, doughId) {
+      commit(SET_DOUGH, doughId);
     },
 
-    setSauce({ getters, commit }, sauceType) {
-      const sauce = getters.sauces.find(({ type }) => type === sauceType);
-
-      commit(SET_SAUCE, { sauceType, sauce });
+    setSize({ commit }, sizeId) {
+      commit(SET_SIZE, sizeId);
     },
 
-    setFilling({ commit }, { fillingType, count }) {
-      commit(SET_FILLING, { fillingType, count });
+    setSauce({ commit }, sauceId) {
+      commit(SET_SAUCE, sauceId);
     },
 
-    dropFilling({ commit }, filling) {
-      commit(DROP_FILLING, filling.type);
+    setIngredient({ commit }, { ingredientId, quantity }) {
+      commit(SET_INGREDIENT, { ingredientId, quantity });
+    },
+
+    dropIngredient({ commit }, ingredient) {
+      commit(DROP_INGREDIENT, ingredient.id);
     },
 
     setName({ commit }, name) {
       commit(SET_NAME, name);
-    },
-
-    setPrice({ commit }, price) {
-      commit(SET_PRICE, price);
     },
   },
 };

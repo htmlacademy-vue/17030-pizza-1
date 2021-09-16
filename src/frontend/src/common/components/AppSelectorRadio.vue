@@ -23,11 +23,12 @@ export default {
 
   props: {
     checked: {
-      type: String,
+      type: [String, Number],
       required: true,
+      default: "",
     },
     value: {
-      type: String,
+      type: [String, Number],
       required: true,
     },
     name: {
@@ -38,7 +39,7 @@ export default {
 
   computed: {
     isChecked() {
-      return this.checked === this.value;
+      return this.checked.toString() === this.value.toString();
     },
   },
 

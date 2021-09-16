@@ -1,0 +1,64 @@
+import { emailRegex, phoneRegex } from "@/common/constants.js";
+
+const rules = {
+  isNotEmpty: {
+    rule: (value) => !!value?.trim(),
+    message: "Поле не заполнено",
+  },
+  required: {
+    rule: (value) => !!value?.trim(),
+    message: "Поле обязательно для заполнения",
+  },
+  email: {
+    rule: (value) => (value ? emailRegex.test(value) : true),
+    message: "Электронная почта имеет неверный формат",
+  },
+  phone: {
+    rule: (value) => (value ? phoneRegex.test(value) : true),
+    message: "Телефон имеет неверный формат",
+  },
+};
+
+const validator = (value, appliedRules) => {
+  let error = "";
+
+  appliedRules.forEach((appliedRule) => {
+    if (!rules[appliedRule]) {
+      return;
+    }
+    const { rule, message } = rules[appliedRule];
+    if (!rule(value)) {
+      error = message;
+    }
+  });
+
+  return error;
+};
+
+export default {
+  methods: {
+    $validateFields(fields, validations) {
+      let isValid = true;
+
+      Object.keys(validations).forEach((key) => {
+        validations[key].error = validator(fields[key], validations[key].rules);
+
+        if (validations[key].error) {
+          isValid = false;
+        }
+      });
+
+      return isValid;
+    },
+
+    $clearValidationErrors() {
+      if (!this.validations) {
+        return;
+      }
+
+      Object.keys(this.validations).forEach((key) => {
+        this.$set(this.validations[key], "error", "");
+      });
+    },
+  },
+};

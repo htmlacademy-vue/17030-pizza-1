@@ -3,13 +3,13 @@
     <div class="address-form__header">
       <b>Адрес №{{ counter }}. {{ address.name }}</b>
       <div class="address-form__edit">
-        <AppIcon @click="$emit('edit')">Изменить адрес</AppIcon>
+        <AppIcon @click="$emit('editing')">Изменить адрес</AppIcon>
       </div>
     </div>
 
     <p>
-      {{ address.street }}, д. {{ address.house }}, оф.
-      {{ address.apartment }}
+      {{ address.street }}, д. {{ address.building }}, оф.
+      {{ address.flat }}
     </p>
     <small>{{ address.comment }}</small>
   </div>

@@ -1,26 +1,21 @@
 <template>
   <li class="additional-list__item">
     <p class="additional-list__description">
-      <img
-        :src="additionalItem.image"
-        :alt="additionalItem.name"
-        width="39"
-        height="60"
-      />
-      <span>{{ additionalItem.name }}</span>
+      <img :src="miscItem.image" :alt="miscItem.name" width="39" height="60" />
+      <span>{{ miscItem.name }}</span>
     </p>
 
     <div class="additional-list__wrapper">
       <AppCounter
-        :value="additionalCount"
+        :value="miscQuantity"
         :min="0"
         class="additional-list__counter"
-        @input="changeAdditionalCount(additionalItem.type, $event)"
+        @input="changeMiscCount(miscItem.id, $event)"
         plus-color-modifier-class="counter__button--orange"
       />
 
       <div class="additional-list__price">
-        <b>{{ additionalItem.price }} ₽</b>
+        <b>{{ miscItem.price }} ₽</b>
       </div>
     </div>
   </li>
@@ -31,27 +26,27 @@ import AppCounter from "@/common/components/AppCounter.vue";
 import { mapActions } from "vuex";
 
 export default {
-  name: "CartAdditionalItem",
+  name: "CartMiscItem",
 
   components: {
     AppCounter,
   },
 
   props: {
-    additionalItem: {
+    miscItem: {
       type: Object,
       required: true,
     },
-    additionalCount: {
+    miscQuantity: {
       type: Number,
       required: true,
     },
   },
 
   methods: {
-    ...mapActions("Cart", ["updateAdditionalCount"]),
-    changeAdditionalCount(additionalType, count) {
-      this.updateAdditionalCount({ additionalType, count });
+    ...mapActions("Cart", ["updateMiscCount"]),
+    changeMiscCount(miscId, quantity) {
+      this.updateMiscCount({ miscId, quantity });
     },
   },
 };
