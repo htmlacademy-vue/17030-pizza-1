@@ -106,12 +106,12 @@
 
     <CartFooter v-if="hasProducts" />
 
-    <AppPopup v-if="isPopupVisible" @close-popup="closePopup">
-      <template v-slot:title>Спасибо за заказ</template>
-      <template v-slot:default>
+    <AppPopup :visible="isPopupVisible" @close="closePopup">
+      <template #title>Спасибо за заказ</template>
+      <template #default>
         Мы начали готовить Ваш заказ, скоро привезём его вам ;)
       </template>
-      <template v-slot:action>Отлично, я жду!</template>
+      <template #action>Отлично, я жду!</template>
     </AppPopup>
   </form>
 </template>
