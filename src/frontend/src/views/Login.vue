@@ -1,44 +1,46 @@
 <template>
-  <div class="sign-form">
-    <a href="#" class="close close--white" @click.prevent="$router.push('/')">
-      <span class="visually-hidden">Закрыть форму авторизации</span>
-    </a>
-    <div class="sign-form__title">
-      <h1 class="title title--small">Авторизуйтесь на сайте</h1>
-    </div>
-    <form
-      action="test.html"
-      method="post"
-      @submit.prevent="sendForm"
-      novalidate
-    >
-      <div class="sign-form__input">
-        <AppInput
-          ref="email"
-          v-model="email"
-          type="email"
-          name="email"
-          placeholder="example@mail.ru"
-          :error-text="validations.email.error"
-        >
-          E-mail
-        </AppInput>
+  <transition name="popup" appear>
+    <div class="sign-form">
+      <a href="#" class="close close--white" @click.prevent="$router.push('/')">
+        <span class="visually-hidden">Закрыть форму авторизации</span>
+      </a>
+      <div class="sign-form__title">
+        <h1 class="title title--small">Авторизуйтесь на сайте</h1>
       </div>
+      <form
+        action="test.html"
+        method="post"
+        @submit.prevent="sendForm"
+        novalidate
+      >
+        <div class="sign-form__input">
+          <AppInput
+            ref="email"
+            v-model="email"
+            type="email"
+            name="email"
+            placeholder="example@mail.ru"
+            :error-text="validations.email.error"
+          >
+            E-mail
+          </AppInput>
+        </div>
 
-      <div class="sign-form__input">
-        <AppInput
-          v-model="password"
-          type="password"
-          name="pass"
-          placeholder="***********"
-          :error-text="validations.password.error"
-        >
-          Пароль
-        </AppInput>
-      </div>
-      <AppButton type="submit">Авторизоваться</AppButton>
-    </form>
-  </div>
+        <div class="sign-form__input">
+          <AppInput
+            v-model="password"
+            type="password"
+            name="pass"
+            placeholder="***********"
+            :error-text="validations.password.error"
+          >
+            Пароль
+          </AppInput>
+        </div>
+        <AppButton type="submit">Авторизоваться</AppButton>
+      </form>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -104,5 +106,20 @@ export default {
     margin: 0 auto;
     padding: 16px 14px;
   }
+}
+
+.popup-enter-active,
+.popup-leave-active {
+  transition: 0.5s;
+}
+
+.popup-enter {
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+}
+
+.popup-leave-to {
+  transform: translate(-50%, -50%) scale(1.2);
+  opacity: 0;
 }
 </style>

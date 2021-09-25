@@ -12,6 +12,7 @@ export default [
         component: () => import("@/views/Login.vue"),
         meta: {
           middlewares: [isLoggedIn],
+          notAnimate: true,
         },
       },
     ],

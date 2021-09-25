@@ -4,6 +4,7 @@
       <transition
         appear
         enter-active-class="animate__animated animate__fast animate__slideInUp"
+        @appear="appear"
       >
         <router-view />
       </transition>
@@ -30,6 +31,14 @@ export default {
       setAuth(this.$store);
     }
     this.$store.dispatch("init");
+  },
+
+  methods: {
+    appear(el, done) {
+      if (this.$route.meta.notAnimate) {
+        done();
+      }
+    },
   },
 };
 </script>
