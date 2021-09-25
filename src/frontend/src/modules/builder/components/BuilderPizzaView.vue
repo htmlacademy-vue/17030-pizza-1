@@ -2,7 +2,7 @@
   <AppDrop @drop="dropIngredient">
     <div v-if="pizza" class="pizza" :class="classFoundation">
       <div class="pizza__wrapper">
-        <transition-group name="ingredients">
+        <transition-group name="ingredients" tag="div">
           <template v-for="ingredientMini in this.pizza.ingredients">
             <div
               v-for="quantity in ingredientMini.quantity"
