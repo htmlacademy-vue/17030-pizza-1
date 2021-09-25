@@ -1,28 +1,55 @@
 <template>
-  <div class="popup">
-    <a href="#" class="close" @click.prevent="$emit('close-popup')">
-      <span class="visually-hidden">Закрыть попап</span>
-    </a>
-    <div class="popup__title">
-      <h2 class="title">
-        <slot name="title" />
-      </h2>
-    </div>
-    <p>
-      <slot name="default" />
-    </p>
+  <transition name="popup" @after-leave="afterLeave">
+    <div v-if="localVisible" class="popup">
+      <a href="#" class="close" @click.prevent="localVisible = false">
+        <span class="visually-hidden">Закрыть попап</span>
+      </a>
+      <div class="popup__title">
+        <h2 class="title">
+          <slot name="title" />
+        </h2>
+      </div>
+      <p>
+        <slot name="default" />
+      </p>
 
-    <div class="popup__button">
-      <AppButton tag="a" @click.prevent="$emit('close-popup')">
-        <slot name="action">Хорошо</slot>
-      </AppButton>
+      <div class="popup__button">
+        <AppButton tag="a" @click.prevent="localVisible = false">
+          <slot name="action">Хорошо</slot>
+        </AppButton>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
 export default {
   name: "AppPopup",
+
+  props: {
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      localVisible: this.visible,
+    };
+  },
+
+  watch: {
+    visible(visible) {
+      this.localVisible = visible;
+    },
+  },
+
+  methods: {
+    afterLeave() {
+      this.$emit("close");
+    },
+  },
 };
 </script>
 
@@ -89,5 +116,20 @@ export default {
   ::v-deep a {
     padding: 16px 32px;
   }
+}
+
+.popup-enter-active,
+.popup-leave-active {
+  transition: 0.5s;
+}
+
+.popup-enter {
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+}
+
+.popup-leave-to {
+  transform: translate(-50%, -50%) scale(1.2);
+  opacity: 0;
 }
 </style>

@@ -2,14 +2,16 @@
   <AppDrop @drop="dropIngredient">
     <div v-if="pizza" class="pizza" :class="classFoundation">
       <div class="pizza__wrapper">
-        <template v-for="ingredientMini in this.pizza.ingredients">
-          <div
-            v-for="quantity in ingredientMini.quantity"
-            :key="`${ingredientMini.ingredientId}-${quantity}`"
-            class="pizza__filling"
-            :class="classIngredient(ingredientMini.ingredientId, quantity)"
-          ></div>
-        </template>
+        <transition-group name="ingredients" tag="div">
+          <template v-for="ingredientMini in this.pizza.ingredients">
+            <div
+              v-for="quantity in ingredientMini.quantity"
+              :key="`${ingredientMini.ingredientId}-${quantity}`"
+              class="pizza__filling"
+              :class="classIngredient(ingredientMini.ingredientId, quantity)"
+            ></div>
+          </template>
+        </transition-group>
       </div>
     </div>
   </AppDrop>
@@ -61,4 +63,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ingredients-enter-active,
+.ingredients-leave-active {
+  transition: 0.5s;
+}
+
+.ingredients-enter,
+.ingredients-leave-to {
+  transform: scale(1.1);
+  opacity: 0;
+}
+</style>

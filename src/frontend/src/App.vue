@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <AppLayout>
-      <router-view />
+      <transition
+        appear
+        enter-active-class="animate__animated animate__fast animate__slideInUp"
+        @appear="appear"
+      >
+        <router-view />
+      </transition>
     </AppLayout>
   </div>
 </template>
@@ -25,6 +31,14 @@ export default {
       setAuth(this.$store);
     }
     this.$store.dispatch("init");
+  },
+
+  methods: {
+    appear(el, done) {
+      if (this.$route.meta.notAnimate) {
+        done();
+      }
+    },
   },
 };
 </script>
