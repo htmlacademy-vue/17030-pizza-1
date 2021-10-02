@@ -3,6 +3,7 @@
     <span
       class="input__caption"
       :class="{ 'visually-hidden': !isVisibleCaption }"
+      data-test="input-caption"
     >
       <slot />
     </span>
@@ -16,7 +17,9 @@
       :required="required"
       @input="$emit('input', $event.target.value)"
     />
-    <span v-if="showError" class="input__text">{{ errorText }}</span>
+    <span v-if="showError" class="input__text" data-test="error-text">
+      {{ errorText }}
+    </span>
   </label>
 </template>
 
