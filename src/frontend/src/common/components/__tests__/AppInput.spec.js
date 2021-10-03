@@ -14,16 +14,11 @@ describe("AppInput", () => {
     isVisibleCaption: false,
     modBigLabel: true,
   };
-  const listeners = { input: null };
 
   let wrapper;
   const createComponent = (options) => {
     wrapper = shallowMount(AppInput, options);
   };
-
-  beforeEach(() => {
-    listeners.input = jest.fn();
-  });
 
   afterEach(() => {
     wrapper.destroy();
@@ -43,7 +38,7 @@ describe("AppInput", () => {
   });
 
   it("emit input", async () => {
-    createComponent({ propsData, listeners });
+    createComponent({ propsData });
     const payload = "emit payload";
     wrapper.vm.$emit("input");
     wrapper.vm.$emit("input", payload);
