@@ -2,13 +2,15 @@ import { shallowMount } from "@vue/test-utils";
 import AppInput from "@/common/components/AppInput.vue";
 
 describe("AppInput", () => {
+  const bigLabelClass = "input--big-label";
+  const visuallyHiddenClass = "visually-hidden";
   const slots = { default: "Input caption" };
   const propsData = {
     value: "test message",
     name: "attr-name",
     type: "number",
-    placeholder: "text placeholder",
-    errorText: "error test",
+    placeholder: "Test",
+    errorText: "Error",
     readonly: true,
     required: true,
     isVisibleCaption: false,
@@ -31,64 +33,78 @@ describe("AppInput", () => {
     );
   });
 
-  it("sets caption `visually-hidden` class", () => {
+  it("caption has `visually-hidden` class", () => {
     createComponent({ propsData, slots });
     const inputCaption = wrapper.find(`[data-test="input-caption"]`);
-    expect(inputCaption.classes()).toContain("visually-hidden");
+    expect(inputCaption.classes()).toContain(visuallyHiddenClass);
   });
 
-  it("emit input", async () => {
+  it("It emits an input event when typing", async () => {
     createComponent({ propsData });
-    const payload = "emit payload";
-    wrapper.vm.$emit("input");
-    wrapper.vm.$emit("input", payload);
-    await wrapper.vm.$nextTick();
+    let input = wrapper.find("input");
+    await input.trigger("input");
     expect(wrapper.emitted("input")).toBeTruthy();
-    expect(wrapper.emitted("input").length).toBe(2);
-    expect(wrapper.emitted("input")[1]).toEqual([payload]);
   });
 
-  it("sets root element `input--big-label` class", () => {
+  it("emits the current input value when typing", async () => {
     createComponent({ propsData });
-    expect(wrapper.classes()).toContain("input--big-label");
+    const input = wrapper.find("input");
+    input.element.value = "test";
+    await input.trigger("input");
+    expect(wrapper.emitted("input")[0][0]).toEqual("test");
   });
 
-  it("displays value", () => {
+  it("root element has `input--big-label` class", () => {
     createComponent({ propsData });
-    expect(wrapper.vm.value).toEqual(propsData.value);
+    expect(wrapper.classes()).toContain(bigLabelClass);
   });
 
-  it("displays correct value of the name attr", () => {
+  it("It sets the initial model value", async () => {
     createComponent({ propsData });
-    expect(wrapper.vm.name).toEqual(propsData.name);
+    expect(wrapper.find("input").element.value).toBe(propsData.value);
   });
 
-  it("displays correct value of the type attr", () => {
+  it("input name is prop name", () => {
     createComponent({ propsData });
-    expect(wrapper.vm.type).toEqual(propsData.type);
+    const input = wrapper.find("input");
+    expect(input.attributes("name")).toBe(propsData.name);
   });
 
-  it("displays correct value of the placeholder attr", () => {
+  it("input type is prop type", () => {
     createComponent({ propsData });
-    expect(wrapper.vm.placeholder).toEqual(propsData.placeholder);
+    const input = wrapper.find("input");
+    expect(input.attributes("type")).toBe(propsData.type);
   });
 
-  it("sets readonly attr", () => {
+  it("input placeholder is prop placeholder", () => {
     createComponent({ propsData });
-    expect(wrapper.vm.readonly).toEqual(propsData.readonly);
-    expect(wrapper.vm.readonly).toBeTruthy();
+    const input = wrapper.find("input");
+    expect(input.attributes("placeholder")).toBe(propsData.placeholder);
   });
 
-  it("sets required attr", () => {
+  it("input readonly is prop readonly", () => {
     createComponent({ propsData });
-    expect(wrapper.vm.required).toEqual(propsData.required);
-    expect(wrapper.vm.readonly).toBeTruthy();
+    const input = wrapper.find("input");
+    expect(input.attributes("readonly")).toBeTruthy();
   });
 
-  it("displays error", () => {
+  it("input required is prop required", () => {
+    createComponent({ propsData });
+    const input = wrapper.find("input");
+    expect(input.attributes("required")).toBeTruthy();
+  });
+
+  it("has error message", () => {
     createComponent({ propsData });
     const error = wrapper.find(`[data-test="error-text"]`);
     expect(error.exists()).toBeTruthy();
     expect(error.text()).toBe(propsData.errorText);
+  });
+
+  it("does not have error message", () => {
+    propsData.errorText = "";
+    createComponent({ propsData });
+    const error = wrapper.find(`[data-test="error-text"]`);
+    expect(error.exists()).toBeFalsy();
   });
 });
