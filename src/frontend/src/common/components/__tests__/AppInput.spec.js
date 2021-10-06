@@ -6,12 +6,12 @@ describe("AppInput", () => {
   const visuallyHiddenClass = "visually-hidden";
   const slots = { default: "Input caption" };
   const propsData = {
-    value: "test message",
+    value: "testValue",
     name: "attr-name",
-    type: "number",
+    type: "text",
     placeholder: "Test",
     errorText: "Error",
-    readonly: true,
+    readonly: false,
     required: true,
     isVisibleCaption: false,
     modBigLabel: true,
@@ -59,7 +59,7 @@ describe("AppInput", () => {
     expect(wrapper.classes()).toContain(bigLabelClass);
   });
 
-  it("It sets the initial model value", async () => {
+  it("It sets the initial model value", () => {
     createComponent({ propsData });
     expect(wrapper.find("input").element.value).toBe(propsData.value);
   });
@@ -71,6 +71,7 @@ describe("AppInput", () => {
   });
 
   it("input type is prop type", () => {
+    propsData.type = "number";
     createComponent({ propsData });
     const input = wrapper.find("input");
     expect(input.attributes("type")).toBe(propsData.type);
@@ -83,6 +84,7 @@ describe("AppInput", () => {
   });
 
   it("input readonly is prop readonly", () => {
+    propsData.readonly = true;
     createComponent({ propsData });
     const input = wrapper.find("input");
     expect(input.attributes("readonly")).toBeTruthy();
