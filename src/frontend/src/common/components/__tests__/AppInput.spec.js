@@ -41,7 +41,7 @@ describe("AppInput", () => {
 
   it("It emits an input event when typing", async () => {
     createComponent({ propsData });
-    let input = wrapper.find("input");
+    const input = wrapper.find("input");
     await input.trigger("input");
     expect(wrapper.emitted("input")).toBeTruthy();
   });
