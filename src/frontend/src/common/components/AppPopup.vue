@@ -1,7 +1,12 @@
 <template>
   <transition name="popup" @after-leave="afterLeave">
     <div v-if="localVisible" class="popup">
-      <a href="#" class="close" @click.prevent="localVisible = false">
+      <a
+        href="#"
+        class="close"
+        @click.prevent="localVisible = false"
+        data-test="close-btn"
+      >
         <span class="visually-hidden">Закрыть попап</span>
       </a>
       <div class="popup__title">
