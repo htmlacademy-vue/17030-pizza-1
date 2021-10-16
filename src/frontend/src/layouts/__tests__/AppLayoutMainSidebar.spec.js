@@ -15,7 +15,6 @@ describe("AppLayoutMainSidebar", () => {
 
   it("is rendered", () => {
     createComponent({ stubs });
-    console.log(wrapper.html());
     expect(wrapper.exists()).toBeTruthy();
   });
 });
