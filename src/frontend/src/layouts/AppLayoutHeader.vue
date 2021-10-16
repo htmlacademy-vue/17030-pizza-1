@@ -34,11 +34,21 @@
           </picture>
           <span>{{ getUserAttribute("name") }}</span>
         </router-link>
-        <a href="#" class="header__logout" @click.prevent="logout">
+        <a
+          href="#"
+          class="header__logout"
+          @click.prevent="logout"
+          data-test="logout-btn"
+        >
           <span>Выйти</span>
         </a>
       </template>
-      <router-link v-else class="header__login" to="login">
+      <router-link
+        v-else
+        class="header__login"
+        to="login"
+        data-test="login-btn"
+      >
         <span>Войти</span>
       </router-link>
     </div>
