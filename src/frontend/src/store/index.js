@@ -21,7 +21,7 @@ const state = {
 
 const getters = {};
 
-const mutations = {
+export const mutations = {
   [ADD_NOTIFICATION](state, notification) {
     state.notifications = [...state.notifications, notification];
   },
