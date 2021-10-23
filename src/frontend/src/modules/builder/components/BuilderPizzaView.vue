@@ -1,6 +1,6 @@
 <template>
-  <AppDrop @drop="dropIngredient">
-    <div v-if="pizza" class="pizza" :class="classFoundation">
+  <AppDrop @drop="dropIngredient" data-test="app-drop">
+    <div v-if="pizza" class="pizza" :class="classFoundation" data-test="pizza">
       <div class="pizza__wrapper">
         <transition-group name="ingredients" tag="div">
           <template v-for="ingredientMini in this.pizza.ingredients">
@@ -9,6 +9,7 @@
               :key="`${ingredientMini.ingredientId}-${quantity}`"
               class="pizza__filling"
               :class="classIngredient(ingredientMini.ingredientId, quantity)"
+              data-test="pizza-ingredient"
             ></div>
           </template>
         </transition-group>
