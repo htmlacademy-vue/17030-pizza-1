@@ -1,95 +1,13 @@
 import { mount } from "@vue/test-utils";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
-import { generateMockStore } from "@/store/mocks";
-import { SET_ENTITY } from "@/store/mutation-types.js";
-
-const mockIngredients = [
-  {
-    id: 1,
-    name: "Грибы",
-    image: "/public/img/filling/mushrooms.svg",
-    price: 33,
-    type: "mushrooms",
-  },
-  {
-    id: 2,
-    name: "Чеддер",
-    image: "/public/img/filling/cheddar.svg",
-    price: 42,
-    type: "cheddar",
-  },
-  {
-    id: 3,
-    name: "Томаты",
-    image: "/public/img/filling/tomatoes.svg",
-    price: 35,
-    type: "tomatoes",
-  },
-  {
-    id: 4,
-    name: "Лосось",
-    image: "/public/img/filling/salmon.svg",
-    price: 50,
-    type: "salmon",
-  },
-];
-const mockSauces = [
-  { id: 1, name: "Томатный", price: 50, type: "tomato" },
-  {
-    id: 2,
-    name: "Сливочный",
-    price: 50,
-    type: "creamy",
-  },
-];
-const mockPizza = {
-  id: "1",
-  name: "",
-  sauceId: 1,
-  doughId: 1,
-  sizeId: 1,
-  quantity: 1,
-  ingredients: [],
-};
-const mocks = {
-  $store: {},
-};
-
-const createIngredients = (store) => {
-  store.commit(
-    SET_ENTITY,
-    {
-      module: "Builder",
-      entity: "ingredients",
-      value: mockIngredients,
-    },
-    { root: true }
-  );
-};
-
-const createSauces = (store) => {
-  store.commit(
-    SET_ENTITY,
-    {
-      module: "Builder",
-      entity: "sauces",
-      value: mockSauces,
-    },
-    { root: true }
-  );
-};
-
-const createPizza = (store) => {
-  store.commit(
-    SET_ENTITY,
-    {
-      module: "Builder",
-      entity: "pizza",
-      value: mockPizza,
-    },
-    { root: true }
-  );
-};
+import {
+  createIngredients,
+  createPizza,
+  createSauces,
+  generateMockStore,
+  mockIngredients,
+  mockSauces,
+} from "@/store/mocks";
 
 describe("BuilderIngredientsSelector", () => {
   let wrapper;
@@ -142,7 +60,7 @@ describe("BuilderIngredientsSelector", () => {
   it("calls set sauce action", async () => {
     createPizza(store);
     createSauces(store);
-    createComponent({ mocks, store });
+    createComponent({ store });
     const secondSauceRadio = wrapper.find(`[data-test="sauce-radio-input"]`);
     await secondSauceRadio.vm.$emit("change", mockSauces[0].id);
     expect(actions.Builder.setSauce).toHaveBeenCalled();
@@ -155,7 +73,7 @@ describe("BuilderIngredientsSelector", () => {
   it("calls set ingredient action", async () => {
     createPizza(store);
     createIngredients(store);
-    createComponent({ mocks, store });
+    createComponent({ store });
     const ingredientCounter = wrapper.find(`[data-test="ingredient-counter"]`);
     await ingredientCounter.vm.$emit("input", mockIngredients[0].id, 1);
     expect(actions.Builder.setIngredient).toHaveBeenCalled();
