@@ -89,9 +89,13 @@ describe("BuilderDoughSelector", () => {
 });
 
 /*
-...mapState("Builder", {
-  doughList: "dough",
-}),
-return this.$store.state.Builder.pizza?.doughId;
-this.$store.dispatch("Builder/setDough", val);
-*/
+ * Протестировать
+ *
+ * ...mapState("Builder", {
+ *   doughList: "dough",
+ * }),
+ *
+ * return this.$store.state.Builder.pizza?.doughId;
+ * this.$store.dispatch("Builder/setDough", val);
+ *
+ */

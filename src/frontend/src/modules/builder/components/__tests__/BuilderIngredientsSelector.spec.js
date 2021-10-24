@@ -85,10 +85,13 @@ describe("BuilderIngredientsSelector", () => {
 });
 
 /*
+ * Протестировать
+ *
  * <ul v-if="ingredients" class="ingredients__list">
  * <div v-if="pizza" class="sheet__content ingredients">
  *
  * ...mapState("Builder", ["pizza", "ingredients", "sauces"]),
  * this.$store.dispatch("Builder/setSauce", val);
  * ...mapActions("Builder", ["setIngredient"]),
- * */
+ *
+ */
