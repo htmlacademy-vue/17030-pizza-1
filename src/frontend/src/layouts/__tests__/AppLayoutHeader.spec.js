@@ -90,14 +90,6 @@ describe("AppLayoutHeader", () => {
     expect(mocks.$notifier.success).toHaveBeenCalled();
     expect(mocks.$router.push).toHaveBeenCalledWith("login");
   });
-
-  // TODO: не понимаю, как протестировать переход по маршруту `login`
-  // it("redirect to login on click", async () => {
-  //   createComponent({ localVue, store, router, stubs, mocks });
-  //   const loginBtn = wrapper.find(`[data-test="login-btn"]`);
-  //   await loginBtn.trigger("click");
-  //   expect(mocks.$router.push).toHaveBeenCalledWith("login");
-  // });
 });
 
 /*
