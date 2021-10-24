@@ -68,6 +68,11 @@ describe("BuilderPizzaView", () => {
       },
     };
     store = generateMockStore(actions);
+    createDough(store);
+    createSauces(store);
+    createIngredients(store);
+    createSizes(store);
+    createPizza(store);
   });
 
   afterEach(() => {
@@ -75,21 +80,11 @@ describe("BuilderPizzaView", () => {
   });
 
   it("is rendered", () => {
-    createDough(store);
-    createSauces(store);
-    createIngredients(store);
-    createSizes(store);
-    createPizza(store);
     createComponent({ store, localVue, stubs });
     expect(wrapper.exists()).toBeTruthy();
   });
 
   it("generates `pizza--foundation--big-creamy` class", () => {
-    createDough(store);
-    createSauces(store);
-    createIngredients(store);
-    createSizes(store);
-    createPizza(store);
     setPizzaBigDough(store);
     setPizzaCreamySauce(store);
     createComponent({ store, localVue, stubs });
@@ -98,11 +93,6 @@ describe("BuilderPizzaView", () => {
   });
 
   it(`generates \`pizza__${INGREDIENT.type}\` class with modifiers`, () => {
-    createDough(store);
-    createSauces(store);
-    createIngredients(store);
-    createSizes(store);
-    createPizza(store);
     setPizzaMushroomsIngredient(store);
     createComponent({ store, localVue, stubs });
     const pizzaIngredients = wrapper.findAll(`[data-test="pizza-ingredient"]`);
@@ -116,22 +106,21 @@ describe("BuilderPizzaView", () => {
     ).toBeTruthy();
   });
 
-  // TODO: не получается выполнить action `dropIngredient`
-  it("action `dropIngredient`", async () => {
-    createDough(store);
-    createSauces(store);
-    createIngredients(store);
-    createSizes(store);
-    createPizza(store);
+  it("calls `dropIngredient` action", async () => {
     createComponent({ store, localVue, stubs });
     const transferData = mockIngredients[0];
-    const appDropElement = wrapper.find(`[data-test="app-drop"]`);
+    const appDropElement = wrapper.findComponent({ name: "AppDrop" });
     await appDropElement.vm.$emit("drop", transferData);
-    expect(actions.Builder.dropIngredient).toHaveBeenCalled();
+    expect(actions.Builder.dropIngredient).toHaveBeenCalledWith(
+      expect.any(Object),
+      transferData
+    );
   });
 });
 
 /*
+ * Протестировать
+ *
  * <div v-if="pizza" class="pizza" :class="classFoundation">
  * <template v-for="ingredientMini in this.pizza.ingredients">
  * :class="classIngredient(ingredientMini.ingredientId, quantity)"

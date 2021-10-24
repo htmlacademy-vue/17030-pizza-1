@@ -1,5 +1,5 @@
 <template>
-  <AppDrop @drop="dropIngredient" data-test="app-drop">
+  <AppDrop @drop="dropIngredient">
     <div v-if="pizza" class="pizza" :class="classFoundation" data-test="pizza">
       <div class="pizza__wrapper">
         <transition-group name="ingredients" tag="div">
