@@ -2,18 +2,21 @@ import { shallowMount } from "@vue/test-utils";
 import AppCounter from "@/common/components/AppCounter.vue";
 
 describe("AppCounter", () => {
-  const propsData = {
-    min: 5,
-    value: 7,
-    max: 10,
-    plusColorModifierClass: "test-class",
-  };
-
+  let propsData;
   let wrapper;
 
   const createComponent = (options) => {
     wrapper = shallowMount(AppCounter, options);
   };
+
+  beforeEach(() => {
+    propsData = {
+      min: 5,
+      value: 7,
+      max: 10,
+      plusColorModifierClass: "test-class",
+    };
+  });
 
   afterEach(() => {
     wrapper.destroy();

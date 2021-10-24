@@ -5,16 +5,20 @@ describe("AppSelectorRadio", () => {
   const slots = {
     default: "Default slot content",
   };
-  const propsData = {
-    checked: "Equal value",
-    value: "Equal value",
-    name: "test-name",
-  };
+  let propsData;
 
   let wrapper;
   const createComponent = (options) => {
     wrapper = shallowMount(AppSelectorRadio, options);
   };
+
+  beforeEach(() => {
+    propsData = {
+      checked: "Equal value",
+      value: "Equal value",
+      name: "test-name",
+    };
+  });
 
   afterEach(() => {
     wrapper.destroy();

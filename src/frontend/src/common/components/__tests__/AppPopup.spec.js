@@ -17,13 +17,17 @@ describe("AppPopup", () => {
     title: "Slot title",
     action: "Slot action",
   };
-  const propsData = {
-    visible: true,
-  };
+  let propsData;
   let wrapper;
   const createComponent = (options) => {
     wrapper = shallowMount(AppPopup, options);
   };
+
+  beforeEach(() => {
+    propsData = {
+      visible: true,
+    };
+  });
 
   afterEach(() => {
     wrapper.destroy();

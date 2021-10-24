@@ -5,16 +5,20 @@ describe("AppRadio", () => {
   const slots = {
     default: "Default slot",
   };
-  const propsData = {
-    checked: "Equals value",
-    value: "Equals value",
-    name: "test-name",
-  };
+  let propsData;
 
   let wrapper;
   const createComponent = (options) => {
     wrapper = shallowMount(AppRadio, options);
   };
+
+  beforeEach(() => {
+    propsData = {
+      checked: "Equals value",
+      value: "Equals value",
+      name: "test-name",
+    };
+  });
 
   afterEach(() => {
     wrapper.destroy();

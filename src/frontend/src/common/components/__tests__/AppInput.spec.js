@@ -5,22 +5,26 @@ describe("AppInput", () => {
   const bigLabelClass = "input--big-label";
   const visuallyHiddenClass = "visually-hidden";
   const slots = { default: "Input caption" };
-  const propsData = {
-    value: "testValue",
-    name: "attr-name",
-    type: "text",
-    placeholder: "Test",
-    errorText: "Error",
-    readonly: false,
-    required: true,
-    isVisibleCaption: false,
-    modBigLabel: true,
-  };
+  let propsData;
 
   let wrapper;
   const createComponent = (options) => {
     wrapper = shallowMount(AppInput, options);
   };
+
+  beforeEach(() => {
+    propsData = {
+      value: "testValue",
+      name: "attr-name",
+      type: "text",
+      placeholder: "Test",
+      errorText: "Error",
+      readonly: false,
+      required: true,
+      isVisibleCaption: false,
+      modBigLabel: true,
+    };
+  });
 
   afterEach(() => {
     wrapper.destroy();

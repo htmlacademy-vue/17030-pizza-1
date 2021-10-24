@@ -4,7 +4,7 @@ import AppButton from "@/common/components/AppButton.vue";
 describe("AppButton", () => {
   const slots = { default: "content" };
   const defaultBtnType = "button";
-  const propsData = { type: "submit" };
+  let propsData;
   const listeners = { click: null };
 
   let wrapper;
@@ -14,6 +14,7 @@ describe("AppButton", () => {
   };
 
   beforeEach(() => {
+    propsData = { type: "submit" };
     listeners.click = jest.fn();
   });
 
