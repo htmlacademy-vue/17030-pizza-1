@@ -118,9 +118,9 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import CartProductItem from "@/modules/cart/CartProductItem.vue";
-import CartMiscItem from "@/modules/cart/CartMiscItem.vue";
-import CartFooter from "@/modules/cart/CartFooter.vue";
+import CartProductItem from "@/modules/cart/components/CartProductItem.vue";
+import CartMiscItem from "@/modules/cart/components/CartMiscItem.vue";
+import CartFooter from "@/modules/cart/components/CartFooter.vue";
 import { validator } from "@/mixins";
 
 const newAddress = () => {
