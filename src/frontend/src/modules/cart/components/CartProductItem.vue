@@ -24,6 +24,7 @@
       :min="0"
       plus-color-modifier-class="quantityer__button--orange"
       @input="changeQuantity(pizza.id, $event)"
+      data-test="pizza-counter"
     />
 
     <div class="cart-list__price">
@@ -35,6 +36,7 @@
         type="button"
         class="cart-list__edit"
         @click.prevent="editPizza(pizza.id)"
+        data-test="change-button"
       >
         Изменить
       </button>
