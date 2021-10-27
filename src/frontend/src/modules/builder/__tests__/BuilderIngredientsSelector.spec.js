@@ -75,7 +75,7 @@ describe("BuilderIngredientsSelector", () => {
     createIngredients(store);
     createComponent({ store });
     const ingredientCounter = wrapper.find(`[data-test="ingredient-counter"]`);
-    await ingredientCounter.vm.$emit("input", mockIngredients[0].id, 1);
+    await ingredientCounter.vm.$emit("input", 1);
     expect(actions.Builder.setIngredient).toHaveBeenCalled();
     expect(actions.Builder.setIngredient).toHaveBeenCalledWith(
       expect.any(Object),
