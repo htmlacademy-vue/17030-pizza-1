@@ -36,9 +36,7 @@ describe("CartProductItem", () => {
 
   it("is rendered", () => {
     createIngredients(store);
-    // addPizzaToCart(store);
     createComponent({ store, propsData });
-    console.log(wrapper.html());
     expect(wrapper.exists()).toBeTruthy();
   });
 
@@ -52,7 +50,7 @@ describe("CartProductItem", () => {
       expect.any(Object),
       {
         pizzaId: mockCartPizza.id,
-        quantity: quantity,
+        quantity,
       }
     );
   });
