@@ -12,6 +12,7 @@
         class="additional-list__counter"
         @input="changeMiscCount(miscItem.id, $event)"
         plus-color-modifier-class="counter__button--orange"
+        data-test="misc-counter"
       />
 
       <div class="additional-list__price">
