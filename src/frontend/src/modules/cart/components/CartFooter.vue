@@ -1,7 +1,12 @@
 <template>
   <section class="footer">
     <div class="footer__more">
-      <AppButton tag="a" mod-border mod-arrow @click.prevent="wantAnother"
+      <AppButton
+        tag="a"
+        mod-border
+        mod-arrow
+        @click.prevent="wantAnother"
+        data-test="want-another-button"
         >Хочу еще одну
       </AppButton>
     </div>
@@ -13,7 +18,9 @@
     </div>
 
     <div class="footer__submit">
-      <AppButton type="submit">Оформить заказ</AppButton>
+      <AppButton type="submit" data-test="checkout-button">
+        Оформить заказ
+      </AppButton>
     </div>
   </section>
 </template>
