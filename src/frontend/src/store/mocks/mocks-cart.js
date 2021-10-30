@@ -1,4 +1,4 @@
-import { ADD_PIZZA } from "@/store/mutation-types.js";
+import { SET_ENTITY } from "@/store/mutation-types.js";
 
 // export const mockCart = {
 //   // cartOrder: {
@@ -30,29 +30,7 @@ import { ADD_PIZZA } from "@/store/mutation-types.js";
 //   //   ],
 //   //   misc: [],
 //   // },
-//   misc: [
-//     {
-//       id: 1,
-//       name: "Cola-Cola 0,5 литра",
-//       image: "/public/img/cola.svg",
-//       price: 56,
-//       type: "cola",
-//     },
-//     {
-//       id: 2,
-//       name: "Острый соус",
-//       image: "/public/img/sauce.svg",
-//       price: 10,
-//       type: "sauce",
-//     },
-//     {
-//       id: 3,
-//       name: "Картошка из печи",
-//       image: "/public/img/potato.svg",
-//       price: 170,
-//       type: "potato",
-//     },
-//   ],
+//   misc: [],
 //   receivingMethodValue: "pickup",
 //   pizzasPrice: 150,
 // };
@@ -67,6 +45,42 @@ export const mockCartPizza = {
   ingredients: [{ ingredientId: 2, quantity: 2 }],
 };
 
-export const addPizzaToCart = (store) => {
-  store.commit(`Cart/${ADD_PIZZA}`, mockCartPizza);
+export const mocksCartMisc = [
+  {
+    id: 1,
+    name: "Cola-Cola 0,5 литра",
+    image: "/public/img/cola.svg",
+    price: 56,
+    type: "cola",
+  },
+  {
+    id: 2,
+    name: "Острый соус",
+    image: "/public/img/sauce.svg",
+    price: 10,
+    type: "sauce",
+  },
+  {
+    id: 3,
+    name: "Картошка из печи",
+    image: "/public/img/potato.svg",
+    price: 170,
+    type: "potato",
+  },
+];
+
+// export const addPizzaToCart = (store) => {
+//   store.commit(`Cart/${ADD_PIZZA}`, mockCartPizza);
+// };
+
+export const createCartMisc = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Cart",
+      entity: "misc",
+      value: mocksCartMisc,
+    },
+    { root: true }
+  );
 };
