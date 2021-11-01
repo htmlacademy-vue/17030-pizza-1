@@ -19,6 +19,7 @@
           required
           :error-text="validations.name.error"
           v-model="localAddress.name"
+          data-test="addr-name"
         >
           Название адреса*
         </AppInput>
@@ -30,6 +31,7 @@
           required
           :error-text="validations.street.error"
           v-model="localAddress.street"
+          data-test="addr-street"
         >
           Улица*
         </AppInput>
@@ -41,6 +43,7 @@
           required
           :error-text="validations.building.error"
           v-model="localAddress.building"
+          data-test="addr-house"
         >
           Дом*
         </AppInput>
@@ -50,6 +53,7 @@
           name="addr-apartment"
           placeholder="Введите № квартиры"
           v-model="localAddress.flat"
+          data-test="addr-apartment"
         >
           Квартира
         </AppInput>
@@ -66,10 +70,14 @@
     </div>
 
     <div class="address-form__buttons">
-      <AppButton mod-transparent @click.prevent="remove(localAddress.id)">
+      <AppButton
+        mod-transparent
+        @click.prevent="remove(localAddress.id)"
+        data-test="remove-button"
+      >
         Удалить
       </AppButton>
-      <AppButton type="submit">Сохранить</AppButton>
+      <AppButton type="submit" data-test="save-button">Сохранить</AppButton>
     </div>
   </form>
 </template>
