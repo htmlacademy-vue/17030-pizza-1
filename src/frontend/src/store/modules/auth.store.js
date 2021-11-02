@@ -143,13 +143,13 @@ export default {
     },
 
     async putAddress({ commit }, address) {
-      const newAddress = await this.$api.addresses.put(address);
+      await this.$api.addresses.put(address);
       commit(
         UPDATE_ENTITY,
         {
           module: "Auth",
           entity: "addresses",
-          value: newAddress,
+          value: address,
         },
         { root: true }
       );
