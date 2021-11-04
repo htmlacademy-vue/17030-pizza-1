@@ -22,6 +22,7 @@
             :is-visible-caption="false"
             name="pizza_name"
             placeholder="Введите название пиццы"
+            data-test="pizza-name"
           >
             Название пиццы
           </AppInput>
