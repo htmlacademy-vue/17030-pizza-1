@@ -18,6 +18,7 @@
               v-for="pizza in cartOrder.pizzas"
               :key="pizza.id"
               :pizza="pizza"
+              data-test="cart-product-item"
             />
           </ul>
 
@@ -29,6 +30,7 @@
                 :key="miscItem.name"
                 :misc-item="miscItem"
                 :misc-quantity="getMiscQuantity(miscItem.id)"
+                data-test="cart-misc-item"
               />
             </ul>
           </div>
@@ -37,7 +39,12 @@
             <label class="cart-form__select">
               <span class="cart-form__label">Получение заказа:</span>
 
-              <select name="test" class="select" v-model="receiving">
+              <select
+                name="test"
+                class="select"
+                v-model="receiving"
+                data-test="select-receiving"
+              >
                 <option value="pickup">Заберу сам</option>
                 <option value="new-address">Новый адрес</option>
                 <option
@@ -57,11 +64,16 @@
               mod-big-label
               :error-text="validations.phone.error"
               required
+              data-test="tel"
             >
               Контактный телефон:
             </AppInput>
 
-            <div v-if="isNotPickupReceiving" class="cart-form__address">
+            <div
+              v-if="isNotPickupReceiving"
+              class="cart-form__address"
+              data-test="delivery-address-form"
+            >
               <span class="cart-form__label">Новый адрес:</span>
 
               <div class="cart-form__input">
@@ -71,6 +83,7 @@
                   :readonly="isAddressFromProfile"
                   :error-text="validations.street.error"
                   required
+                  data-test="street"
                   >Улица*
                 </AppInput>
               </div>
@@ -82,6 +95,7 @@
                   :readonly="isAddressFromProfile"
                   :error-text="validations.building.error"
                   required
+                  data-test="house"
                   >Дом*
                 </AppInput>
               </div>
@@ -91,22 +105,24 @@
                   name="apartment"
                   v-model="cartOrder.address.flat"
                   :readonly="isAddressFromProfile"
-                  >Квартира
+                  data-test="apartment"
+                >
+                  Квартира
                 </AppInput>
               </div>
             </div>
           </div>
         </template>
 
-        <div v-else class="sheet cart__empty">
+        <div v-else class="sheet cart__empty" data-test="cart-empty">
           <p>В корзине нет ни одного товара</p>
         </div>
       </div>
     </main>
 
-    <CartFooter v-if="hasProducts" />
+    <CartFooter v-if="hasProducts" data-test="cart-footer" />
 
-    <AppPopup :visible="isPopupVisible" @close="closePopup">
+    <AppPopup :visible="isPopupVisible" @close="closePopup" data-test="popup">
       <template #title>Спасибо за заказ</template>
       <template #default>
         Мы начали готовить Ваш заказ, скоро привезём его вам ;)

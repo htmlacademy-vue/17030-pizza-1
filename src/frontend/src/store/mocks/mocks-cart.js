@@ -1,4 +1,4 @@
-import { SET_ENTITY } from "@/store/mutation-types.js";
+import { ADD_PIZZA, SET_ENTITY } from "@/store/mutation-types.js";
 
 // export const mockCart = {
 //   // cartOrder: {
@@ -69,9 +69,9 @@ export const mocksCartMisc = [
   },
 ];
 
-// export const addPizzaToCart = (store) => {
-//   store.commit(`Cart/${ADD_PIZZA}`, mockCartPizza);
-// };
+export const addPizzaToCart = (store) => {
+  store.commit(`Cart/${ADD_PIZZA}`, mockCartPizza);
+};
 
 export const createCartMisc = (store) => {
   store.commit(
