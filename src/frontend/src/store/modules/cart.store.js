@@ -1,6 +1,7 @@
 import {
   ADD_PIZZA,
   RESET_STATE,
+  SET_ADDRESS_TO_CART_ORDER,
   SET_ENTITY,
   SET_USER_ID_TO_CART_ORDER,
   SETUP_EXIST_ORDER,
@@ -137,6 +138,10 @@ export default {
     [SETUP_EXIST_ORDER](state, normalizedExistOrder) {
       state.cartOrder = { ...normalizedExistOrder };
     },
+
+    [SET_ADDRESS_TO_CART_ORDER](state, address) {
+      state.cartOrder = Object.assign({}, state.cartOrder, { address });
+    },
   },
 
   actions: {
@@ -191,6 +196,10 @@ export default {
         },
         { root: true }
       );
+    },
+
+    setAddressToCartOrder({ commit }, address) {
+      commit(SET_ADDRESS_TO_CART_ORDER, address);
     },
 
     setupExistOrder({ commit, rootState, dispatch }, existOrderId) {

@@ -196,19 +196,23 @@ export default {
         return this.receivingMethodValue;
       },
       set(val) {
+        this.setReceivingMethod(val);
+
         const address = this.addresses.find(
           ({ id }) => id.toString() === val.toString()
         );
 
-        if (address) {
-          this.cartOrder.address = { ...address };
-          this.isAddressFromProfile = true;
+        if (this.isNotPickupReceiving) {
+          if (address) {
+            this.isAddressFromProfile = true;
+            this.setAddressToCartOrder(address);
+          } else {
+            this.isAddressFromProfile = false;
+            this.setAddressToCartOrder(newAddress());
+          }
         } else {
-          this.cartOrder.address = newAddress();
-          this.isAddressFromProfile = false;
+          this.setAddressToCartOrder(null);
         }
-
-        this.setReceivingMethod(val);
       },
     },
 
@@ -232,7 +236,6 @@ export default {
         this.validations = result;
       },
     },
-    cartOrder() {},
     "cartOrder.phone"() {
       this.$clearValidationErrors();
     },
@@ -253,6 +256,7 @@ export default {
       "setUserIdToCartOrder",
       "resetState",
       "setReceivingMethod",
+      "setAddressToCartOrder",
     ]),
     ...mapActions("Builder", ["createNewPizza"]),
 
