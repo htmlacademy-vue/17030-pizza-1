@@ -7,31 +7,27 @@ import {
   createSizes,
   generateMockStore,
 } from "@/store/mocks";
-import AppPopup from "@/common/components/AppPopup.vue";
 import {
   addPizzaToCart,
   createCartMisc,
   mocksCartMisc,
+  newAddress,
+  setReceivingAddress,
+  setReceivingMethod,
 } from "@/store/mocks/mocks-cart.js";
+import AppPopup from "@/common/components/AppPopup.vue";
 import AppInput from "@/common/components/AppInput.vue";
 import AppButton from "@/common/components/AppButton.vue";
-import { SET_ENTITY } from "@/store/mutation-types.js";
 
 const localVue = createLocalVue();
 localVue.component("AppPopup", AppPopup);
 localVue.component("AppInput", AppInput);
 localVue.component("AppButton", AppButton);
 
-const setNewAddressOption = (store) => {
-  store.commit(
-    SET_ENTITY,
-    {
-      module: "Cart",
-      entity: "receivingMethodValue",
-      value: "new-address",
-    },
-    { root: true }
-  );
+const mocks = {
+  $router: {
+    push: jest.fn(),
+  },
 };
 
 describe("Cart", () => {
@@ -51,9 +47,14 @@ describe("Cart", () => {
         fetchMisc: jest.fn(),
         resetState: jest.fn(),
         setReceivingMethod: jest.fn(),
+        setAddressToCartOrder: jest.fn(),
+      },
+      Builder: {
+        createNewPizza: jest.fn(),
       },
     };
     store = generateMockStore(actions);
+    mocks.$router.push = jest.fn();
   });
 
   afterEach(() => {
@@ -128,27 +129,34 @@ describe("Cart", () => {
     expect(deliveryAddress.exists()).toBeFalsy();
   });
 
-  // TODO: Не получается протестировать изменения способа доставки на "Новый адрес"
-  //      опшион выбирается но в wrapper.html() вижу разметку для пункьа "Заберу сам"
-  //      заметил, если закомментить actions.Cart в хуке `beforeEach` на 50 - 54 строках,
-  //      то проверка срабатывает.
-  it("selects new-address receiving", async () => {
+  it("sets new-address receiving", async () => {
     createDough(store);
     createSauces(store);
     createIngredients(store);
     createSizes(store);
     addPizzaToCart(store);
     createCartMisc(store);
-    // setNewAddressOption(store);
+    setReceivingMethod(store, "new-address");
+    setReceivingAddress(store, newAddress);
+    createComponent({ localVue, store });
+    const deliveryAddress = wrapper.find(`[data-test="delivery-address-form"]`);
+    expect(wrapper.find("option:checked").element.value).toBe("new-address");
+    expect(deliveryAddress.exists()).toBeTruthy();
+  });
+
+  it("selects new address on change select receiving", async () => {
+    createDough(store);
+    createSauces(store);
+    createIngredients(store);
+    createSizes(store);
+    addPizzaToCart(store);
+    createCartMisc(store);
     createComponent({ localVue, store });
     const selectReceivingOptions = wrapper
       .find(`[data-test="select-receiving"]`)
       .findAll("option");
     await selectReceivingOptions.at(1).setSelected();
-    const deliveryAddress = wrapper.find(`[data-test="delivery-address-form"]`);
     expect(wrapper.find("option:checked").element.value).toBe("new-address");
-    console.log(wrapper.html());
-    expect(deliveryAddress.exists()).toBeTruthy();
   });
 
   it("validate mixin has been called on form submit", async () => {
@@ -158,21 +166,11 @@ describe("Cart", () => {
     createSizes(store);
     addPizzaToCart(store);
     createCartMisc(store);
+    setReceivingMethod(store, "new-address");
+    setReceivingAddress(store, newAddress);
     createComponent({ localVue, store });
-    const selectReceivingOptions = wrapper
-      .find(`[data-test="select-receiving"]`)
-      .findAll("option");
-    await selectReceivingOptions.at(1).setSelected();
     const spyValidateFields = jest.spyOn(wrapper.vm, "$validateFields");
-    const deliveryAddress = wrapper.find(`[data-test="delivery-address-form"]`);
     expect(wrapper.find("option:checked").element.value).toBe("new-address");
-    expect(actions.Cart.setReceivingMethod).toHaveBeenLastCalledWith(
-      expect.any(Object),
-      "new-address"
-    );
-
-    setNewAddressOption(store);
-    expect(deliveryAddress.exists()).toBeTruthy();
     await wrapper.trigger("submit.prevent");
     expect(spyValidateFields).toHaveBeenCalled();
   });
@@ -184,7 +182,9 @@ describe("Cart", () => {
     createSizes(store);
     addPizzaToCart(store);
     createCartMisc(store);
-    createComponent({ localVue, store });
+    setReceivingMethod(store, "new-address");
+    setReceivingAddress(store, newAddress);
+    createComponent({ localVue, store, mocks });
     const selectReceivingOptions = wrapper
       .find(`[data-test="select-receiving"]`)
       .findAll("option");
@@ -199,11 +199,13 @@ describe("Cart", () => {
     await fieldApartment.vm.$emit("input", "88");
     await wrapper.trigger("submit");
     expect(actions.Orders.post).toHaveBeenCalled();
-    // await wrapper.vm.$nextTick();
+    await wrapper.vm.$nextTick();
     expect(wrapper.html()).toContain("Спасибо за заказ");
-    const popupCloseBtn = wrapper.find(`[data-test="close-btn"]`);
-    await popupCloseBtn.trigger("click");
+    const popup = wrapper.find(`[data-test="popup"]`);
+    await popup.vm.$emit("close");
     expect(actions.Cart.resetState).toHaveBeenCalled();
+    expect(actions.Builder.createNewPizza).toHaveBeenCalled();
+    expect(mocks.$router.push).toHaveBeenCalled();
   });
 });
 

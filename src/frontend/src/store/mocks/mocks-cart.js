@@ -1,4 +1,8 @@
-import { ADD_PIZZA, SET_ENTITY } from "@/store/mutation-types.js";
+import {
+  ADD_PIZZA,
+  SET_ADDRESS_TO_CART_ORDER,
+  SET_ENTITY,
+} from "@/store/mutation-types.js";
 
 // export const mockCart = {
 //   // cartOrder: {
@@ -69,6 +73,13 @@ export const mocksCartMisc = [
   },
 ];
 
+export const newAddress = {
+  street: "",
+  building: "",
+  flat: "",
+  comment: "",
+};
+
 export const addPizzaToCart = (store) => {
   store.commit(`Cart/${ADD_PIZZA}`, mockCartPizza);
 };
@@ -83,4 +94,20 @@ export const createCartMisc = (store) => {
     },
     { root: true }
   );
+};
+
+export const setReceivingMethod = (store, method) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Cart",
+      entity: "receivingMethodValue",
+      value: method,
+    },
+    { root: true }
+  );
+};
+
+export const setReceivingAddress = (store, address) => {
+  store.commit(`Cart/${SET_ADDRESS_TO_CART_ORDER}`, address);
 };
