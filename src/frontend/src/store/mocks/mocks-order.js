@@ -1,3 +1,5 @@
+import { SET_ENTITY } from "@/store/mutation-types.js";
+
 export const mocksOrder = {
   id: 3,
   phone: "8800880088",
@@ -34,4 +36,16 @@ export const mocksOrder = {
     comment: "",
     userId: "30731b5c-bd69-43e6-bcd6-a8fd119bcb97",
   },
+};
+
+export const queryOrders = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Orders",
+      entity: "orders",
+      value: [mocksOrder],
+    },
+    { root: true }
+  );
 };
