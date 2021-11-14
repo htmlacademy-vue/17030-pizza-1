@@ -1,7 +1,12 @@
 <template>
   <transition name="popup" appear>
     <div class="sign-form">
-      <a href="#" class="close close--white" @click.prevent="$router.push('/')">
+      <a
+        href="#"
+        class="close close--white"
+        @click.prevent="$router.push('/')"
+        data-test="close-button"
+      >
         <span class="visually-hidden">Закрыть форму авторизации</span>
       </a>
       <div class="sign-form__title">
@@ -21,6 +26,7 @@
             name="email"
             placeholder="example@mail.ru"
             :error-text="validations.email.error"
+            data-test="email-component"
           >
             E-mail
           </AppInput>
@@ -33,6 +39,7 @@
             name="pass"
             placeholder="***********"
             :error-text="validations.password.error"
+            data-test="password-component"
           >
             Пароль
           </AppInput>
