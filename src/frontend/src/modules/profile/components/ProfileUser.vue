@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user" class="user">
+  <div class="user">
     <picture>
       <source
         type="image/webp"
@@ -23,13 +23,21 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "ProfileUser",
 
+  props: {
+    user: {
+      type: Object,
+      default() {
+        return null;
+      },
+    },
+  },
+
   computed: {
-    ...mapState("Auth", ["user"]),
     ...mapGetters("Auth", ["getUserAttribute"]),
   },
 };

@@ -4,7 +4,7 @@
       <h1 class="title title--big">Мои данные</h1>
     </div>
 
-    <ProfileUser />
+    <ProfileUser v-if="user" :user="user" />
 
     <div class="layout__address">
       <ProfileAddress
@@ -37,6 +37,7 @@ export default {
   },
 
   computed: {
+    ...mapState("Auth", ["user"]),
     ...mapState("Auth", ["addresses"]),
   },
 
