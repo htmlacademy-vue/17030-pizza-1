@@ -38,13 +38,15 @@ export const mocksOrder = {
   },
 };
 
-export const queryOrders = (store) => {
+export const mockOrders = [mocksOrder];
+
+export const createOrders = (store) => {
   store.commit(
     SET_ENTITY,
     {
       module: "Orders",
       entity: "orders",
-      value: [mocksOrder],
+      value: mockOrders,
     },
     { root: true }
   );

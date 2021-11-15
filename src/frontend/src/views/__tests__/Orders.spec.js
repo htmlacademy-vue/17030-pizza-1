@@ -1,7 +1,7 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import Orders from "@/views/Orders.vue";
 import { generateMockStore } from "@/store/mocks";
-import { queryOrders } from "@/store/mocks/mocks-order.js";
+import { createOrders, mockOrders } from "@/store/mocks/mocks-order.js";
 import AppButton from "@/common/components/AppButton.vue";
 
 const localVue = createLocalVue();
@@ -35,14 +35,14 @@ describe("Orders", () => {
   });
 
   it("renders order items", () => {
-    queryOrders(store);
+    createOrders(store);
     createComponent({ localVue, store });
     const orderItems = wrapper.findAll(`[data-test="order-item-component"]`);
-    expect(orderItems.wrappers.length).toBe(store.state.Orders.orders.length);
+    expect(orderItems.wrappers.length).toEqual(mockOrders.length);
   });
 
-  it("calls actions", () => {
-    queryOrders(store);
+  it("calls actions on create hook", () => {
+    createOrders(store);
     createComponent({ localVue, store });
     expect(wrapper.exists()).toBeTruthy();
     expect(actions.Orders.query).toHaveBeenCalled();
