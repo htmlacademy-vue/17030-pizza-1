@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import { mutations } from "@/store";
 import VuexPlugins from "@/plugins/vuexPlugins.js";
 import { SET_ENTITY } from "@/store/mutation-types.js";
+import user from "@/static/user.json";
 
 const state = () => ({
   notifications: [],
@@ -170,6 +171,27 @@ export const createPizza = (store) => {
   store.commit(
     SET_ENTITY,
     { module: "Builder", entity: "pizza", value: mockPizza },
+    { root: true }
+  );
+};
+
+export const authenticateUser = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "isAuthenticated",
+      value: true,
+    },
+    { root: true }
+  );
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "user",
+      value: user,
+    },
     { root: true }
   );
 };

@@ -1,33 +1,10 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import AppLayoutHeader from "@/layouts/AppLayoutHeader.vue";
 import Vuex from "vuex";
-import { generateMockStore } from "@/store/mocks";
-import { SET_ENTITY } from "@/store/mutation-types.js";
-import user from "@/static/user.json";
+import { authenticateUser, generateMockStore } from "@/store/mocks";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-
-const authenticateUser = (store) => {
-  store.commit(
-    SET_ENTITY,
-    {
-      module: "Auth",
-      entity: "isAuthenticated",
-      value: true,
-    },
-    { root: true }
-  );
-  store.commit(
-    SET_ENTITY,
-    {
-      module: "Auth",
-      entity: "user",
-      value: user,
-    },
-    { root: true }
-  );
-};
 
 const mocks = {
   $router: {
