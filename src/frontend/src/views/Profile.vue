@@ -42,11 +42,11 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("Auth/queryAddresses");
+    this.queryAddresses();
   },
 
   methods: {
-    ...mapActions("Auth", ["createNewAddress"]),
+    ...mapActions("Auth", ["queryAddresses", "createNewAddress"]),
   },
 };
 </script>
