@@ -10,12 +10,21 @@
       </div>
 
       <div class="order__button">
-        <AppButton mod-border @click.prevent="deleteOrder(order.id)">
+        <AppButton
+          mod-border
+          @click.prevent="deleteOrder(order.id)"
+          data-test="remove-button"
+        >
           Удалить
         </AppButton>
       </div>
       <div class="order__button">
-        <AppButton @click.prevent="repeatOrder(order.id)">Повторить</AppButton>
+        <AppButton
+          @click.prevent="repeatOrder(order.id)"
+          data-test="repeat-button"
+        >
+          Повторить
+        </AppButton>
       </div>
     </div>
 
@@ -47,7 +56,11 @@
       </li>
     </ul>
 
-    <ul class="order__additional">
+    <ul
+      v-if="misc.length"
+      class="order__additional"
+      data-test="order-additional"
+    >
       <li v-for="oneMisc in getMisc()" :key="oneMisc.id">
         <img :src="oneMisc.image" width="20" height="30" :alt="oneMisc.name" />
         <p>

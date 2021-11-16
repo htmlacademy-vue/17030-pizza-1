@@ -6,6 +6,7 @@
       :class="{ 'counter__button--disabled': canNotDecrease }"
       @click.prevent="decrease"
       :disabled="canNotDecrease"
+      data-test="button-minus"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
@@ -25,6 +26,7 @@
       ]"
       @click.prevent="increase"
       :disabled="canNotIncrease"
+      data-test="button-plus"
     >
       <span class="visually-hidden">Больше</span>
     </button>

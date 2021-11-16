@@ -6,6 +6,7 @@
       :class="{ 'button--disabled': canNotOrder }"
       :disabled="canNotOrder"
       @click.prevent="addToCart"
+      data-test="button-cook"
     >
       Готовьте!
     </AppButton>

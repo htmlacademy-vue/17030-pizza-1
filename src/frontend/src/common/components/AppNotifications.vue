@@ -22,7 +22,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .notifications-wrapper {
   position: fixed;
   z-index: 9999;

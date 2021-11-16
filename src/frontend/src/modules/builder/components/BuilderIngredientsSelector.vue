@@ -13,6 +13,7 @@
           :value="sauce.id"
           class="ingredients__input"
           name="sauce"
+          data-test="sauce-radio-input"
         >
           <span>{{ sauce.name }}</span>
         </AppRadio>
@@ -41,6 +42,7 @@
               :max="APP_COUNTER_MAX_VALUE"
               class="counter--orange ingredients__counter"
               @input="changeIngredientQuantity(ingredientItem.id, $event)"
+              data-test="ingredient-counter"
             />
           </li>
         </ul>

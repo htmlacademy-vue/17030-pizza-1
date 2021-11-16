@@ -11,6 +11,7 @@
         class="diameter__input"
         :class="`diameter__input--${size.type}`"
         name="size"
+        data-test="size-radio-item"
       >
         <span>{{ size.name }}</span>
       </AppSelectorRadio>

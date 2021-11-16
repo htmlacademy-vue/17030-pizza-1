@@ -11,6 +11,7 @@
         class="dough__input"
         :class="`dough__input--${doughItem.type}`"
         name="dough"
+        data-test="app-selector-radio"
       >
         <b>{{ doughItem.name }}</b>
         <span>{{ doughItem.description }}</span>

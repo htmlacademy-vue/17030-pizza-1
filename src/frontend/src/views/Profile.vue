@@ -4,7 +4,7 @@
       <h1 class="title title--big">Мои данные</h1>
     </div>
 
-    <ProfileUser />
+    <ProfileUser v-if="user" :user="user" data-test="profile-user-component" />
 
     <div class="layout__address">
       <ProfileAddress
@@ -12,12 +12,17 @@
         :key="address.id"
         :counter="index + 1"
         :address="address"
+        data-test="profile-address-component"
       />
     </div>
 
     <div class="layout__button">
-      <AppButton mod-border @click.prevent="createNewAddress"
-        >Добавить новый адрес
+      <AppButton
+        mod-border
+        @click.prevent="createNewAddress"
+        data-test="create-new-address-button"
+      >
+        Добавить новый адрес
       </AppButton>
     </div>
   </div>
@@ -37,15 +42,16 @@ export default {
   },
 
   computed: {
+    ...mapState("Auth", ["user"]),
     ...mapState("Auth", ["addresses"]),
   },
 
   created() {
-    this.$store.dispatch("Auth/queryAddresses");
+    this.queryAddresses();
   },
 
   methods: {
-    ...mapActions("Auth", ["createNewAddress"]),
+    ...mapActions("Auth", ["queryAddresses", "createNewAddress"]),
   },
 };
 </script>
