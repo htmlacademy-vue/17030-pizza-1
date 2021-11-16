@@ -4,41 +4,6 @@ import {
   SET_ENTITY,
 } from "@/store/mutation-types.js";
 
-// export const mockCart = {
-//   // cartOrder: {
-//   //   userId: null,
-//   //   phone: "",
-//   //   address: null,
-//   //   pizzas: [
-//   //     {
-//   //       id: "1",
-//   //       name: "test1",
-//   //       sauceId: 1,
-//   //       doughId: 1,
-//   //       sizeId: 1,
-//   //       quantity: 1,
-//   //       ingredients: [{ ingredientId: 2, quantity: 2 }],
-//   //     },
-//   //     {
-//   //       id: "2",
-//   //       name: "test2",
-//   //       sauceId: "2",
-//   //       doughId: "2",
-//   //       sizeId: "3",
-//   //       quantity: 1,
-//   //       ingredients: [
-//   //         { ingredientId: 8, quantity: 0 },
-//   //         { ingredientId: 4, quantity: 3 },
-//   //       ],
-//   //     },
-//   //   ],
-//   //   misc: [],
-//   // },
-//   misc: [],
-//   receivingMethodValue: "pickup",
-//   pizzasPrice: 150,
-// };
-
 export const mockCartPizza = {
   id: "1",
   name: "test1",

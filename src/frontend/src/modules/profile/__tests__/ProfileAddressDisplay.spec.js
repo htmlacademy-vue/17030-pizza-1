@@ -22,7 +22,6 @@ describe("ProfileAddressDisplay", () => {
 
   it("is rendered", () => {
     createComponent({ localVue, propsData });
-    console.log(wrapper.html());
     expect(wrapper.exists()).toBeTruthy();
   });
 
