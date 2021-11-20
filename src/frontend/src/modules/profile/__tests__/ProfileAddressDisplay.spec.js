@@ -33,11 +33,6 @@ describe("ProfileAddressDisplay", () => {
   it("emit editing custom event when on click change address button", async () => {
     createComponent({ localVue, propsData });
     const changeAddrBtn = wrapper.find(`[data-test="change-address-button"]`);
-    /*
-     * TODO: Не понимаю, почему не срабатывает обычный клик по кнопке.
-     *       В учебном проекте, при взаимодействии с AppIcon в тестах все эмитится
-     */
-    // await changeAddrBtn.trigger("click");
     await changeAddrBtn.vm.$emit("click");
     expect(wrapper.emitted("editing")).toBeTruthy();
   });
