@@ -32,9 +32,12 @@
 import ProfileUser from "@/modules/profile/components/ProfileUser.vue";
 import ProfileAddress from "@/modules/profile/components/ProfileAddress.vue";
 import { mapActions, mapState } from "vuex";
+import { auth } from "@/middlewares";
 
 export default {
   name: "Profile",
+  layout: "AppLayoutMain",
+  middlewares: { auth },
 
   components: {
     ProfileUser,

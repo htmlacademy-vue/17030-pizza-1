@@ -16,9 +16,12 @@
 <script>
 import OrderItem from "@/modules/orders/components/OrderItem.vue";
 import { mapState } from "vuex";
+import { auth } from "@/middlewares";
 
 export default {
   name: "Orders",
+  layout: "AppLayoutMain",
+  middlewares: { auth },
 
   components: {
     OrderItem,

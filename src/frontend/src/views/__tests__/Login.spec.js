@@ -1,5 +1,5 @@
 import { createLocalVue, mount } from "@vue/test-utils";
-import Login from "@/views/Login.vue";
+import Login from "@/views/index/^Login.vue";
 import AppInput from "@/common/components/AppInput.vue";
 import AppButton from "@/common/components/AppButton.vue";
 

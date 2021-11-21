@@ -1,6 +1,6 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import Vuex from "vuex";
-import Index from "@/views/Index.vue";
+import Index from "@/views/index/Index.vue";
 import {
   createDough,
   createIngredients,

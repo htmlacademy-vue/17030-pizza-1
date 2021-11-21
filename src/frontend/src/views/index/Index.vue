@@ -40,11 +40,11 @@
 </template>
 
 <script>
-import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
-import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
-import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
-import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
-import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector.vue";
+import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";
+import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
+import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter.vue";
 
 export default {
   name: "IndexHome",
