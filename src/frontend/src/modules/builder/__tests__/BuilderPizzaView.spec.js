@@ -1,22 +1,22 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView.vue";
-import {
-  createDough,
-  createIngredients,
-  createPizza,
-  createSauces,
-  createSizes,
-  generateMockStore,
-  mockDough,
-  mockIngredients,
-  mockSauces,
-} from "@/store/mocks";
+import { generateMockStore } from "@/store/mocks";
 import {
   SET_DOUGH,
   SET_INGREDIENT,
   SET_SAUCE,
 } from "@/store/mutation-types.js";
 import Vuex from "vuex";
+import {
+  createDough,
+  createIngredients,
+  createPizza,
+  createSauces,
+  createSizes,
+  mockDough,
+  mockIngredients,
+  mockSauces,
+} from "@/store/mocks/mocks-builder.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

@@ -1,6 +1,7 @@
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector.vue";
 import { mount } from "@vue/test-utils";
-import { createSizes, generateMockStore, mockSizes } from "@/store/mocks";
+import { generateMockStore } from "@/store/mocks";
+import { createSizes, mockSizes } from "@/store/mocks/mocks-builder.js";
 
 describe("BuilderSizeSelector", () => {
   let wrapper;

@@ -1,16 +1,16 @@
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter.vue";
 import { createLocalVue, mount } from "@vue/test-utils";
+import { generateMockStore } from "@/store/mocks";
+import AppButton from "@/common/components/AppButton.vue";
+import { SET_INGREDIENT, SET_NAME } from "@/store/mutation-types.js";
 import {
   createDough,
   createIngredients,
   createPizza,
   createSauces,
   createSizes,
-  generateMockStore,
   mockIngredients,
-} from "@/store/mocks";
-import AppButton from "@/common/components/AppButton.vue";
-import { SET_INGREDIENT, SET_NAME } from "@/store/mutation-types.js";
+} from "@/store/mocks/mocks-builder.js";
 
 const setPizzaName = (store) => {
   store.commit(`Builder/${SET_NAME}`, "pizza name");

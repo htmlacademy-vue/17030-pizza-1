@@ -1,13 +1,13 @@
 import { mount } from "@vue/test-utils";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
+import { generateMockStore } from "@/store/mocks";
 import {
   createIngredients,
   createPizza,
   createSauces,
-  generateMockStore,
   mockIngredients,
   mockSauces,
-} from "@/store/mocks";
+} from "@/store/mocks/mocks-builder.js";
 
 describe("BuilderIngredientsSelector", () => {
   let wrapper;
