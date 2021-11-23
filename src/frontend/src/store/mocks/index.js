@@ -1,5 +1,5 @@
 import { cloneDeep } from "lodash";
-import modules from "@/store/modules";
+import modules from "@/modules";
 import Vuex from "vuex";
 import { mutations } from "@/store";
 import VuexPlugins from "@/plugins/vuexPlugins.js";
