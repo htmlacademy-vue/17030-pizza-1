@@ -1,7 +1,8 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import AppLayoutHeader from "@/layouts/AppLayoutHeader.vue";
 import Vuex from "vuex";
-import { authenticateUser, generateMockStore } from "@/store/mocks";
+import { generateMockStore } from "@/store/mocks";
+import { authenticateUser } from "@/store/mocks/mocks-auth.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

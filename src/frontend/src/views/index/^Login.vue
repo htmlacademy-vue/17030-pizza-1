@@ -52,9 +52,12 @@
 
 <script>
 import { validator } from "@/mixins";
+import { isLoggedIn } from "@/middlewares";
 
 export default {
   name: "Login",
+  notAnimate: true,
+  middlewares: { isLoggedIn },
   mixins: [validator],
 
   data() {

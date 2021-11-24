@@ -1,7 +1,8 @@
 import { mount } from "@vue/test-utils";
 import CartProductItem from "@/modules/cart/components/CartProductItem.vue";
-import { createIngredients, generateMockStore } from "@/store/mocks";
+import { generateMockStore } from "@/store/mocks";
 import { mockCartPizza } from "@/store/mocks/mocks-cart.js";
+import { createIngredients } from "@/store/mocks/mocks-builder.js";
 
 describe("CartProductItem", () => {
   const propsData = {

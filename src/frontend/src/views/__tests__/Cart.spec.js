@@ -1,12 +1,6 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import Cart from "@/views/Cart.vue";
-import {
-  createDough,
-  createIngredients,
-  createSauces,
-  createSizes,
-  generateMockStore,
-} from "@/store/mocks";
+import { generateMockStore } from "@/store/mocks";
 import {
   addPizzaToCart,
   createCartMisc,
@@ -18,6 +12,12 @@ import {
 import AppPopup from "@/common/components/AppPopup.vue";
 import AppInput from "@/common/components/AppInput.vue";
 import AppButton from "@/common/components/AppButton.vue";
+import {
+  createDough,
+  createIngredients,
+  createSauces,
+  createSizes,
+} from "@/store/mocks/mocks-builder.js";
 
 const localVue = createLocalVue();
 localVue.component("AppPopup", AppPopup);

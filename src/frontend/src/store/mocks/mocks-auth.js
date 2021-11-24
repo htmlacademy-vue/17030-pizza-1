@@ -1,4 +1,5 @@
 import { SET_ENTITY } from "@/store/mutation-types.js";
+import user from "@/static/user.json";
 
 export const mocksAddresses = [
   {
@@ -28,6 +29,27 @@ export const createAddresses = (store) => {
       module: "Auth",
       entity: "addresses",
       value: mocksAddresses,
+    },
+    { root: true }
+  );
+};
+
+export const authenticateUser = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "isAuthenticated",
+      value: true,
+    },
+    { root: true }
+  );
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "user",
+      value: user,
     },
     { root: true }
   );

@@ -1,16 +1,16 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import OrderItem from "@/modules/orders/components/OrderItem.vue";
+import { generateMockStore } from "@/store/mocks";
+import AppButton from "@/common/components/AppButton.vue";
+import { mocksOrder } from "@/store/mocks/mocks-order.js";
+import { createCartMisc } from "@/store/mocks/mocks-cart.js";
 import {
   createDough,
   createIngredients,
   createPizza,
   createSauces,
   createSizes,
-  generateMockStore,
-} from "@/store/mocks";
-import AppButton from "@/common/components/AppButton.vue";
-import { mocksOrder } from "@/store/mocks/mocks-order.js";
-import { createCartMisc } from "@/store/mocks/mocks-cart.js";
+} from "@/store/mocks/mocks-builder.js";
 
 const localVue = createLocalVue();
 const selfPickupPhrase = "Заберу сам";

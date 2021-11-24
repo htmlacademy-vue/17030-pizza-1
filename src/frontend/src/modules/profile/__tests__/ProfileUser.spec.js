@@ -1,7 +1,8 @@
 import { mount } from "@vue/test-utils";
 import ProfileUser from "@/modules/profile/components/ProfileUser.vue";
-import { authenticateUser, generateMockStore } from "@/store/mocks";
+import { generateMockStore } from "@/store/mocks";
 import user from "@/static/user.json";
+import { authenticateUser } from "@/store/mocks/mocks-auth.js";
 
 describe("ProfileUser", () => {
   let wrapper;

@@ -1,17 +1,17 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import Vuex from "vuex";
-import Index from "@/views/Index.vue";
+import Index from "@/views/index/Index.vue";
+import { generateMockStore } from "@/store/mocks";
+import AppInput from "@/common/components/AppInput.vue";
+import AppButton from "@/common/components/AppButton.vue";
 import {
   createDough,
   createIngredients,
   createPizza,
   createSauces,
   createSizes,
-  generateMockStore,
   mockPizza,
-} from "@/store/mocks";
-import AppInput from "@/common/components/AppInput.vue";
-import AppButton from "@/common/components/AppButton.vue";
+} from "@/store/mocks/mocks-builder.js";
 
 const localVue = createLocalVue();
 

@@ -1,10 +1,11 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import Profile from "@/views/Profile.vue";
-import { authenticateUser, generateMockStore } from "@/store/mocks";
+import { generateMockStore } from "@/store/mocks";
 import {
+  authenticateUser,
   createAddresses,
   mocksAddresses,
-} from "@/store/mocks/mocks-profile.js";
+} from "@/store/mocks/mocks-auth.js";
 import AppButton from "@/common/components/AppButton.vue";
 import AppIcon from "@/common/components/AppIcon.vue";
 
