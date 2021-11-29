@@ -3,8 +3,8 @@
     action="test.html"
     method="post"
     class="layout-form"
-    @submit.prevent="checkout"
     novalidate
+    @submit.prevent="checkout"
   >
     <main class="content cart">
       <div class="container">
@@ -25,9 +25,9 @@
           <div class="cart__additional">
             <ul class="additional-list">
               <CartMiscItem
-                class="sheet"
                 v-for="miscItem in misc"
                 :key="miscItem.name"
+                class="sheet"
                 :misc-item="miscItem"
                 :misc-quantity="getMiscQuantity(miscItem.id)"
                 data-test="cart-misc-item"
@@ -40,9 +40,9 @@
               <span class="cart-form__label">Получение заказа:</span>
 
               <select
+                v-model="receiving"
                 name="test"
                 class="select"
-                v-model="receiving"
                 data-test="select-receiving"
               >
                 <option value="pickup">Заберу сам</option>
@@ -58,9 +58,9 @@
             </label>
 
             <AppInput
+              v-model="cartOrder.phone"
               name="tel"
               placeholder="+7 999-999-99-99"
-              v-model="cartOrder.phone"
               mod-big-label
               :error-text="validations.phone.error"
               required
@@ -78,8 +78,8 @@
 
               <div class="cart-form__input">
                 <AppInput
-                  name="street"
                   v-model="cartOrder.address.street"
+                  name="street"
                   :readonly="isAddressFromProfile"
                   :error-text="validations.street.error"
                   required
@@ -90,20 +90,21 @@
 
               <div class="cart-form__input cart-form__input--small">
                 <AppInput
-                  name="house"
                   v-model="cartOrder.address.building"
+                  name="house"
                   :readonly="isAddressFromProfile"
                   :error-text="validations.building.error"
                   required
                   data-test="house"
-                  >Дом*
+                >
+                  Дом*
                 </AppInput>
               </div>
 
               <div class="cart-form__input cart-form__input--small">
                 <AppInput
-                  name="apartment"
                   v-model="cartOrder.address.flat"
+                  name="apartment"
                   :readonly="isAddressFromProfile"
                   data-test="apartment"
                 >
@@ -122,7 +123,7 @@
 
     <CartFooter v-if="hasProducts" data-test="cart-footer" />
 
-    <AppPopup :visible="isPopupVisible" @close="closePopup" data-test="popup">
+    <AppPopup :visible="isPopupVisible" data-test="popup" @close="closePopup">
       <template #title>Спасибо за заказ</template>
       <template #default>
         Мы начали готовить Ваш заказ, скоро привезём его вам ;)
@@ -305,4 +306,17 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.cart__title {
+  margin-bottom: 15px;
+}
+
+.cart__additional {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.cart__empty {
+  padding: 20px 30px;
+}
+</style>
