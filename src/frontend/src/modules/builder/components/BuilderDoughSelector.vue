@@ -3,32 +3,30 @@
     <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
     <div class="sheet__content dough">
-      <AppSelectorRadio
+      <BuilderDoughRadio
         v-for="doughItem in doughList"
         :key="doughItem.name"
         v-model="pickedDough"
         :value="doughItem.id"
-        class="dough__input"
         :class="`dough__input--${doughItem.type}`"
-        name="dough"
         data-test="app-selector-radio"
       >
         <b>{{ doughItem.name }}</b>
         <span>{{ doughItem.description }}</span>
-      </AppSelectorRadio>
+      </BuilderDoughRadio>
     </div>
   </div>
 </template>
 
 <script>
-import AppSelectorRadio from "@/common/components/AppSelectorRadio";
 import { mapState } from "vuex";
+import BuilderDoughRadio from "@/modules/builder/components/BuilderDoughRadio.vue";
 
 export default {
   name: "BuilderDoughSelector",
 
   components: {
-    AppSelectorRadio,
+    BuilderDoughRadio,
   },
 
   computed: {
@@ -46,5 +44,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped></style>
