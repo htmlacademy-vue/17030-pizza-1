@@ -6,21 +6,19 @@
 
     <ProfileUser v-if="user" :user="user" data-test="profile-user-component" />
 
-    <div class="layout__address">
-      <ProfileAddress
-        v-for="(address, index) in addresses"
-        :key="address.id"
-        :counter="index + 1"
-        :address="address"
-        data-test="profile-address-component"
-      />
-    </div>
+    <ProfileAddress
+      v-for="(address, index) in addresses"
+      :key="address.id"
+      :counter="index + 1"
+      :address="address"
+      data-test="profile-address-component"
+    />
 
     <div class="layout__button">
       <AppButton
         mod-border
-        @click.prevent="createNewAddress"
         data-test="create-new-address-button"
+        @click.prevent="createNewAddress"
       >
         Добавить новый адрес
       </AppButton>
@@ -59,4 +57,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.layout__button ::v-deep button {
+  padding: 12px 23px;
+}
+</style>
