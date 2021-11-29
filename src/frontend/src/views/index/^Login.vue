@@ -1,32 +1,31 @@
 <template>
-  <transition name="popup" appear>
+  <transition appear name="popup">
     <div class="sign-form">
-      <a
-        href="#"
-        class="close close--white"
-        @click.prevent="$router.push('/')"
+      <AppClose
         data-test="close-button"
+        mod-white
+        @click.prevent="$router.push('/')"
       >
-        <span class="visually-hidden">Закрыть форму авторизации</span>
-      </a>
+        Закрыть форму авторизации
+      </AppClose>
       <div class="sign-form__title">
         <h1 class="title title--small">Авторизуйтесь на сайте</h1>
       </div>
       <form
         action="test.html"
         method="post"
-        @submit.prevent="sendForm"
         novalidate
+        @submit.prevent="sendForm"
       >
         <div class="sign-form__input">
           <AppInput
             ref="email"
             v-model="email"
-            type="email"
-            name="email"
-            placeholder="example@mail.ru"
             :error-text="validations.email.error"
             data-test="email-component"
+            name="email"
+            placeholder="example@mail.ru"
+            type="email"
           >
             E-mail
           </AppInput>
@@ -35,11 +34,11 @@
         <div class="sign-form__input">
           <AppInput
             v-model="password"
-            type="password"
-            name="pass"
-            placeholder="***********"
             :error-text="validations.password.error"
             data-test="password-component"
+            name="pass"
+            placeholder="***********"
+            type="password"
           >
             Пароль
           </AppInput>

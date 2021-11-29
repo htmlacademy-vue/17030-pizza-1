@@ -1,3 +1,31 @@
+<template>
+  <a :class="modifiersClass" class="close" href="#" v-on="$listeners">
+    <span class="visually-hidden"><slot></slot></span>
+  </a>
+</template>
+
+<script>
+export default {
+  name: "AppClose",
+
+  props: {
+    modWhite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  computed: {
+    modifiersClass() {
+      return {
+        "close--white": this.modWhite,
+      };
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
 .close {
   position: absolute;
   top: 16px;
@@ -59,3 +87,4 @@
     }
   }
 }
+</style>

@@ -1,11 +1,14 @@
 <template>
   <transition name="popup" @after-leave="afterLeave">
     <div v-if="localVisible" class="popup">
+      <AppClose data-test="close-btn" @click.prevent="localVisible = false">
+        Закрыть попап
+      </AppClose>
       <a
         href="#"
         class="close"
-        @click.prevent="localVisible = false"
         data-test="close-btn"
+        @click.prevent="localVisible = false"
       >
         <span class="visually-hidden">Закрыть попап</span>
       </a>
