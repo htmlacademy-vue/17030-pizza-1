@@ -9,7 +9,7 @@
         v-model="pickedDough"
         :value="doughItem.id"
         :class="`dough__input--${doughItem.type}`"
-        data-test="app-selector-radio"
+        data-test="dough-radio"
       >
         <b>{{ doughItem.name }}</b>
         <span>{{ doughItem.description }}</span>
