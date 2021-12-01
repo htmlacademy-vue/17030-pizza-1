@@ -13,14 +13,7 @@
         </div>
 
         <template v-if="hasProducts">
-          <ul class="cart-list sheet">
-            <CartProductItem
-              v-for="pizza in cartOrder.pizzas"
-              :key="pizza.id"
-              :pizza="pizza"
-              data-test="cart-product-item"
-            />
-          </ul>
+          <CartPizzaList :pizzas="cartOrder.pizzas" />
 
           <div class="cart__additional">
             <ul class="additional-list">
@@ -135,7 +128,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import CartProductItem from "@/modules/cart/components/CartProductItem.vue";
+import CartPizzaList from "@/modules/cart/components/CartPizzaList.vue";
 import CartMiscItem from "@/modules/cart/components/CartMiscItem.vue";
 import CartFooter from "@/modules/cart/components/CartFooter.vue";
 import { validator } from "@/mixins";
@@ -154,7 +147,7 @@ export default {
   mixins: [validator],
 
   components: {
-    CartProductItem,
+    CartPizzaList,
     CartMiscItem,
     CartFooter,
   },
@@ -237,12 +230,15 @@ export default {
         this.validations = result;
       },
     },
+
     "cartOrder.phone"() {
       this.$clearValidationErrors();
     },
+
     "cartOrder.address.street"() {
       this.$clearValidationErrors();
     },
+
     "cartOrder.address.building"() {
       this.$clearValidationErrors();
     },
@@ -259,6 +255,7 @@ export default {
       "setReceivingMethod",
       "setAddressToCartOrder",
     ]),
+
     ...mapActions("Builder", ["createNewPizza"]),
 
     getMiscQuantity(id) {

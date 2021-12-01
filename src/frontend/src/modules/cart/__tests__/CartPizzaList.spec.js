@@ -1,10 +1,10 @@
 import { mount } from "@vue/test-utils";
-import CartProductItem from "@/modules/cart/components/CartProductItem.vue";
+import CartPizzaList from "@/modules/cart/components/CartPizzaList.vue";
 import { generateMockStore } from "@/store/mocks";
 import { mockCartPizza } from "@/store/mocks/mocks-cart.js";
 import { createIngredients } from "@/store/mocks/mocks-builder.js";
 
-describe("CartProductItem", () => {
+describe("CartPizzaList", () => {
   const propsData = {
     pizza: mockCartPizza,
   };
@@ -17,7 +17,7 @@ describe("CartProductItem", () => {
     },
   };
   const createComponent = (options) => {
-    wrapper = mount(CartProductItem, options);
+    wrapper = mount(CartPizzaList, options);
   };
 
   beforeEach(() => {
