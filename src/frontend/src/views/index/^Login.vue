@@ -80,6 +80,7 @@ export default {
     email() {
       this.$clearValidationErrors();
     },
+
     password() {
       this.$clearValidationErrors();
     },
@@ -110,11 +111,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/scss/mixins/m_center.scss";
+
 .sign-form {
+  @include pf_center-all;
+
+  z-index: 10;
+
+  display: block;
+
+  box-sizing: border-box;
+  width: 455px;
+  padding-top: 146px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  padding-left: 32px;
+
+  background: $white url("~@/assets/img/popup.svg") no-repeat center top;
+  box-shadow: $shadow-light;
+
   ::v-deep button {
     margin: 0 auto;
     padding: 16px 14px;
   }
+}
+
+.sign-form__title {
+  margin-bottom: 24px;
+
+  text-align: center;
+}
+
+.sign-form__input {
+  margin-bottom: 16px;
 }
 
 .popup-enter-active,
