@@ -34,23 +34,7 @@
         :key="orderPizza.id"
         class="order__item"
       >
-        <div class="product">
-          <img
-            src="@/assets/img/product.svg"
-            class="product__img"
-            width="56"
-            height="56"
-            :alt="orderPizza.name"
-          />
-          <div class="product__text">
-            <h2>{{ orderPizza.name }}</h2>
-            <ul>
-              <li>{{ getSizeAndDoughText(orderPizza) }}</li>
-              <li>Соус: {{ getSauceText(orderPizza) }}</li>
-              <li>Начинка: {{ getIngredientsText(orderPizza) }}</li>
-            </ul>
-          </div>
-        </div>
+        <AppProductDescription :pizza="orderPizza" />
 
         <p class="order__price">{{ costOfPizzaText(orderPizza) }} ₽</p>
       </li>
@@ -90,6 +74,7 @@ export default {
   computed: {
     ...mapState("Builder", ["dough", "ingredients", "sauces", "sizes"]),
     ...mapState("Cart", ["misc"]),
+
     orderPizzas() {
       return this.order.orderPizzas;
     },
@@ -166,22 +151,6 @@ export default {
       }, 0);
 
       return totalOfPizza + totalOfMisc;
-    },
-
-    getSizeAndDoughText(orderPizza) {
-      return `${this.getSize(orderPizza)?.name}, ${
-        this.getDough(orderPizza)?.nameAlt
-      }`;
-    },
-
-    getSauceText(orderPizza) {
-      return this.getSauce(orderPizza)?.name.toLowerCase();
-    },
-
-    getIngredientsText(orderPizza) {
-      return this.getIngredients(orderPizza)
-        ?.map(({ name }) => name.toLowerCase())
-        .join(", ");
     },
 
     getAddressText() {
