@@ -21,7 +21,7 @@ import { auth } from "@/middlewares";
 export default {
   name: "Orders",
   layout: "AppLayoutMain",
-  middlewares: { auth },
+  middlewares: [auth],
 
   components: {
     OrderItem,

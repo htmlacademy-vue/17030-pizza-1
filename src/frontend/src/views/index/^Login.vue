@@ -56,7 +56,7 @@ import { isLoggedIn } from "@/middlewares";
 export default {
   name: "Login",
   notAnimate: true,
-  middlewares: { isLoggedIn },
+  middlewares: [isLoggedIn],
   mixins: [validator],
 
   data() {

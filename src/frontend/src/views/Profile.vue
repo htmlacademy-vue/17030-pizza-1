@@ -35,7 +35,7 @@ import { auth } from "@/middlewares";
 export default {
   name: "Profile",
   layout: "AppLayoutMain",
-  middlewares: { auth },
+  middlewares: [auth],
 
   components: {
     ProfileUser,
