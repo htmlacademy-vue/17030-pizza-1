@@ -1,14 +1,7 @@
 <template>
   <header class="header">
     <div class="header__logo">
-      <router-link class="logo" to="/">
-        <img
-          src="@/assets/img/logo.svg"
-          alt="V!U!E! Pizza logo"
-          width="90"
-          height="40"
-        />
-      </router-link>
+      <AppLogo />
     </div>
     <div class="header__cart">
       <router-link to="/cart"> {{ totalPrice }} ₽</router-link>

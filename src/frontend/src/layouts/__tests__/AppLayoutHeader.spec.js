@@ -3,9 +3,11 @@ import AppLayoutHeader from "@/layouts/AppLayoutHeader.vue";
 import Vuex from "vuex";
 import { generateMockStore } from "@/store/mocks";
 import { authenticateUser } from "@/store/mocks/mocks-auth.js";
+import AppLogo from "@/common/components/AppLogo";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.component("AppLogo", AppLogo);
 
 const mocks = {
   $router: {
