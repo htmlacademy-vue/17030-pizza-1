@@ -18,11 +18,15 @@ import {
   createSauces,
   createSizes,
 } from "@/store/mocks/mocks-builder.js";
+import AppProductDescription from "@/common/components/AppProductDescription";
+import AppClose from "@/common/components/AppClose";
 
 const localVue = createLocalVue();
 localVue.component("AppPopup", AppPopup);
 localVue.component("AppInput", AppInput);
 localVue.component("AppButton", AppButton);
+localVue.component("AppProductDescription", AppProductDescription);
+localVue.component("AppClose", AppClose);
 
 const mocks = {
   $router: {

@@ -16,16 +16,7 @@
           <CartPizzaList :pizzas="cartOrder.pizzas" />
 
           <div class="cart__additional">
-            <ul class="additional-list">
-              <CartMiscItem
-                v-for="miscItem in misc"
-                :key="miscItem.name"
-                class="sheet"
-                :misc-item="miscItem"
-                :misc-quantity="getMiscQuantity(miscItem.id)"
-                data-test="cart-misc-item"
-              />
-            </ul>
+            <CartAdditionalList :misc="misc" :cartOrder="cartOrder" />
           </div>
 
           <div class="cart-form">
@@ -129,7 +120,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import CartPizzaList from "@/modules/cart/components/CartPizzaList.vue";
-import CartMiscItem from "@/modules/cart/components/CartMiscItem.vue";
+import CartAdditionalList from "@/modules/cart/components/CartAdditionalList.vue";
 import CartFooter from "@/modules/cart/components/CartFooter.vue";
 import { validator } from "@/mixins";
 
@@ -148,8 +139,8 @@ export default {
 
   components: {
     CartPizzaList,
-    CartMiscItem,
     CartFooter,
+    CartAdditionalList,
   },
 
   data() {
@@ -249,22 +240,14 @@ export default {
   },
 
   methods: {
+    ...mapActions("Builder", ["createNewPizza"]),
+
     ...mapActions("Cart", [
       "setUserIdToCartOrder",
       "resetState",
       "setReceivingMethod",
       "setAddressToCartOrder",
     ]),
-
-    ...mapActions("Builder", ["createNewPizza"]),
-
-    getMiscQuantity(id) {
-      return (
-        this.cartOrder.misc?.find(
-          ({ miscId }) => miscId.toString() === id.toString()
-        )?.quantity ?? 0
-      );
-    },
 
     async checkout() {
       if (
