@@ -71,7 +71,7 @@ export default {
       });
 
       return appliedIngredients
-        .map(({ name }) => name.toLowerCase())
+        ?.map(({ name }) => name.toLowerCase())
         .join(", ");
     },
   },
