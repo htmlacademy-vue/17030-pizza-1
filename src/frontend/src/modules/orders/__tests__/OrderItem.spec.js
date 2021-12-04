@@ -11,10 +11,12 @@ import {
   createSauces,
   createSizes,
 } from "@/store/mocks/mocks-builder.js";
+import AppProductDescription from "@/common/components/AppProductDescription";
 
 const localVue = createLocalVue();
 const selfPickupPhrase = "Заберу сам";
 localVue.component("AppButton", AppButton);
+localVue.component("AppProductDescription", AppProductDescription);
 
 describe("OrderItem", () => {
   let wrapper;

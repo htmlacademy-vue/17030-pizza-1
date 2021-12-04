@@ -3,9 +3,11 @@ import Orders from "@/views/Orders.vue";
 import { generateMockStore } from "@/store/mocks";
 import { createOrders, mockOrders } from "@/store/mocks/mocks-order.js";
 import AppButton from "@/common/components/AppButton.vue";
+import AppProductDescription from "@/common/components/AppProductDescription";
 
 const localVue = createLocalVue();
 localVue.component("AppButton", AppButton);
+localVue.component("AppProductDescription", AppProductDescription);
 
 describe("Orders", () => {
   let wrapper;
