@@ -9,7 +9,7 @@
         Закрыть форму авторизации
       </AppClose>
       <div class="sign-form__title">
-        <h1 class="title title--small">Авторизуйтесь на сайте</h1>
+        <AppTitle mod-text-small>Авторизуйтесь на сайте</AppTitle>
       </div>
       <form
         action="test.html"

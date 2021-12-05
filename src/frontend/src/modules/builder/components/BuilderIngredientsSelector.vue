@@ -1,6 +1,8 @@
 <template>
   <div class="sheet">
-    <h2 class="title title--small sheet__title">Выберите ингредиенты</h2>
+    <AppTitle class="sheet__title" :level="2" mod-text-small>
+      Выберите ингредиенты
+    </AppTitle>
 
     <div v-if="pizza" class="sheet__content ingredients">
       <div class="ingredients__sauce">

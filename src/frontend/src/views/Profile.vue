@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="layout__title">
-      <h1 class="title title--big">Мои данные</h1>
+      <AppTitle mod-text-big>Мои данные</AppTitle>
     </div>
 
     <ProfileUser v-if="user" :user="user" data-test="profile-user-component" />

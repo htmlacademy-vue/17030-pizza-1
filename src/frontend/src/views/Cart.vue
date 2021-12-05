@@ -9,7 +9,7 @@
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
-          <h1 class="title title--big">Корзина</h1>
+          <AppTitle mod-text-big>Корзина</AppTitle>
         </div>
 
         <template v-if="hasProducts">

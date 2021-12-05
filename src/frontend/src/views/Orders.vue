@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="layout__title">
-      <h1 class="title title--big">История заказов</h1>
+      <AppTitle mod-text-big>История заказов</AppTitle>
     </div>
 
     <OrderItem

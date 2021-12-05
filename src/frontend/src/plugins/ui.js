@@ -5,6 +5,7 @@ import AppInput from "@/common/components/AppInput.vue";
 import AppPopup from "@/common/components/AppPopup.vue";
 import AppClose from "@/common/components/AppClose.vue";
 import AppLogo from "@/common/components/AppLogo";
+import AppTitle from "@/common/components/AppTitle";
 import AppProductDescription from "@/common/components/AppProductDescription.vue";
 import AppNotifications from "@/common/components/AppNotifications.vue";
 
@@ -14,5 +15,6 @@ Vue.component("AppInput", AppInput);
 Vue.component("AppPopup", AppPopup);
 Vue.component("AppClose", AppClose);
 Vue.component("AppLogo", AppLogo);
+Vue.component("AppTitle", AppTitle);
 Vue.component("AppProductDescription", AppProductDescription);
 Vue.component("AppNotifications", AppNotifications);

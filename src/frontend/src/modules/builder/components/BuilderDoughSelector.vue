@@ -1,6 +1,8 @@
 <template>
   <div class="sheet">
-    <h2 class="title title--small sheet__title">Выберите тесто</h2>
+    <AppTitle class="sheet__title" :level="2" mod-text-small>
+      Выберите тесто
+    </AppTitle>
 
     <div class="sheet__content dough">
       <BuilderDoughRadio
@@ -33,6 +35,7 @@ export default {
     ...mapState("Builder", {
       doughList: "dough",
     }),
+
     pickedDough: {
       get() {
         return this.$store.state.Builder.pizza?.doughId;

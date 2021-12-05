@@ -13,9 +13,9 @@
         <span class="visually-hidden">Закрыть попап</span>
       </a>
       <div class="popup__title">
-        <h2 class="title">
+        <AppTitle :level="2">
           <slot name="title" />
-        </h2>
+        </AppTitle>
       </div>
       <p>
         <slot name="default" />

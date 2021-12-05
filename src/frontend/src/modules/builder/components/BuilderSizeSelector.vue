@@ -1,6 +1,8 @@
 <template>
   <div class="sheet">
-    <h2 class="title title--small sheet__title">Выберите размер</h2>
+    <AppTitle class="sheet__title" :level="2" mod-text-small>
+      Выберите размер
+    </AppTitle>
 
     <div class="sheet__content diameter">
       <BuilderSizeRadio
@@ -29,6 +31,7 @@ export default {
 
   computed: {
     ...mapState("Builder", ["sizes"]),
+
     pickedSize: {
       get() {
         return this.$store.state.Builder.pizza?.sizeId;
