@@ -4,9 +4,11 @@ import { generateMockStore } from "@/store/mocks";
 import { createOrders, mockOrders } from "@/store/mocks/mocks-order.js";
 import AppButton from "@/common/components/AppButton.vue";
 import AppProductDescription from "@/common/components/AppProductDescription";
+import AppTitle from "@/common/components/AppTitle";
 
 const localVue = createLocalVue();
 localVue.component("AppButton", AppButton);
+localVue.component("AppTitle", AppTitle);
 localVue.component("AppProductDescription", AppProductDescription);
 
 describe("Orders", () => {

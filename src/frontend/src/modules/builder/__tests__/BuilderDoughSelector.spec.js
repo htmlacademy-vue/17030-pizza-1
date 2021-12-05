@@ -3,9 +3,12 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import Vuex from "vuex";
 import { SET_ENTITY } from "@/store/mutation-types.js";
 import { generateMockStore } from "@/store/mocks";
+import AppTitle from "@/common/components/AppTitle";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.component("AppTitle", AppTitle);
+
 const dough = [
   {
     id: 1,

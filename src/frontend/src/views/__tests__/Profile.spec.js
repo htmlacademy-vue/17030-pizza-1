@@ -1,17 +1,19 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import Profile from "@/views/Profile.vue";
 import { generateMockStore } from "@/store/mocks";
+import AppButton from "@/common/components/AppButton.vue";
+import AppIcon from "@/common/components/AppIcon.vue";
+import AppTitle from "@/common/components/AppTitle";
 import {
   authenticateUser,
   createAddresses,
   mocksAddresses,
 } from "@/store/mocks/mocks-auth.js";
-import AppButton from "@/common/components/AppButton.vue";
-import AppIcon from "@/common/components/AppIcon.vue";
 
 const localVue = createLocalVue();
 localVue.component("AppButton", AppButton);
 localVue.component("AppIcon", AppIcon);
+localVue.component("AppTitle", AppTitle);
 
 describe("Profile", () => {
   let wrapper;
