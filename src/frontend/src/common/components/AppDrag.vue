@@ -1,5 +1,8 @@
 <template>
-  <div :draggable="draggable" @dragstart.self="dragstartHandler">
+  <div
+    :draggable="draggable"
+    @dragstart.self="dragstartHandler"
+  >
     <slot />
   </div>
 </template>

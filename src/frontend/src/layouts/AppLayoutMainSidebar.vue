@@ -1,13 +1,6 @@
 <template>
   <div class="sidebar">
-    <router-link to="/" class="logo layout__logo">
-      <img
-        src="@/assets/img/logo.svg"
-        alt="V!U!E! Pizza logo"
-        width="90"
-        height="40"
-      />
-    </router-link>
+    <AppLogo class="layout__logo" />
 
     <router-link
       to="/orders"
@@ -30,4 +23,20 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.layout__logo {
+  display: block;
+
+  margin-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  background-color: $green-500;
+
+  &::v-deep img {
+    display: block;
+
+    margin: 0 auto;
+  }
+}
+</style>

@@ -1,5 +1,9 @@
 <template>
-  <div @drop.stop="dropHandler" @dragenter.prevent @dragover.prevent>
+  <div
+    @drop.stop="dropHandler"
+    @dragenter.prevent
+    @dragover.prevent
+  >
     <slot />
   </div>
 </template>

@@ -1,16 +1,21 @@
 import { shallowMount } from "@vue/test-utils";
 import AppPopup from "@/common/components/AppPopup.vue";
 import AppButton from "@/common/components/AppButton.vue";
+import AppClose from "@/common/components/AppClose";
+import AppTitle from "@/common/components/AppTitle";
 
 const transitionStub = () => ({
   render: function () {
     return this.$options._renderChildren;
   },
 });
+
 describe("AppPopup", () => {
   const stubs = {
     transition: transitionStub(),
     AppButton,
+    AppClose,
+    AppTitle,
   };
   const slots = {
     default: "Slot content",

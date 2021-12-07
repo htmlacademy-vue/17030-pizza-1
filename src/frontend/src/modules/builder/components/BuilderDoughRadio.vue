@@ -1,10 +1,11 @@
 <template>
-  <label class="radio">
+  <label class="dough__input">
     <input
       type="radio"
-      :name="name"
+      name="dough"
       :value="value"
       :checked="isChecked"
+      class="visually-hidden"
       @change="changeHandler"
     />
     <slot />
@@ -13,7 +14,7 @@
 
 <script>
 export default {
-  name: "AppRadio",
+  name: "BuilderDoughRadio",
 
   model: {
     prop: "checked",
@@ -26,12 +27,10 @@ export default {
       required: true,
       default: "",
     },
-
     value: {
       type: [String, Number],
       required: true,
     },
-
     name: {
       type: String,
       default: "",
@@ -55,64 +54,65 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/m_center.scss";
 
-.radio {
+.dough__input {
+  position: relative;
+
+  margin-right: 8%;
+  margin-bottom: 20px;
+  padding-left: 50px;
+
   cursor: pointer;
 
-  span {
+  b {
     @include r-s16-h19;
 
-    position: relative;
-
-    padding-left: 28px;
-
-    &:before {
+    &::before {
       @include p_center-v;
 
-      display: block;
-
-      box-sizing: border-box;
-      width: 20px;
-      height: 20px;
+      width: 36px;
+      height: 36px;
 
       content: "";
       transition: 0.3s;
 
-      border: 1px solid $purple-400;
       border-radius: 50%;
-      background-color: $white;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+  }
+
+  span {
+    @include l-s11-h13;
+
+    display: block;
+  }
+
+  &--light {
+    b {
+      &::before {
+        background-image: url("~@/assets/img/dough-light.svg");
+      }
+    }
+  }
+
+  &--large {
+    b {
+      &::before {
+        background-image: url("~@/assets/img/dough-large.svg");
+      }
     }
   }
 
   &:hover {
-    input:not(:checked):not(:disabled) + span {
-      &:before {
-        border-color: $purple-800;
-      }
+    b::before {
+      box-shadow: $shadow-regular;
     }
   }
 
   input {
-    display: none;
-
-    &:checked + span {
-      &:before {
-        border: 6px solid $green-500;
-      }
-    }
-
-    &:disabled {
-      & + span {
-        &:before {
-          border-color: $purple-400;
-          background-color: $silver-200;
-        }
-      }
-
-      &:checked + span {
-        &:before {
-          border: 6px solid $purple-400;
-        }
-      }
+    &:checked + b::before {
+      box-shadow: $shadow-large;
     }
   }
 }

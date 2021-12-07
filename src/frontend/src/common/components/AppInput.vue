@@ -1,5 +1,8 @@
 <template>
-  <label class="input" :class="modifiersClass">
+  <label
+    class="input"
+    :class="modifiersClass"
+  >
     <span
       class="input__caption"
       :class="{ 'visually-hidden': !isVisibleCaption }"
@@ -17,7 +20,11 @@
       :required="required"
       @input="$emit('input', $event.target.value)"
     />
-    <span v-if="showError" class="input__text" data-test="error-text">
+    <span
+      v-if="showError"
+      class="input__text"
+      data-test="error-text"
+    >
       {{ errorText }}
     </span>
   </label>
@@ -80,4 +87,71 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.input {
+  position: relative;
+  display: block;
+
+  &__caption {
+    @include r-s14-h16;
+
+    display: block;
+
+    margin-bottom: 4px;
+  }
+
+  input {
+    @include r-s16-h19;
+
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 8px 16px;
+
+    transition: 0.3s;
+
+    color: $black;
+    border: 1px solid $purple-400;
+    border-radius: 8px;
+    outline: none;
+    background-color: $white;
+
+    font-family: inherit;
+
+    &:focus {
+      border-color: $green-500;
+    }
+  }
+
+  &:hover {
+    input {
+      border-color: $black;
+    }
+  }
+
+  &--big-label {
+    display: flex;
+    align-items: center;
+
+    .input__caption {
+      @include b-s16-h19;
+
+      margin-right: 16px;
+
+      white-space: nowrap;
+    }
+  }
+
+  &__text {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    color: $red-800;
+
+    @include l-s11-h13;
+  }
+}
+</style>

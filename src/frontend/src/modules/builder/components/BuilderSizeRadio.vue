@@ -1,3 +1,59 @@
+<template>
+  <label class="diameter__input">
+    <input
+      type="radio"
+      name="size"
+      :value="value"
+      :checked="isChecked"
+      class="visually-hidden"
+      @change="changeHandler"
+    />
+    <slot />
+  </label>
+</template>
+
+<script>
+export default {
+  name: "BuilderSizeRadio",
+
+  model: {
+    prop: "checked",
+    event: "change",
+  },
+
+  props: {
+    checked: {
+      type: [String, Number],
+      required: true,
+      default: "",
+    },
+    value: {
+      type: [String, Number],
+      required: true,
+    },
+    name: {
+      type: String,
+      default: "",
+    },
+  },
+
+  computed: {
+    isChecked() {
+      return this.checked.toString() === this.value.toString();
+    },
+  },
+
+  methods: {
+    changeHandler(evt) {
+      this.$emit("change", evt.target.value);
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "~@/assets/scss/mixins/m_center.scss";
+
 .diameter__input {
   margin-right: 8.7%;
   margin-bottom: 20px;
@@ -64,3 +120,4 @@
     }
   }
 }
+</style>

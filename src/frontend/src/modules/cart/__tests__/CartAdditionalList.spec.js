@@ -1,23 +1,34 @@
 import { mount } from "@vue/test-utils";
-import CartMiscItem from "@/modules/cart/components/CartMiscItem.vue";
+import CartAdditionalList from "@/modules/cart/components/CartAdditionalList.vue";
 import { generateMockStore } from "@/store/mocks";
+import { mocksCartMisc } from "@/store/mocks/mocks-cart";
 
-describe("CartMiscItem", () => {
+describe("CartAdditionalList", () => {
   const propsData = {
-    miscItem: {
-      id: 1,
-      name: "Cola-Cola 0,5 литра",
-      image: "/public/img/cola.svg",
-      price: 56,
-      type: "cola",
+    misc: mocksCartMisc,
+    cartOrder: {
+      userId: null,
+      phone: "",
+      address: null,
+      pizzas: [
+        {
+          id: "1",
+          name: "gfhgh",
+          sauceId: 1,
+          doughId: 1,
+          sizeId: 1,
+          quantity: 1,
+          ingredients: [{ ingredientId: 8, quantity: 1 }],
+        },
+      ],
+      misc: [{ miscId: 1, quantity: 1 }],
     },
-    miscQuantity: 4,
   };
   let wrapper;
   let store;
   let actions;
   const createComponent = (options) => {
-    wrapper = mount(CartMiscItem, options);
+    wrapper = mount(CartAdditionalList, options);
   };
 
   beforeEach(() => {
@@ -40,12 +51,14 @@ describe("CartMiscItem", () => {
 
   it("sets props data", () => {
     createComponent({ propsData });
-    const miscCounterInput = wrapper.find(`[data-test="misc-counter"] input`);
-    expect(wrapper.html()).toContain(propsData.miscItem.name);
-    expect(wrapper.html()).toContain(propsData.miscItem.price);
-    expect(miscCounterInput.element.value).toBe(
-      propsData.miscQuantity.toString()
+    const miscItem = wrapper.find(`[data-test="cart-misc-item"]`);
+    const miscCounterInput = miscItem.find(`[data-test="misc-counter"] input`);
+    expect(miscItem.html()).toContain(propsData.misc[0].name);
+    expect(miscItem.html()).toContain(propsData.misc[0].price);
+    const misc = propsData.cartOrder.misc.find(
+      ({ miscId }) => miscId === propsData.misc[0].id
     );
+    expect(miscCounterInput.element.value).toBe(misc.quantity.toString());
   });
 
   it("calls `updateMiscCount` action when on input misc counter", async () => {
@@ -55,7 +68,7 @@ describe("CartMiscItem", () => {
     await miscCounter.vm.$emit("input", quantity);
     expect(actions.Cart.updateMiscCount).toHaveBeenCalledWith(
       expect.any(Object),
-      { miscId: propsData.miscItem.id, quantity }
+      { miscId: propsData.misc[0].id, quantity }
     );
   });
 });

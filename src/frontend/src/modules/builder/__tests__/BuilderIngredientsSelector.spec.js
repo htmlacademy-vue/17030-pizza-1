@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { createLocalVue, mount } from "@vue/test-utils";
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector.vue";
 import { generateMockStore } from "@/store/mocks";
 import {
@@ -8,6 +8,10 @@ import {
   mockIngredients,
   mockSauces,
 } from "@/store/mocks/mocks-builder.js";
+import AppTitle from "@/common/components/AppTitle";
+
+const localVue = createLocalVue();
+localVue.component("AppTitle", AppTitle);
 
 describe("BuilderIngredientsSelector", () => {
   let wrapper;
@@ -32,7 +36,7 @@ describe("BuilderIngredientsSelector", () => {
   });
 
   it("is rendered", () => {
-    createComponent({ store });
+    createComponent({ store, localVue });
 
     expect(wrapper.exists()).toBeTruthy();
   });
@@ -40,7 +44,7 @@ describe("BuilderIngredientsSelector", () => {
   it("renders sauces", () => {
     createPizza(store);
     createSauces(store);
-    createComponent({ store });
+    createComponent({ store, localVue });
     const sauceRadios = wrapper.findAll(`[data-test="sauce-radio-input"]`);
     expect(sauceRadios.wrappers.length).toEqual(mockSauces.length);
   });
@@ -48,7 +52,7 @@ describe("BuilderIngredientsSelector", () => {
   it("renders ingredients", () => {
     createPizza(store);
     createIngredients(store);
-    createComponent({ store });
+    createComponent({ store, localVue });
     const ingredientCounterItems = wrapper.findAll(
       `[data-test="ingredient-counter"]`
     );
@@ -60,7 +64,7 @@ describe("BuilderIngredientsSelector", () => {
   it("calls set sauce action", async () => {
     createPizza(store);
     createSauces(store);
-    createComponent({ store });
+    createComponent({ store, localVue });
     const secondSauceRadio = wrapper.find(`[data-test="sauce-radio-input"]`);
     await secondSauceRadio.vm.$emit("change", mockSauces[0].id);
     expect(actions.Builder.setSauce).toHaveBeenCalled();
@@ -73,7 +77,7 @@ describe("BuilderIngredientsSelector", () => {
   it("calls set ingredient action", async () => {
     createPizza(store);
     createIngredients(store);
-    createComponent({ store });
+    createComponent({ store, localVue });
     const ingredientCounter = wrapper.find(`[data-test="ingredient-counter"]`);
     await ingredientCounter.vm.$emit("input", 1);
     expect(actions.Builder.setIngredient).toHaveBeenCalled();

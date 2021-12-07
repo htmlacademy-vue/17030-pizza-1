@@ -4,6 +4,7 @@ import Index from "@/views/index/Index.vue";
 import { generateMockStore } from "@/store/mocks";
 import AppInput from "@/common/components/AppInput.vue";
 import AppButton from "@/common/components/AppButton.vue";
+import AppTitle from "@/common/components/AppTitle";
 import {
   createDough,
   createIngredients,
@@ -17,6 +18,7 @@ const localVue = createLocalVue();
 
 localVue.component("AppButton", AppButton);
 localVue.component("AppInput", AppInput);
+localVue.component("AppTitle", AppTitle);
 
 localVue.use(Vuex);
 

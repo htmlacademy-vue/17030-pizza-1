@@ -3,36 +3,23 @@
     action="test.html"
     method="post"
     class="layout-form"
-    @submit.prevent="checkout"
     novalidate
+    @submit.prevent="checkout"
   >
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
-          <h1 class="title title--big">Корзина</h1>
+          <AppTitle mod-text-big>Корзина</AppTitle>
         </div>
 
         <template v-if="hasProducts">
-          <ul class="cart-list sheet">
-            <CartProductItem
-              v-for="pizza in cartOrder.pizzas"
-              :key="pizza.id"
-              :pizza="pizza"
-              data-test="cart-product-item"
-            />
-          </ul>
+          <CartPizzaList :pizzas="cartOrder.pizzas" />
 
           <div class="cart__additional">
-            <ul class="additional-list">
-              <CartMiscItem
-                class="sheet"
-                v-for="miscItem in misc"
-                :key="miscItem.name"
-                :misc-item="miscItem"
-                :misc-quantity="getMiscQuantity(miscItem.id)"
-                data-test="cart-misc-item"
-              />
-            </ul>
+            <CartAdditionalList
+              :misc="misc"
+              :cartOrder="cartOrder"
+            />
           </div>
 
           <div class="cart-form">
@@ -40,9 +27,9 @@
               <span class="cart-form__label">Получение заказа:</span>
 
               <select
+                v-model="receiving"
                 name="test"
                 class="select"
-                v-model="receiving"
                 data-test="select-receiving"
               >
                 <option value="pickup">Заберу сам</option>
@@ -58,9 +45,9 @@
             </label>
 
             <AppInput
+              v-model="cartOrder.phone"
               name="tel"
               placeholder="+7 999-999-99-99"
-              v-model="cartOrder.phone"
               mod-big-label
               :error-text="validations.phone.error"
               required
@@ -78,8 +65,8 @@
 
               <div class="cart-form__input">
                 <AppInput
-                  name="street"
                   v-model="cartOrder.address.street"
+                  name="street"
                   :readonly="isAddressFromProfile"
                   :error-text="validations.street.error"
                   required
@@ -90,20 +77,21 @@
 
               <div class="cart-form__input cart-form__input--small">
                 <AppInput
-                  name="house"
                   v-model="cartOrder.address.building"
+                  name="house"
                   :readonly="isAddressFromProfile"
                   :error-text="validations.building.error"
                   required
                   data-test="house"
-                  >Дом*
+                >
+                  Дом*
                 </AppInput>
               </div>
 
               <div class="cart-form__input cart-form__input--small">
                 <AppInput
-                  name="apartment"
                   v-model="cartOrder.address.flat"
+                  name="apartment"
                   :readonly="isAddressFromProfile"
                   data-test="apartment"
                 >
@@ -114,15 +102,26 @@
           </div>
         </template>
 
-        <div v-else class="sheet cart__empty" data-test="cart-empty">
+        <div
+          v-else
+          class="sheet cart__empty"
+          data-test="cart-empty"
+        >
           <p>В корзине нет ни одного товара</p>
         </div>
       </div>
     </main>
 
-    <CartFooter v-if="hasProducts" data-test="cart-footer" />
+    <CartFooter
+      v-if="hasProducts"
+      data-test="cart-footer"
+    />
 
-    <AppPopup :visible="isPopupVisible" @close="closePopup" data-test="popup">
+    <AppPopup
+      :visible="isPopupVisible"
+      data-test="popup"
+      @close="closePopup"
+    >
       <template #title>Спасибо за заказ</template>
       <template #default>
         Мы начали готовить Ваш заказ, скоро привезём его вам ;)
@@ -134,8 +133,8 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import CartProductItem from "@/modules/cart/components/CartProductItem.vue";
-import CartMiscItem from "@/modules/cart/components/CartMiscItem.vue";
+import CartPizzaList from "@/modules/cart/components/CartPizzaList.vue";
+import CartAdditionalList from "@/modules/cart/components/CartAdditionalList.vue";
 import CartFooter from "@/modules/cart/components/CartFooter.vue";
 import { validator } from "@/mixins";
 
@@ -153,9 +152,9 @@ export default {
   mixins: [validator],
 
   components: {
-    CartProductItem,
-    CartMiscItem,
+    CartPizzaList,
     CartFooter,
+    CartAdditionalList,
   },
 
   data() {
@@ -236,12 +235,15 @@ export default {
         this.validations = result;
       },
     },
+
     "cartOrder.phone"() {
       this.$clearValidationErrors();
     },
+
     "cartOrder.address.street"() {
       this.$clearValidationErrors();
     },
+
     "cartOrder.address.building"() {
       this.$clearValidationErrors();
     },
@@ -252,21 +254,14 @@ export default {
   },
 
   methods: {
+    ...mapActions("Builder", ["createNewPizza"]),
+
     ...mapActions("Cart", [
       "setUserIdToCartOrder",
       "resetState",
       "setReceivingMethod",
       "setAddressToCartOrder",
     ]),
-    ...mapActions("Builder", ["createNewPizza"]),
-
-    getMiscQuantity(id) {
-      return (
-        this.cartOrder.misc?.find(
-          ({ miscId }) => miscId.toString() === id.toString()
-        )?.quantity ?? 0
-      );
-    },
 
     async checkout() {
       if (
@@ -305,4 +300,93 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.cart__title {
+  margin-bottom: 15px;
+}
+
+.cart__additional {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.cart__empty {
+  padding: 20px 30px;
+}
+
+.cart-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cart-form__select {
+  display: flex;
+  align-items: center;
+
+  margin-right: auto;
+
+  span {
+    margin-right: 16px;
+  }
+}
+
+.cart-form__label {
+  @include b-s16-h19;
+
+  white-space: nowrap;
+}
+
+.cart-form__address {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  margin-top: 20px;
+}
+
+.cart-form__input {
+  flex-grow: 1;
+
+  margin-bottom: 20px;
+  margin-left: 16px;
+
+  &--small {
+    max-width: 120px;
+  }
+}
+
+.select {
+  @include r-s16-h19;
+
+  display: block;
+
+  margin: 0;
+  padding: 8px 16px;
+  padding-right: 30px;
+
+  cursor: pointer;
+  transition: 0.3s;
+
+  color: $black;
+  border: 1px solid $purple-400;
+  border-radius: 8px;
+  outline: none;
+  background-color: $silver-100;
+  background-image: url("~@/assets/img/select.svg");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+
+  font-family: inherit;
+
+  appearance: none;
+
+  &:hover {
+    border-color: $orange-100;
+  }
+
+  &:focus {
+    border-color: $green-500;
+  }
+}
+</style>

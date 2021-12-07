@@ -1,12 +1,16 @@
-import { mount } from "@vue/test-utils";
-import CartProductItem from "@/modules/cart/components/CartProductItem.vue";
+import { createLocalVue, mount } from "@vue/test-utils";
+import CartPizzaList from "@/modules/cart/components/CartPizzaList.vue";
 import { generateMockStore } from "@/store/mocks";
 import { mockCartPizza } from "@/store/mocks/mocks-cart.js";
 import { createIngredients } from "@/store/mocks/mocks-builder.js";
+import AppProductDescription from "@/common/components/AppProductDescription";
 
-describe("CartProductItem", () => {
+const localVue = createLocalVue();
+localVue.component("AppProductDescription", AppProductDescription);
+
+describe("CartPizzaList", () => {
   const propsData = {
-    pizza: mockCartPizza,
+    pizzas: [mockCartPizza],
   };
   let wrapper;
   let store;
@@ -17,7 +21,7 @@ describe("CartProductItem", () => {
     },
   };
   const createComponent = (options) => {
-    wrapper = mount(CartProductItem, options);
+    wrapper = mount(CartPizzaList, options);
   };
 
   beforeEach(() => {
@@ -37,13 +41,13 @@ describe("CartProductItem", () => {
 
   it("is rendered", () => {
     createIngredients(store);
-    createComponent({ store, propsData });
+    createComponent({ store, propsData, localVue });
     expect(wrapper.exists()).toBeTruthy();
   });
 
   it("calls `updatePizzaQuantity` action on input AppCounter", async () => {
     createIngredients(store);
-    createComponent({ store, propsData });
+    createComponent({ store, propsData, localVue });
     const quantity = 2;
     const pizzaCounter = wrapper.find(`[data-test="pizza-counter"]`);
     await pizzaCounter.vm.$emit("input", quantity);
@@ -58,7 +62,7 @@ describe("CartProductItem", () => {
 
   it("calls `editPizza` on click by button", async () => {
     createIngredients(store);
-    createComponent({ store, propsData, mocks });
+    createComponent({ store, propsData, mocks, localVue });
     const editBtn = wrapper.find(`[data-test="change-button"]`);
     await editBtn.trigger("click");
     expect(mocks.$router.push).toHaveBeenCalled();

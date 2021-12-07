@@ -3,9 +3,12 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import Vuex from "vuex";
 import { SET_ENTITY } from "@/store/mutation-types.js";
 import { generateMockStore } from "@/store/mocks";
+import AppTitle from "@/common/components/AppTitle";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.component("AppTitle", AppTitle);
+
 const dough = [
   {
     id: 1,
@@ -79,8 +82,8 @@ describe("BuilderDoughSelector", () => {
     creteBuilderPizza(store);
     createDough(store);
     createComponent({ localVue, store });
-    const appSelectorRadio = wrapper.find(`[data-test="app-selector-radio"]`);
-    await appSelectorRadio.vm.$emit("change", dough[0].id);
+    const doughRadio = wrapper.find(`[data-test="dough-radio"]`);
+    await doughRadio.vm.$emit("change", dough[0].id);
     expect(actions.Builder.setDough).toHaveBeenCalledWith(
       expect.any(Object),
       dough[0].id

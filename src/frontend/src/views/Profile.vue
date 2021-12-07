@@ -1,26 +1,28 @@
 <template>
   <div>
     <div class="layout__title">
-      <h1 class="title title--big">Мои данные</h1>
+      <AppTitle mod-text-big>Мои данные</AppTitle>
     </div>
 
-    <ProfileUser v-if="user" :user="user" data-test="profile-user-component" />
+    <ProfileUser
+      v-if="user"
+      :user="user"
+      data-test="profile-user-component"
+    />
 
-    <div class="layout__address">
-      <ProfileAddress
-        v-for="(address, index) in addresses"
-        :key="address.id"
-        :counter="index + 1"
-        :address="address"
-        data-test="profile-address-component"
-      />
-    </div>
+    <ProfileAddress
+      v-for="(address, index) in addresses"
+      :key="address.id"
+      :counter="index + 1"
+      :address="address"
+      data-test="profile-address-component"
+    />
 
     <div class="layout__button">
       <AppButton
         mod-border
-        @click.prevent="createNewAddress"
         data-test="create-new-address-button"
+        @click.prevent="createNewAddress"
       >
         Добавить новый адрес
       </AppButton>
@@ -37,7 +39,7 @@ import { auth } from "@/middlewares";
 export default {
   name: "Profile",
   layout: "AppLayoutMain",
-  middlewares: { auth },
+  middlewares: [auth],
 
   components: {
     ProfileUser,
@@ -59,4 +61,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.layout__button ::v-deep button {
+  padding: 12px 23px;
+}
+</style>

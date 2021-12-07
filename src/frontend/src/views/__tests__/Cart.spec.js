@@ -12,6 +12,9 @@ import {
 import AppPopup from "@/common/components/AppPopup.vue";
 import AppInput from "@/common/components/AppInput.vue";
 import AppButton from "@/common/components/AppButton.vue";
+import AppProductDescription from "@/common/components/AppProductDescription";
+import AppClose from "@/common/components/AppClose";
+import AppTitle from "@/common/components/AppTitle";
 import {
   createDough,
   createIngredients,
@@ -23,6 +26,9 @@ const localVue = createLocalVue();
 localVue.component("AppPopup", AppPopup);
 localVue.component("AppInput", AppInput);
 localVue.component("AppButton", AppButton);
+localVue.component("AppProductDescription", AppProductDescription);
+localVue.component("AppClose", AppClose);
+localVue.component("AppTitle", AppTitle);
 
 const mocks = {
   $router: {

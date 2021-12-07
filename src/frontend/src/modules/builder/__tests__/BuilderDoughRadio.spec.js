@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import AppSelectorRadio from "@/common/components/AppSelectorRadio.vue";
+import BuilderDoughRadio from "@/modules/builder/components/BuilderDoughRadio.vue";
 
-describe("AppSelectorRadio", () => {
+describe("BuilderDoughRadio", () => {
   const slots = {
     default: "Default slot content",
   };
@@ -9,7 +9,7 @@ describe("AppSelectorRadio", () => {
 
   let wrapper;
   const createComponent = (options) => {
-    wrapper = shallowMount(AppSelectorRadio, options);
+    wrapper = shallowMount(BuilderDoughRadio, options);
   };
 
   beforeEach(() => {
@@ -54,11 +54,5 @@ describe("AppSelectorRadio", () => {
     createComponent({ propsData });
     const input = wrapper.find("input");
     expect(input.element.checked).toBeFalsy();
-  });
-
-  it("input name is prop name", () => {
-    createComponent({ propsData });
-    const input = wrapper.find("input");
-    expect(input.attributes("name")).toBe(propsData.name);
   });
 });

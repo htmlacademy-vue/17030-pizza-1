@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="layout__title">
-      <h1 class="title title--big">История заказов</h1>
+      <AppTitle mod-text-big>История заказов</AppTitle>
     </div>
 
     <OrderItem
@@ -21,7 +21,7 @@ import { auth } from "@/middlewares";
 export default {
   name: "Orders",
   layout: "AppLayoutMain",
-  middlewares: { auth },
+  middlewares: [auth],
 
   components: {
     OrderItem,

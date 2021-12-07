@@ -1,25 +1,40 @@
 <template>
-  <transition name="popup" @after-leave="afterLeave">
-    <div v-if="localVisible" class="popup">
+  <transition
+    name="popup"
+    @after-leave="afterLeave"
+  >
+    <div
+      v-if="localVisible"
+      class="popup"
+    >
+      <AppClose
+        data-test="close-btn"
+        @click.prevent="localVisible = false"
+      >
+        Закрыть попап
+      </AppClose>
       <a
         href="#"
         class="close"
-        @click.prevent="localVisible = false"
         data-test="close-btn"
+        @click.prevent="localVisible = false"
       >
         <span class="visually-hidden">Закрыть попап</span>
       </a>
       <div class="popup__title">
-        <h2 class="title">
+        <AppTitle :level="2">
           <slot name="title" />
-        </h2>
+        </AppTitle>
       </div>
       <p>
         <slot name="default" />
       </p>
 
       <div class="popup__button">
-        <AppButton tag="a" @click.prevent="localVisible = false">
+        <AppButton
+          tag="a"
+          @click.prevent="localVisible = false"
+        >
           <slot name="action">Хорошо</slot>
         </AppButton>
       </div>

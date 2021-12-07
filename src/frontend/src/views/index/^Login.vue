@@ -1,32 +1,34 @@
 <template>
-  <transition name="popup" appear>
+  <transition
+    appear
+    name="popup"
+  >
     <div class="sign-form">
-      <a
-        href="#"
-        class="close close--white"
-        @click.prevent="$router.push('/')"
+      <AppClose
         data-test="close-button"
+        mod-white
+        @click.prevent="$router.push('/')"
       >
-        <span class="visually-hidden">Закрыть форму авторизации</span>
-      </a>
+        Закрыть форму авторизации
+      </AppClose>
       <div class="sign-form__title">
-        <h1 class="title title--small">Авторизуйтесь на сайте</h1>
+        <AppTitle mod-text-small>Авторизуйтесь на сайте</AppTitle>
       </div>
       <form
         action="test.html"
         method="post"
-        @submit.prevent="sendForm"
         novalidate
+        @submit.prevent="sendForm"
       >
         <div class="sign-form__input">
           <AppInput
             ref="email"
             v-model="email"
-            type="email"
-            name="email"
-            placeholder="example@mail.ru"
             :error-text="validations.email.error"
             data-test="email-component"
+            name="email"
+            placeholder="example@mail.ru"
+            type="email"
           >
             E-mail
           </AppInput>
@@ -35,11 +37,11 @@
         <div class="sign-form__input">
           <AppInput
             v-model="password"
-            type="password"
-            name="pass"
-            placeholder="***********"
             :error-text="validations.password.error"
             data-test="password-component"
+            name="pass"
+            placeholder="***********"
+            type="password"
           >
             Пароль
           </AppInput>
@@ -57,7 +59,7 @@ import { isLoggedIn } from "@/middlewares";
 export default {
   name: "Login",
   notAnimate: true,
-  middlewares: { isLoggedIn },
+  middlewares: [isLoggedIn],
   mixins: [validator],
 
   data() {
@@ -81,6 +83,7 @@ export default {
     email() {
       this.$clearValidationErrors();
     },
+
     password() {
       this.$clearValidationErrors();
     },
@@ -111,11 +114,39 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/scss/mixins/m_center.scss";
+
 .sign-form {
+  @include pf_center-all;
+
+  z-index: 10;
+
+  display: block;
+
+  box-sizing: border-box;
+  width: 455px;
+  padding-top: 146px;
+  padding-right: 32px;
+  padding-bottom: 32px;
+  padding-left: 32px;
+
+  background: $white url("~@/assets/img/popup.svg") no-repeat center top;
+  box-shadow: $shadow-light;
+
   ::v-deep button {
     margin: 0 auto;
     padding: 16px 14px;
   }
+}
+
+.sign-form__title {
+  margin-bottom: 24px;
+
+  text-align: center;
+}
+
+.sign-form__input {
+  margin-bottom: 16px;
 }
 
 .popup-enter-active,
