@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="layout__title">
-      <AppTitle mod-text-big>История заказов</AppTitle>
+      <AppTitle mod-text-big>
+        История заказов
+      </AppTitle>
     </div>
 
     <OrderItem
@@ -20,6 +22,7 @@ import { auth } from "@/middlewares";
 
 export default {
   name: "Orders",
+
   layout: "AppLayoutMain",
   middlewares: [auth],
 

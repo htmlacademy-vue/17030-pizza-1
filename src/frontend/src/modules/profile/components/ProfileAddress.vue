@@ -127,6 +127,7 @@ export default {
       type: Number,
       required: true,
     },
+
     address: {
       type: Object,
       default() {
@@ -161,9 +162,11 @@ export default {
     "localAddress.name"() {
       this.$clearValidationErrors();
     },
+
     "localAddress.street"() {
       this.$clearValidationErrors();
     },
+
     "localAddress.building"() {
       this.$clearValidationErrors();
     },
@@ -183,14 +186,17 @@ export default {
 
   methods: {
     ...mapActions("Auth", ["postAddress", "putAddress", "deleteAddress"]),
+
     remove(id) {
       this.deleteAddress({ id, isNewAddress: this.isNewAddress });
     },
+
     async edit() {
       this.isDisplayMode = false;
       await this.$nextTick();
       this.$refs.addrName.$refs.input.focus();
     },
+
     save() {
       if (
         !this.$validateFields(

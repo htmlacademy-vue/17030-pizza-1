@@ -9,7 +9,9 @@
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
-          <AppTitle mod-text-big>Корзина</AppTitle>
+          <AppTitle mod-text-big>
+            Корзина
+          </AppTitle>
         </div>
 
         <template v-if="hasProducts">
@@ -18,7 +20,7 @@
           <div class="cart__additional">
             <CartAdditionalList
               :misc="misc"
-              :cartOrder="cartOrder"
+              :cart-order="cartOrder"
             />
           </div>
 
@@ -71,7 +73,8 @@
                   :error-text="validations.street.error"
                   required
                   data-test="street"
-                  >Улица*
+                >
+                  Улица*
                 </AppInput>
               </div>
 
@@ -122,11 +125,15 @@
       data-test="popup"
       @close="closePopup"
     >
-      <template #title>Спасибо за заказ</template>
+      <template #title>
+        Спасибо за заказ
+      </template>
       <template #default>
         Мы начали готовить Ваш заказ, скоро привезём его вам ;)
       </template>
-      <template #action>Отлично, я жду!</template>
+      <template #action>
+        Отлично, я жду!
+      </template>
     </AppPopup>
   </form>
 </template>
@@ -149,13 +156,14 @@ const newAddress = () => {
 
 export default {
   name: "Cart",
-  mixins: [validator],
 
   components: {
     CartPizzaList,
     CartFooter,
     CartAdditionalList,
   },
+
+  mixins: [validator],
 
   data() {
     return {

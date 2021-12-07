@@ -19,7 +19,7 @@
       :readonly="readonly"
       :required="required"
       @input="$emit('input', $event.target.value)"
-    />
+    >
     <span
       v-if="showError"
       class="input__text"
@@ -40,34 +40,42 @@ export default {
       required: true,
       default: "",
     },
+
     name: {
       type: String,
       required: true,
     },
+
     type: {
       type: String,
       default: "text",
     },
+
     placeholder: {
       type: String,
       default: "",
     },
+
     errorText: {
       type: String,
       default: "",
     },
+
     readonly: {
       type: Boolean,
       default: false,
     },
+
     required: {
       type: Boolean,
       default: false,
     },
+
     isVisibleCaption: {
       type: Boolean,
       default: true,
     },
+
     modBigLabel: {
       type: Boolean,
       default: false,
@@ -80,6 +88,7 @@ export default {
         "input--big-label": this.modBigLabel,
       };
     },
+
     showError() {
       return !!this.errorText;
     },

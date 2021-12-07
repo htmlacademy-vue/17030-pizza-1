@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="layout__title">
-      <AppTitle mod-text-big>Мои данные</AppTitle>
+      <AppTitle mod-text-big>
+        Мои данные
+      </AppTitle>
     </div>
 
     <ProfileUser
@@ -38,6 +40,7 @@ import { auth } from "@/middlewares";
 
 export default {
   name: "Profile",
+
   layout: "AppLayoutMain",
   middlewares: [auth],
 
