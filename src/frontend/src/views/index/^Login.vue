@@ -12,7 +12,9 @@
         Закрыть форму авторизации
       </AppClose>
       <div class="sign-form__title">
-        <AppTitle mod-text-small>Авторизуйтесь на сайте</AppTitle>
+        <AppTitle mod-text-small>
+          Авторизуйтесь на сайте
+        </AppTitle>
       </div>
       <form
         action="test.html"
@@ -46,7 +48,9 @@
             Пароль
           </AppInput>
         </div>
-        <AppButton type="submit">Авторизоваться</AppButton>
+        <AppButton type="submit">
+          Авторизоваться
+        </AppButton>
       </form>
     </div>
   </transition>
@@ -58,8 +62,10 @@ import { isLoggedIn } from "@/middlewares";
 
 export default {
   name: "Login",
+
   notAnimate: true,
   middlewares: [isLoggedIn],
+
   mixins: [validator],
 
   data() {

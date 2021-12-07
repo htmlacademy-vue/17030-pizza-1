@@ -35,7 +35,9 @@
           tag="a"
           @click.prevent="localVisible = false"
         >
-          <slot name="action">Хорошо</slot>
+          <slot name="action">
+            Хорошо
+          </slot>
         </AppButton>
       </div>
     </div>

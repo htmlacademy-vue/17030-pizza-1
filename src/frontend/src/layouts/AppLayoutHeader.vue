@@ -4,7 +4,9 @@
       <AppLogo />
     </div>
     <div class="header__cart">
-      <router-link to="/cart"> {{ totalPrice }} ₽</router-link>
+      <router-link to="/cart">
+        {{ totalPrice }} ₽
+      </router-link>
     </div>
     <div class="header__user">
       <template v-if="isAuthenticated">
@@ -16,14 +18,14 @@
                 @/assets/img/users/user5.webp    1x,
                 @/assets/img/users/user5@2x.webp 2x
               "
-            />
+            >
             <img
               src="@/assets/img/users/user5.jpg"
               srcset="@/assets/img/users/user5@2x.jpg"
               :alt="getUserAttribute('name')"
               width="32"
               height="32"
-            />
+            >
           </picture>
           <span>{{ getUserAttribute("name") }}</span>
         </router-link>

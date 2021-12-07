@@ -18,6 +18,7 @@ export default {
       type: Object,
       required: true,
     },
+
     draggable: {
       type: Boolean,
       default: true,

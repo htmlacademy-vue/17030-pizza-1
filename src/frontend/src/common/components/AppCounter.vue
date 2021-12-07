@@ -16,7 +16,7 @@
       class="counter__input"
       :value="value"
       @input="inputHandler"
-    />
+    >
     <button
       type="button"
       class="counter__button counter__button--plus"

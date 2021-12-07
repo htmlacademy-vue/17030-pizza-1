@@ -5,7 +5,7 @@
     href="#"
     v-on="$listeners"
   >
-    <span class="visually-hidden"><slot></slot></span>
+    <span class="visually-hidden"><slot /></span>
   </a>
 </template>
 

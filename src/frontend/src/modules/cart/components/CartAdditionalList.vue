@@ -12,7 +12,7 @@
           :alt="miscItem.name"
           width="39"
           height="60"
-        />
+        >
         <span>{{ miscItem.name }}</span>
       </p>
 

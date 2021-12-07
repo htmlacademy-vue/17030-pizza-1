@@ -6,13 +6,15 @@
       to="/orders"
       class="layout__link"
       active-class="layout__link--active"
-      >История заказов
+    >
+      История заказов
     </router-link>
     <router-link
       to="/profile"
       class="layout__link"
       active-class="layout__link--active"
-      >Мои данные
+    >
+      Мои данные
     </router-link>
   </div>
 </template>

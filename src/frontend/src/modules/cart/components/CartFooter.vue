@@ -12,7 +12,7 @@
       </AppButton>
     </div>
     <p class="footer__text">
-      Перейти к конструктору<br />чтоб собрать ещё одну пиццу
+      Перейти к конструктору<br>чтоб собрать ещё одну пиццу
     </p>
     <div class="footer__price">
       <b>Итого: {{ totalPrice }} ₽</b>

@@ -7,7 +7,7 @@
       :checked="isChecked"
       class="visually-hidden"
       @change="changeHandler"
-    />
+    >
     <slot />
   </label>
 </template>
@@ -27,10 +27,12 @@ export default {
       required: true,
       default: "",
     },
+
     value: {
       type: [String, Number],
       required: true,
     },
+
     name: {
       type: String,
       default: "",

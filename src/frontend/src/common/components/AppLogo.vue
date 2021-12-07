@@ -8,7 +8,7 @@
       alt="V!U!E! Pizza logo"
       width="90"
       height="40"
-    />
+    >
   </router-link>
 </template>
 

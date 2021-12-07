@@ -6,7 +6,7 @@
       :value="value"
       :checked="isChecked"
       @change="changeHandler"
-    />
+    >
     <slot />
   </label>
 </template>

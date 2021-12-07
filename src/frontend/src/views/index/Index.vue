@@ -5,7 +5,9 @@
       method="post"
     >
       <div class="content__wrapper">
-        <AppTitle mod-text-big>Конструктор пиццы</AppTitle>
+        <AppTitle mod-text-big>
+          Конструктор пиццы
+        </AppTitle>
 
         <div class="content__dough">
           <BuilderDoughSelector />

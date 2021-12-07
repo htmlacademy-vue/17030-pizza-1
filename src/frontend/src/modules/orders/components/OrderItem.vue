@@ -36,7 +36,9 @@
       >
         <AppProductDescription :pizza="orderPizza" />
 
-        <p class="order__price">{{ costOfPizzaText(orderPizza) }} ₽</p>
+        <p class="order__price">
+          {{ costOfPizzaText(orderPizza) }} ₽
+        </p>
       </li>
     </ul>
 
@@ -54,7 +56,7 @@
           width="20"
           height="30"
           :alt="oneMisc.name"
-        />
+        >
         <p>
           <span>{{ oneMisc.name }}</span>
           <b>{{ oneMisc.price }} ₽</b>
@@ -62,7 +64,9 @@
       </li>
     </ul>
 
-    <p class="order__address">Адрес доставки: {{ getAddressText() }}</p>
+    <p class="order__address">
+      Адрес доставки: {{ getAddressText() }}
+    </p>
   </section>
 </template>
 
