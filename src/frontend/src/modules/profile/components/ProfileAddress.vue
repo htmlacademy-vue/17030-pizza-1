@@ -36,9 +36,9 @@
             v-model="localAddress.name"
             name="addr-name"
             placeholder="Введите название адреса"
-            required
             :error-text="validations.name.error"
             data-test="addr-name"
+            required
           >
             Название адреса*
           </AppInput>
@@ -48,9 +48,9 @@
             v-model="localAddress.street"
             name="addr-street"
             placeholder="Введите название улицы"
-            required
             :error-text="validations.street.error"
             data-test="addr-street"
+            required
           >
             Улица*
           </AppInput>
@@ -60,9 +60,9 @@
             v-model="localAddress.building"
             name="addr-house"
             placeholder="Введите номер дома"
-            required
             :error-text="validations.building.error"
             data-test="addr-house"
+            required
           >
             Дом*
           </AppInput>
