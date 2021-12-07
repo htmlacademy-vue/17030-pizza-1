@@ -1,6 +1,9 @@
 <template>
   <main class="content">
-    <form action="#" method="post">
+    <form
+      action="#"
+      method="post"
+    >
       <div class="content__wrapper">
         <AppTitle mod-text-big>Конструктор пиццы</AppTitle>
 

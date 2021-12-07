@@ -1,5 +1,9 @@
 <template>
-  <button class="icon" type="button" v-on="$listeners">
+  <button
+    class="icon"
+    type="button"
+    v-on="$listeners"
+  >
     <span class="visually-hidden"><slot /></span>
   </button>
 </template>

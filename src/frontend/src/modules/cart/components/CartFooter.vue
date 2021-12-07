@@ -19,7 +19,10 @@
     </div>
 
     <div class="footer__submit">
-      <AppButton type="submit" data-test="checkout-button">
+      <AppButton
+        type="submit"
+        data-test="checkout-button"
+      >
         Оформить заказ
       </AppButton>
     </div>

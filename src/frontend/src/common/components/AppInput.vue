@@ -1,5 +1,8 @@
 <template>
-  <label class="input" :class="modifiersClass">
+  <label
+    class="input"
+    :class="modifiersClass"
+  >
     <span
       class="input__caption"
       :class="{ 'visually-hidden': !isVisibleCaption }"
@@ -17,7 +20,11 @@
       :required="required"
       @input="$emit('input', $event.target.value)"
     />
-    <span v-if="showError" class="input__text" data-test="error-text">
+    <span
+      v-if="showError"
+      class="input__text"
+      data-test="error-text"
+    >
       {{ errorText }}
     </span>
   </label>

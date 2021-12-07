@@ -1,5 +1,8 @@
 <template>
-  <transition appear name="popup">
+  <transition
+    appear
+    name="popup"
+  >
     <div class="sign-form">
       <AppClose
         data-test="close-button"

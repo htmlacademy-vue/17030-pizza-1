@@ -45,8 +45,16 @@
       class="order__additional"
       data-test="order-additional"
     >
-      <li v-for="oneMisc in getMisc()" :key="oneMisc.id">
-        <img :src="oneMisc.image" width="20" height="30" :alt="oneMisc.name" />
+      <li
+        v-for="oneMisc in getMisc()"
+        :key="oneMisc.id"
+      >
+        <img
+          :src="oneMisc.image"
+          width="20"
+          height="30"
+          :alt="oneMisc.name"
+        />
         <p>
           <span>{{ oneMisc.name }}</span>
           <b>{{ oneMisc.price }} ₽</b>

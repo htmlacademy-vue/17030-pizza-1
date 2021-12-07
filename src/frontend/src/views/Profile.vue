@@ -4,7 +4,11 @@
       <AppTitle mod-text-big>Мои данные</AppTitle>
     </div>
 
-    <ProfileUser v-if="user" :user="user" data-test="profile-user-component" />
+    <ProfileUser
+      v-if="user"
+      :user="user"
+      data-test="profile-user-component"
+    />
 
     <ProfileAddress
       v-for="(address, index) in addresses"

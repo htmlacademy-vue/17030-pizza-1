@@ -1,7 +1,16 @@
 <template>
-  <transition name="popup" @after-leave="afterLeave">
-    <div v-if="localVisible" class="popup">
-      <AppClose data-test="close-btn" @click.prevent="localVisible = false">
+  <transition
+    name="popup"
+    @after-leave="afterLeave"
+  >
+    <div
+      v-if="localVisible"
+      class="popup"
+    >
+      <AppClose
+        data-test="close-btn"
+        @click.prevent="localVisible = false"
+      >
         Закрыть попап
       </AppClose>
       <a
@@ -22,7 +31,10 @@
       </p>
 
       <div class="popup__button">
-        <AppButton tag="a" @click.prevent="localVisible = false">
+        <AppButton
+          tag="a"
+          @click.prevent="localVisible = false"
+        >
           <slot name="action">Хорошо</slot>
         </AppButton>
       </div>

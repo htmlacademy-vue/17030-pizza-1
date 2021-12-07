@@ -1,6 +1,10 @@
 <template>
   <div class="sheet">
-    <AppTitle class="sheet__title" :level="2" mod-text-small>
+    <AppTitle
+      class="sheet__title"
+      :level="2"
+      mod-text-small
+    >
       Выберите размер
     </AppTitle>
 

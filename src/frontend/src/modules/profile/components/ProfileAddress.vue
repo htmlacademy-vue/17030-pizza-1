@@ -1,10 +1,16 @@
 <template>
   <div class="layout__address">
-    <div v-if="isDisplayMode" class="sheet address-form">
+    <div
+      v-if="isDisplayMode"
+      class="sheet address-form"
+    >
       <div class="address-form__header">
         <b>Адрес №{{ counter }}. {{ address.name }}</b>
         <div class="address-form__edit">
-          <AppIcon data-test="change-address-button" @click="edit">
+          <AppIcon
+            data-test="change-address-button"
+            @click="edit"
+          >
             Изменить адрес
           </AppIcon>
         </div>
@@ -96,7 +102,12 @@
         >
           Удалить
         </AppButton>
-        <AppButton type="submit" data-test="save-button">Сохранить</AppButton>
+        <AppButton
+          type="submit"
+          data-test="save-button"
+        >
+          Сохранить
+        </AppButton>
       </div>
     </form>
   </div>

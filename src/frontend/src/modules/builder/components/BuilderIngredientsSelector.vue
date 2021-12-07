@@ -1,10 +1,17 @@
 <template>
   <div class="sheet">
-    <AppTitle class="sheet__title" :level="2" mod-text-small>
+    <AppTitle
+      class="sheet__title"
+      :level="2"
+      mod-text-small
+    >
       Выберите ингредиенты
     </AppTitle>
 
-    <div v-if="pizza" class="sheet__content ingredients">
+    <div
+      v-if="pizza"
+      class="sheet__content ingredients"
+    >
       <div class="ingredients__sauce">
         <p>Основной соус:</p>
 
@@ -24,7 +31,10 @@
       <div class="ingredients__filling">
         <p>Начинка:</p>
 
-        <ul v-if="ingredients" class="ingredients__list">
+        <ul
+          v-if="ingredients"
+          class="ingredients__list"
+        >
           <li
             v-for="ingredientItem in ingredients"
             :key="ingredientItem.name"
@@ -34,7 +44,10 @@
               :transfer-data="ingredientItem"
               :draggable="canDragIngredient(ingredientItem)"
             >
-              <span class="filling" :class="`filling--${ingredientItem.type}`">
+              <span
+                class="filling"
+                :class="`filling--${ingredientItem.type}`"
+              >
                 {{ ingredientItem.name }}
               </span>
             </AppDrag>

@@ -1,5 +1,8 @@
 <template>
-  <router-link class="logo" to="/">
+  <router-link
+    class="logo"
+    to="/"
+  >
     <img
       src="@/assets/img/logo.svg"
       alt="V!U!E! Pizza logo"

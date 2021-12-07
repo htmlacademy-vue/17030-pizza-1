@@ -16,7 +16,10 @@
           <CartPizzaList :pizzas="cartOrder.pizzas" />
 
           <div class="cart__additional">
-            <CartAdditionalList :misc="misc" :cartOrder="cartOrder" />
+            <CartAdditionalList
+              :misc="misc"
+              :cartOrder="cartOrder"
+            />
           </div>
 
           <div class="cart-form">
@@ -99,15 +102,26 @@
           </div>
         </template>
 
-        <div v-else class="sheet cart__empty" data-test="cart-empty">
+        <div
+          v-else
+          class="sheet cart__empty"
+          data-test="cart-empty"
+        >
           <p>В корзине нет ни одного товара</p>
         </div>
       </div>
     </main>
 
-    <CartFooter v-if="hasProducts" data-test="cart-footer" />
+    <CartFooter
+      v-if="hasProducts"
+      data-test="cart-footer"
+    />
 
-    <AppPopup :visible="isPopupVisible" data-test="popup" @close="closePopup">
+    <AppPopup
+      :visible="isPopupVisible"
+      data-test="popup"
+      @close="closePopup"
+    >
       <template #title>Спасибо за заказ</template>
       <template #default>
         Мы начали готовить Ваш заказ, скоро привезём его вам ;)

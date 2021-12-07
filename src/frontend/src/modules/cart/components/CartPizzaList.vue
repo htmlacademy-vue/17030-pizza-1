@@ -6,7 +6,10 @@
       class="cart-list__item"
       data-test="cart-product-item"
     >
-      <AppProductDescription class="cart-list__product" :pizza="pizza" />
+      <AppProductDescription
+        class="cart-list__product"
+        :pizza="pizza"
+      />
 
       <AppCounter
         class="cart-list__quantityer"

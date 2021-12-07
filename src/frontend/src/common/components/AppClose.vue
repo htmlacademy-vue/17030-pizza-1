@@ -1,5 +1,10 @@
 <template>
-  <a :class="modifiersClass" class="close" href="#" v-on="$listeners">
+  <a
+    :class="modifiersClass"
+    class="close"
+    href="#"
+    v-on="$listeners"
+  >
     <span class="visually-hidden"><slot></slot></span>
   </a>
 </template>
